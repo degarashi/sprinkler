@@ -5,7 +5,7 @@
 #include <mutex>
 #include <thread>
 #include "x_aux.hpp"
-#include "domain.hpp"
+#include "../domain.hpp"
 
 class QHBoxLayout;
 class QStandardItemModel;

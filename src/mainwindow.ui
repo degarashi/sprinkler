@@ -293,13 +293,13 @@
   <customwidget>
    <class>dg::rectwindow</class>
    <extends>QWidget</extends>
-   <header>rectwindow.hpp</header>
+   <header>src/rectwindow.hpp</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>dg::CurIndicator</class>
    <extends>QLabel</extends>
-   <header>cur_indicator.hpp</header>
+   <header>src/cur_indicator.hpp</header>
    <slots>
     <slot>onSprinkleCounterChanged(size_t,size_t)</slot>
    </slots>
@@ -307,18 +307,18 @@
   <customwidget>
    <class>dg::MyCheckbox</class>
    <extends>QCheckBox</extends>
-   <header>mycheckbox.hpp</header>
+   <header>src/mycheckbox.hpp</header>
   </customwidget>
   <customwidget>
    <class>dg::MySliderI</class>
    <extends>QWidget</extends>
-   <header>myslider_i.hpp</header>
+   <header>src/myslider_i.hpp</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>dg::MySliderD</class>
    <extends>QWidget</extends>
-   <header>myslider_d.hpp</header>
+   <header>src/myslider_d.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

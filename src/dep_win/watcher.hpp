@@ -1,5 +1,5 @@
 #pragma once
-#include "domain.hpp"
+#include "../domain.hpp"
 #include <QRect>
 #include <QObject>
 #include <unordered_set>

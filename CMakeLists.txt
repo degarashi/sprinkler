@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.1.0)
 project(sprinkler)
 
 set(without-unittest YES)
-add_subdirectory(histgram)
+add_subdirectory(src/histgram)
 
 set(CXX_VERSION 17)
-include(lubee/cxx_options.cmake)
+include(src/lubee/cxx_options.cmake)
 
 if(${CMAKE_CXX_COMPILER_ID} MATCHES ".*(C|c)lang")
 	message(STATUS "Using clang...")
@@ -21,29 +21,29 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Threads REQUIRED)
 
-aux_source_directory(. SRC)
+aux_source_directory(src SRC)
 if(${UNIX})
 	find_package(X11 REQUIRED)
-	aux_source_directory(dep_linux SRC)
+	aux_source_directory(src/dep_linux SRC)
 	include_directories(
-		dep_linux
+		src/dep_linux
 		${X11_INCLUDE_DIR}
 	)
 	set(LINK_LIBS ${LINK_LIBS} ${X11_LIBRARIES})
 elseif(${WIN32})
-	aux_source_directory(dep_win SRC)
+	aux_source_directory(src/dep_win SRC)
 	set(SRC ${SRC}
-		dep_win/ghook/wevent.cpp
-		dep_win/ghook/wmutex.cpp
+		src/dep_win/ghook/wevent.cpp
+		src/dep_win/ghook/wmutex.cpp
 	)
 	include_directories(
-		dep_win
+		src/dep_win
 	)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-subsystem,windows")
 else()
 	message(FATAL_ERROR "Unknown target system(neither unix nor win32)")
 endif()
-file(GLOB_RECURSE UI_FILES *.ui)
+file(GLOB_RECURSE UI_FILES src/*.ui)
 
 add_executable(
 	${PROJECT_NAME}

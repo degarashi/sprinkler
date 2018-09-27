@@ -30,7 +30,7 @@
   <customwidget>
    <class>dg::RectView</class>
    <extends>QWidget</extends>
-   <header>rectview.hpp</header>
+   <header>src/rectview.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

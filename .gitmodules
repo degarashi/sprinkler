@@ -1,6 +1,6 @@
 [submodule "histgram"]
-	path = histgram
+	path = src/histgram
 	url = ../histgram
 [submodule "spine"]
-	path = spine
+	path = src/spine
 	url = ../spine
