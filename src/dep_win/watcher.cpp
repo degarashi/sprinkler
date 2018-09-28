@@ -74,7 +74,7 @@ namespace dg {
 	}
 	void Watcher::makeArea(QHBoxLayout* addArea) {
 		DragPos* dp = new DragPos();
-		dp->setText("Drag here");
+		dp->setText("Drag here to append...");
 		dp->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 		dp->setFrameShape(QFrame::Panel);
 		// Window指定されたらWatcherへ通知

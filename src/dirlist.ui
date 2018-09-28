@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>DirectoryList</string>
+   <string>ImageSource</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>

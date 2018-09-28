@@ -33,7 +33,7 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>DirList</string>
+          <string>ImageSource</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -55,7 +55,7 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>WatchList</string>
+          <string>WindowWatch</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -125,7 +125,7 @@
        <item row="6" column="0">
         <widget class="QPushButton" name="pbInit">
          <property name="text">
-          <string>Reset</string>
+          <string comment="Sprinkle">Reset</string>
          </property>
         </widget>
        </item>
@@ -182,7 +182,7 @@
        <item row="2" column="0">
         <widget class="QPushButton" name="removeKeep">
          <property name="text">
-          <string>Remove</string>
+          <string comment="Keep">Remove</string>
          </property>
         </widget>
        </item>
@@ -198,7 +198,7 @@
        </sizepolicy>
       </property>
       <property name="title">
-       <string>Collect-Constraint</string>
+       <string>ImageCollect-Constraint</string>
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <item row="3" column="0" colspan="2">
@@ -255,7 +255,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>OpenWatchList</string>
+    <string>ImageSource</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -282,7 +282,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>OpenDirList</string>
+    <string>WindowWatch</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>

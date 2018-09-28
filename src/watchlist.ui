@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>WatchWindow</string>
+   <string>WindowWatch</string>
   </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>
@@ -38,7 +38,7 @@
      <item>
       <widget class="QPushButton" name="removeButton">
        <property name="text">
-        <string>RemoveWatch</string>
+        <string>Remove</string>
        </property>
        <property name="icon">
         <iconset theme="list-remove">
