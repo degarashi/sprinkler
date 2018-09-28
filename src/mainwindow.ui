@@ -104,18 +104,21 @@
         <widget class="dg::CurIndicator" name="numIndicator">
          <property name="font">
           <font>
-           <family>Abyssinica SIL</family>
-           <pointsize>20</pointsize>
-           <weight>75</weight>
+           <family>Arial</family>
+           <pointsize>15</pointsize>
+           <weight>50</weight>
            <italic>true</italic>
-           <bold>true</bold>
+           <bold>false</bold>
           </font>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <property name="lineWidth">
+          <number>2</number>
          </property>
          <property name="text">
           <string/>
