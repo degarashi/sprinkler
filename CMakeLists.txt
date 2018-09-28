@@ -18,7 +18,11 @@ endif()
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS
+	Widgets
+	LinguistTools
+	REQUIRED
+)
 find_package(Threads REQUIRED)
 
 aux_source_directory(src SRC)
@@ -43,12 +47,26 @@ elseif(${WIN32})
 else()
 	message(FATAL_ERROR "Unknown target system(neither unix nor win32)")
 endif()
+
+set(TRANSLATION_DIR translation)
 file(GLOB_RECURSE UI_FILES src/*.ui)
+set(TS_FILES
+	${TRANSLATION_DIR}/sprinkler_ja.ts
+)
+set(TRANSLATION_TARGET_FILES
+	${SRC}
+	${UI_FILES}
+)
+qt5_create_translation(QM_FILES
+	${TRANSLATION_TARGET_FILES}
+	${TS_FILES}
+)
 
 add_executable(
 	${PROJECT_NAME}
 	${SRC}
 	${UI_FILES}
+	${QM_FILES}
 )
 target_link_libraries(
 	${PROJECT_NAME}
