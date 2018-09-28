@@ -111,7 +111,7 @@ namespace dg {
 			QMetaObject::invokeMethod(this, [msg=QString(e.what()), this](){
 				QMessageBox::warning(
 					this,
-					"Error occurred",
+					tr("Error occurred"),
 					msg
 				);
 				qApp->quit();
@@ -130,21 +130,21 @@ namespace dg {
 		auto* m = _reqModel;
 		{
 			auto* mag = _ui->slMax;
-			mag->setName("Max");
+			mag->setName(tr("Max"));
 			mag->refSlider()->setRange(10, 100);
 			mag->setModel(m, Request::Max);
 			_setReqData(Request::Max, 0.8);
 		}
 		{
 			auto* min = _ui->slMin;
-			min->setName("Min");
+			min->setName(tr("Min"));
 			min->refSlider()->setRange(10, 100);
 			min->setModel(m, Request::Min);
 			_setReqData(Request::Min, 0.4);
 		}
 		{
 			auto* samp = _ui->slSamp;
-			samp->setName("Samp");
+			samp->setName(tr("Samp"));
 			samp->refSlider()->setRange(1, 8);
 			samp->setModel(m, Request::Sample);
 			_setReqData(Request::Sample, 4);
@@ -241,8 +241,8 @@ namespace dg {
 		// パスの復元
 		m->clear();
 		m->insertColumns(0, 2);
-		m->setHeaderData(0, Qt::Horizontal, "Path", Qt::EditRole);
-		m->setHeaderData(1, Qt::Horizontal, "ImageCount", Qt::EditRole);
+		m->setHeaderData(0, Qt::Horizontal, tr("Path"), Qt::EditRole);
+		m->setHeaderData(1, Qt::Horizontal, tr("ImageCount"), Qt::EditRole);
 
 		const int n = s.beginReadArray(c_dirmodel);
 		{

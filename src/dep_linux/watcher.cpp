@@ -31,7 +31,7 @@ namespace dg {
 	}
 	void Watcher::makeArea(QHBoxLayout* addArea) {
 		QPushButton* pb = new QPushButton();
-		pb->setText("Add");
+		pb->setText(tr("Add"));
 		pb->setIcon(QIcon::fromTheme("list-add"));
 		addArea->addWidget(pb);
 
@@ -67,7 +67,7 @@ namespace dg {
 			try {
 				Display_U disp_u(XOpenDisplay(nullptr));
 				if(!disp_u) {
-					throw std::runtime_error( "unable to connect to display");
+					throw std::runtime_error(tr("unable to connect to display").toStdString());
 				}
 				XSetErrorHandler(HandleError);
 
@@ -188,7 +188,7 @@ namespace dg {
 													self->_entry.emplace_back(WatchEntry{
 														.id = self->_serialId++,
 														.window = target,
-														.name = name ? *name : "(noname)",
+														.name = name ? *name : tr("(noname)").toStdString(),
 														.rect = getwindowrect(target)
 													});
 													QMetaObject::invokeMethod(self, "_onStateChanged", Qt::QueuedConnection);
@@ -209,7 +209,7 @@ namespace dg {
 					} else if(ret==0) {
 						// timeout
 					} else {
-						throw std::runtime_error("error in select()");
+						throw std::runtime_error(tr("error in select()").toStdString());
 					}
 				}
 				return false;
@@ -258,7 +258,7 @@ namespace dg {
 	}
 	void Watcher::_removeWatch(const WatchId id) {
 		if(!_thread.joinable())
-			throw std::runtime_error("Not running thread");
+			throw std::runtime_error(tr("Not running thread").toStdString());
 
 		WindowD target;
 		{
@@ -279,7 +279,7 @@ namespace dg {
 	}
 	void Watcher::addWatch() {
 		if(!_thread.joinable())
-			throw std::runtime_error("Not running thread");
+			throw std::runtime_error(tr("Not running thread").toStdString());
 
 		const Command cmd = {
 			.type = Command::AddWatch
@@ -288,7 +288,7 @@ namespace dg {
 	}
 	void Watcher::startLoop() {
 		if(_thread.joinable())
-			throw std::runtime_error("Already running");
+			throw std::runtime_error(tr("Already running").toStdString());
 
 		int cmd[2];
 		pipe(cmd);

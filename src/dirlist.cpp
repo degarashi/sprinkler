@@ -12,7 +12,7 @@ namespace dg {
 		_ui->table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 	}
 	void DirList::addDir() {
-		QString path(QFileDialog::getExistingDirectory(this, "Select Image Directory", nullptr));
+		QString path(QFileDialog::getExistingDirectory(this, tr("Select Image Directory"), nullptr));
 		if(!path.isEmpty()) {
 			QAbstractItemModel* m = _ui->table->model();
 			// 既に登録されていたら何もしない

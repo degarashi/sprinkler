@@ -36,8 +36,8 @@ namespace dg {
 		if(!_index.isValid())
 			return;
 		QMenu menu(this);
-		QAction* act = menu.addAction("Keep");
-		act->setShortcut(QKeySequence("k"));
+		QAction* act = menu.addAction(tr("Keep"));
+		act->setShortcut(QKeySequence(tr("k", "Keep")));
 		act->setCheckable(true);
 		act->setChecked(_index.data(Qt::UserRole).value<KeepData>().keep);
 		connect(act, &QAction::toggled, this, [this](const bool b){
