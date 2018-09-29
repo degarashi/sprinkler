@@ -291,6 +291,21 @@
     <string>Ctrl+D</string>
    </property>
   </action>
+  <action name="actionSprinkle">
+   <property name="text">
+    <string>Sprinkle</string>
+   </property>
+  </action>
+  <action name="actionRe_Sprinkle">
+   <property name="text">
+    <string>Re-Sprinkle</string>
+   </property>
+  </action>
+  <action name="actionReset">
+   <property name="text">
+    <string>Reset</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -490,8 +505,8 @@
   <connection>
    <sender>pbInit</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>sprinkleReset()</slot>
+   <receiver>actionReset</receiver>
+   <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>587</x>
@@ -506,8 +521,8 @@
   <connection>
    <sender>pbNext</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>sprinkle()</slot>
+   <receiver>actionSprinkle</receiver>
+   <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>718</x>
@@ -554,8 +569,8 @@
   <connection>
    <sender>pbCurrent</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>reSprinkle()</slot>
+   <receiver>actionRe_Sprinkle</receiver>
+   <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>718</x>
@@ -580,6 +595,54 @@
     <hint type="destinationlabel">
      <x>446</x>
      <y>340</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSprinkle</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>sprinkle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>369</x>
+     <y>264</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRe_Sprinkle</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>reSprinkle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>369</x>
+     <y>264</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionReset</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>sprinkleReset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>369</x>
+     <y>264</y>
     </hint>
    </hints>
   </connection>

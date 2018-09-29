@@ -67,11 +67,13 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="138"/>
+        <location filename="../src/mainwindow.ui" line="296"/>
         <source>Sprinkle</source>
         <translation>画像を散布</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="158"/>
+        <location filename="../src/mainwindow.ui" line="301"/>
         <source>Re-Sprinkle</source>
         <translation>(前回の画像セットを)再度散布</translation>
     </message>
@@ -120,6 +122,11 @@
         <location filename="../src/mainwindow.ui" line="291"/>
         <source>Ctrl+D</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="306"/>
+        <source>Reset</source>
+        <translation>リセット</translation>
     </message>
 </context>
 <context>
