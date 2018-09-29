@@ -4,7 +4,6 @@
 #include <QTranslator>
 #include <QTextCodec>
 #include <QLibraryInfo>
-#include <QDebug>
 
 int main(int argc, char *argv[]) {
 	// for XmbTextPropertyToTextList
