@@ -19,6 +19,7 @@ namespace dg {
 class QSettings;
 class QStandardItemModel;
 class QStandardItem;
+class QSystemTrayIcon;
 namespace dg {
 	class GeneWorker;
 	class GLabel;
@@ -61,6 +62,7 @@ namespace dg {
 			QThread*			_workerThread;
 			GeneWorker*			_geneWorker;
 			QtWNotifier*		_qtntf;
+			QSystemTrayIcon*	_tray;
 			// [path -> modelindex]
 			QHash<QString, QModelIndex> _path2idx;
 
@@ -69,6 +71,7 @@ namespace dg {
 			void _initWatchList();
 			void _initRequestModel();
 			void _initKeepModel();
+			void _initSystemTray();
 			void _cleanKeepList();
 			void _clearKeepList();
 			void _saveDirModel(QSettings& s);

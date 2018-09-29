@@ -19,6 +19,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QMessageBox>
+#include <QSystemTrayIcon>
 #include "glabel.hpp"
 #include "gene_worker.hpp"
 
@@ -79,6 +80,44 @@ namespace dg {
 		_ui->listKeep->setEnabled(b);
 		_ui->removeKeep->setEnabled(b);
 	}
+	void MainWindow::_initSystemTray() {
+		if(QSystemTrayIcon::isSystemTrayAvailable()) {
+			_tray = new QSystemTrayIcon(this);
+			_tray->setIcon(QApplication::style()->standardIcon(QStyle::SP_TitleBarMenuButton));
+			connect(_tray, &QSystemTrayIcon::activated, this, [this](const QSystemTrayIcon::ActivationReason reason){
+				switch(reason) {
+					case QSystemTrayIcon::Context:
+					{
+						// 詳細メニュー
+						QMenu menu(this);
+						menu.addSection("detail menu");
+						menu.addAction(_ui->actionOpenWatchList);
+						menu.addAction(_ui->actionOpenDirList);
+						menu.addSeparator();
+						menu.addAction(_ui->actionSprinkle);
+						menu.addAction(_ui->actionRe_Sprinkle);
+						menu.addAction(_ui->actionReset);
+						menu.addSeparator();
+						menu.addAction(_ui->actionQuit);
+						menu.exec(QCursor::pos());
+						break;
+					}
+					case QSystemTrayIcon::Trigger:
+					{
+						// 簡易メニュー
+						QMenu menu(this);
+						menu.addSection("simplified menu");
+						menu.addAction(_ui->actionSprinkle);
+						menu.addAction(_ui->actionRe_Sprinkle);
+						menu.exec(QCursor::pos());
+						break;
+					}
+					default: break;
+				}
+			});
+			_tray->show();
+		}
+	}
 	MainWindow::MainWindow(QWidget *const parent):
 		QMainWindow(parent),
 		_ui(new Ui::MainWindow),
@@ -87,7 +126,8 @@ namespace dg {
 		_dirModel(nullptr),
 		_reqModel(nullptr),
 		_keepModel(nullptr),
-		_dirList(nullptr)
+		_dirList(nullptr),
+		_tray(nullptr)
 	{
 		_ui->setupUi(this);
 
@@ -97,6 +137,7 @@ namespace dg {
 			_initWatchList();
 			_initRequestModel();
 			_initKeepModel();
+			_initSystemTray();
 
 			_workerThread = new QThread(this);
 			_workerThread->start();
