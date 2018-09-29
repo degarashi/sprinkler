@@ -186,6 +186,7 @@ namespace dg {
 					_path2idx.insert(kp.path, idx);
 				}
 			}
+			_setControlsEnabled(false);
 			QTimer::singleShot(0, _geneWorker, [wk=_geneWorker, param, keep, cb=_quantizer->qmap(), ns=_notshown](){
 				wk->calcArea(param, cb, keep, ns, QuantifySize);
 			});

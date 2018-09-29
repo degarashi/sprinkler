@@ -65,6 +65,19 @@ namespace dg {
 		}
 		_path2idx.clear();
 		_emitSprinkleCounterChanged();
+		_setControlsEnabled(true);
+	}
+	void MainWindow::_setControlsEnabled(const bool b) {
+		_ui->pbCurrent->setEnabled(b);
+		_ui->pbInit->setEnabled(b);
+		_ui->pbNext->setEnabled(b);
+
+		_ui->slMax->setEnabled(b);
+		_ui->slMin->setEnabled(b);
+		_ui->slSamp->setEnabled(b);
+
+		_ui->listKeep->setEnabled(b);
+		_ui->removeKeep->setEnabled(b);
 	}
 	MainWindow::MainWindow(QWidget *const parent):
 		QMainWindow(parent),

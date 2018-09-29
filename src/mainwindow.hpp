@@ -80,6 +80,7 @@ namespace dg {
 			void _setReqData(int index, const QVariant& v);
 			QVariant _getReqData(int index) const;
 			void _sprinkle();
+			void _setControlsEnabled(bool b);
 			static void _CollectImageInDir(ImageV& imgv, ImageSet& imgs, const QString& path, bool recursive);
 			static void _CollectImage(ImageV& imgv, ImageSet& imgs, const QString& path);
 
