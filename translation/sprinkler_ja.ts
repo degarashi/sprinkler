@@ -153,6 +153,47 @@
     </message>
 </context>
 <context>
+    <name>Watcher_Linux</name>
+    <message>
+        <location filename="../src/localize_str.cpp" line="6"/>
+        <source>Add</source>
+        <translation>追加</translation>
+    </message>
+    <message>
+        <location filename="../src/localize_str.cpp" line="9"/>
+        <source>unable to connect to display</source>
+        <translation>ディスプレイへの接続に失敗</translation>
+    </message>
+    <message>
+        <location filename="../src/localize_str.cpp" line="12"/>
+        <source>(noname)</source>
+        <translation>(名無し)</translation>
+    </message>
+    <message>
+        <location filename="../src/localize_str.cpp" line="15"/>
+        <source>error in select()</source>
+        <translation>select()関数でエラー発生</translation>
+    </message>
+    <message>
+        <location filename="../src/localize_str.cpp" line="18"/>
+        <source>Not running thread</source>
+        <translation>スレッドがまだスタートしていません</translation>
+    </message>
+    <message>
+        <location filename="../src/localize_str.cpp" line="21"/>
+        <source>Already running</source>
+        <translation>スレッドは既にスタート済み</translation>
+    </message>
+</context>
+<context>
+    <name>Watcher_Win</name>
+    <message>
+        <location filename="../src/localize_str.cpp" line="26"/>
+        <source>Drag here to append...</source>
+        <translation>ここをドラッグして追加...</translation>
+    </message>
+</context>
+<context>
     <name>dg::CurIndicator</name>
     <message>
         <location filename="../src/cur_indicator.cpp" line="5"/>
@@ -213,40 +254,6 @@
         <location filename="../src/mainwindow.cpp" line="299"/>
         <source>ImageCount</source>
         <translation>画像カウント</translation>
-    </message>
-</context>
-<context>
-    <name>dg::Watcher</name>
-    <message>
-        <location filename="../src/dep_linux/watcher.cpp" line="34"/>
-        <source>Add</source>
-        <translation>追加</translation>
-    </message>
-    <message>
-        <location filename="../src/dep_linux/watcher.cpp" line="70"/>
-        <source>unable to connect to display</source>
-        <translation>ディスプレイへの接続に失敗</translation>
-    </message>
-    <message>
-        <location filename="../src/dep_linux/watcher.cpp" line="191"/>
-        <source>(noname)</source>
-        <translation>(名無し)</translation>
-    </message>
-    <message>
-        <location filename="../src/dep_linux/watcher.cpp" line="212"/>
-        <source>error in select()</source>
-        <translation>select()関数でエラー発生</translation>
-    </message>
-    <message>
-        <location filename="../src/dep_linux/watcher.cpp" line="261"/>
-        <location filename="../src/dep_linux/watcher.cpp" line="282"/>
-        <source>Not running thread</source>
-        <translation>スレッドがまだスタートしていません</translation>
-    </message>
-    <message>
-        <location filename="../src/dep_linux/watcher.cpp" line="291"/>
-        <source>Already running</source>
-        <translation>スレッドは既にスタート済み</translation>
     </message>
 </context>
 <context>

@@ -5,6 +5,7 @@
 #include <QHBoxLayout>
 #include <QApplication>
 #include <QThread>
+#include "../localize_str.hpp"
 
 namespace dg {
 	namespace {
@@ -74,7 +75,7 @@ namespace dg {
 	}
 	void Watcher::makeArea(QHBoxLayout* addArea) {
 		DragPos* dp = new DragPos();
-		dp->setText(tr("Drag here to append..."));
+		dp->setText(lcl::Watcher_Win::DragHereToAppend());
 		dp->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 		dp->setFrameShape(QFrame::Panel);
 		// Window指定されたらWatcherへ通知

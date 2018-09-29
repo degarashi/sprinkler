@@ -6,6 +6,7 @@
 #include "clientwin.h"
 #include <QHBoxLayout>
 #include <QPushButton>
+#include "../localize_str.hpp"
 
 namespace dg {
 	bool g_Xerror;
@@ -22,6 +23,7 @@ namespace dg {
 		return rect.isEmpty();
 	}
 
+	namespace LCL = lcl::Watcher_Linux;
 	Watcher::Watcher(QObject* parent):
 		QObject(parent),
 		_model(new QStandardItemModel(this))
@@ -31,7 +33,7 @@ namespace dg {
 	}
 	void Watcher::makeArea(QHBoxLayout* addArea) {
 		QPushButton* pb = new QPushButton();
-		pb->setText(tr("Add"));
+		pb->setText(LCL::Add());
 		pb->setIcon(QIcon::fromTheme("list-add"));
 		addArea->addWidget(pb);
 
@@ -67,7 +69,7 @@ namespace dg {
 			try {
 				Display_U disp_u(XOpenDisplay(nullptr));
 				if(!disp_u) {
-					throw std::runtime_error(tr("unable to connect to display").toStdString());
+					throw std::runtime_error(LCL::UnableConnectDisplay().toStdString());
 				}
 				XSetErrorHandler(HandleError);
 
@@ -188,7 +190,7 @@ namespace dg {
 													self->_entry.emplace_back(WatchEntry{
 														.id = self->_serialId++,
 														.window = target,
-														.name = name ? *name : tr("(noname)").toStdString(),
+														.name = name ? *name : LCL::NoName().toStdString(),
 														.rect = getwindowrect(target)
 													});
 													QMetaObject::invokeMethod(self, "_onStateChanged", Qt::QueuedConnection);
@@ -209,7 +211,7 @@ namespace dg {
 					} else if(ret==0) {
 						// timeout
 					} else {
-						throw std::runtime_error(tr("error in select()").toStdString());
+						throw std::runtime_error(LCL::ErrorInSelect().toStdString());
 					}
 				}
 				return false;
@@ -258,7 +260,7 @@ namespace dg {
 	}
 	void Watcher::_removeWatch(const WatchId id) {
 		if(!_thread.joinable())
-			throw std::runtime_error(tr("Not running thread").toStdString());
+			throw std::runtime_error(LCL::NotRunningThread().toStdString());
 
 		WindowD target;
 		{
@@ -279,7 +281,7 @@ namespace dg {
 	}
 	void Watcher::addWatch() {
 		if(!_thread.joinable())
-			throw std::runtime_error(tr("Not running thread").toStdString());
+			throw std::runtime_error(LCL::NotRunningThread().toStdString());
 
 		const Command cmd = {
 			.type = Command::AddWatch
@@ -288,7 +290,7 @@ namespace dg {
 	}
 	void Watcher::startLoop() {
 		if(_thread.joinable())
-			throw std::runtime_error(tr("Already running").toStdString());
+			throw std::runtime_error(LCL::AlreadyRunning().toStdString());
 
 		int cmd[2];
 		pipe(cmd);
