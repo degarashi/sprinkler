@@ -79,6 +79,9 @@ namespace dg {
 
 		_ui->listKeep->setEnabled(b);
 		_ui->removeKeep->setEnabled(b);
+
+		_tray->setIcon(QApplication::style()->standardIcon(
+			b ? QStyle::SP_TitleBarMenuButton : QStyle::SP_BrowserReload));
 	}
 	void MainWindow::_initSystemTray() {
 		if(QSystemTrayIcon::isSystemTrayAvailable()) {
