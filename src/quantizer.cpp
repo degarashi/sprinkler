@@ -50,7 +50,7 @@ namespace dg {
 			auto& rv = _dset.rv[DomainType::Qt];
 			rv.clear();
 			for(const QWindow *const w : qApp->topLevelWindows()) {
-				if(w->isVisible()) {
+				if(w->isExposed() && w->isVisible()) {
 					rv.emplace_back(dg::Rect_Name{
 						w->frameGeometry(),
 						w->objectName()
