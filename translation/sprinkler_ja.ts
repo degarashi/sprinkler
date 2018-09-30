@@ -32,9 +32,13 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.ui" line="14"/>
         <source>MainWindow</source>
-        <translation>メインウィンドウ</translation>
+        <translation type="vanished">メインウィンドウ</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="14"/>
+        <source>Sprinkler (v0.0.3)</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="36"/>
