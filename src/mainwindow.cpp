@@ -94,6 +94,8 @@ namespace dg {
 						// 詳細メニュー
 						QMenu menu(this);
 						menu.addSection(tr("detail menu"));
+						menu.addAction(_actionShow);
+						menu.addSeparator();
 						menu.addAction(_ui->actionOpenWatchList);
 						menu.addAction(_ui->actionOpenDirList);
 						menu.addSeparator();
@@ -110,6 +112,8 @@ namespace dg {
 						// 簡易メニュー
 						QMenu menu(this);
 						menu.addSection(tr("simplified menu"));
+						menu.addAction(_actionShow);
+						menu.addSeparator();
 						menu.addAction(_ui->actionSprinkle);
 						menu.addAction(_ui->actionRe_Sprinkle);
 						menu.exec(QCursor::pos());
@@ -130,7 +134,8 @@ namespace dg {
 		_reqModel(nullptr),
 		_keepModel(nullptr),
 		_dirList(nullptr),
-		_tray(nullptr)
+		_tray(nullptr),
+		_actionShow(nullptr)
 	{
 		_ui->setupUi(this);
 
@@ -141,6 +146,11 @@ namespace dg {
 			_initRequestModel();
 			_initKeepModel();
 			_initSystemTray();
+
+			// ウィンドウサイズ復帰
+			_actionShow = new QAction(this);
+			_actionShow->setText(tr("Show Window"));
+			connect(_actionShow, SIGNAL(triggered(bool)), this, SLOT(showNormal()));
 
 			_workerThread = new QThread(this);
 			_workerThread->start();
@@ -501,7 +511,7 @@ namespace dg {
 		_label.clear();
 		_qtntf->onQtGeometryChanged();
 	}
-	void MainWindow::closeEvent(QCloseEvent* e) {
+	void MainWindow::_saveInfo() {
 		// ウィンドウサイズと、子ウィンドウの表示状態を保存
 		QSettings s;
 		s.beginGroup(c_mainwindow);
@@ -512,15 +522,29 @@ namespace dg {
 
 		_saveDirModel(s);
 		_saveKeepModel(s);
+	}
+	void MainWindow::closeEvent(QCloseEvent* e) {
+		_saveInfo();
 
-		// 子ウィンドウを全て閉じる
+		// ---- 後始末 ----
 		_clearLabels();
+		// 子ウィンドウを全て閉じる
 		_watchList->close();
 		_dirList->close();
 
+		// Geneスレッド終了 & 待機
 		_workerThread->quit();
 		_workerThread->wait();
+
 		QMainWindow::closeEvent(e);
+	}
+	void MainWindow::changeEvent(QEvent* e) {
+		if(e->type() == QEvent::WindowStateChange) {
+			// 最小化と同時に非表示
+			if(isMinimized()) {
+				hide();
+			}
+		}
 	}
 	void MainWindow::removeKeep() {
 		QModelIndexList sel = _ui->listKeep->selectionModel()->selectedRows();

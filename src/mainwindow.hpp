@@ -63,6 +63,7 @@ namespace dg {
 			GeneWorker*			_geneWorker;
 			QtWNotifier*		_qtntf;
 			QSystemTrayIcon*	_tray;
+			QAction*			_actionShow;
 			// [path -> modelindex]
 			QHash<QString, QModelIndex> _path2idx;
 
@@ -84,6 +85,7 @@ namespace dg {
 			QVariant _getReqData(int index) const;
 			void _sprinkle();
 			void _setControlsEnabled(bool b);
+			void _saveInfo();
 			static void _CollectImageInDir(ImageV& imgv, ImageSet& imgs, const QString& path, bool recursive);
 			static void _CollectImage(ImageV& imgv, ImageSet& imgs, const QString& path);
 
@@ -114,5 +116,6 @@ namespace dg {
 
 		protected:
 			void closeEvent(QCloseEvent* e) override;
+			void changeEvent(QEvent* e) override;
 	};
 }
