@@ -32,11 +32,6 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.ui" line="14"/>
-        <source>Sprinkler (v0.0.3)</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.ui" line="36"/>
         <location filename="../src/mainwindow.ui" line="297"/>
         <source>ImageSource</source>
@@ -92,6 +87,11 @@
         <location filename="../src/mainwindow.ui" line="100"/>
         <source>ImageCollect-Constraint</source>
         <translation>画像収集条件</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="14"/>
+        <source>Sprinkler (v0.0.4)</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="118"/>
