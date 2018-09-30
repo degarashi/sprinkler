@@ -200,14 +200,14 @@ namespace dg {
 			mag->setName(tr("Max"));
 			mag->refSlider()->setRange(10, 100);
 			mag->setModel(m, Request::Max);
-			_setReqData(Request::Max, 0.8);
+			_setReqData(Request::Max, 0.6);
 		}
 		{
 			auto* min = _ui->slMin;
 			min->setName(tr("Min"));
 			min->refSlider()->setRange(10, 100);
 			min->setModel(m, Request::Min);
-			_setReqData(Request::Min, 0.4);
+			_setReqData(Request::Min, 0.3);
 		}
 		{
 			auto* samp = _ui->slSamp;
