@@ -93,7 +93,7 @@ namespace dg {
 					{
 						// 詳細メニュー
 						QMenu menu(this);
-						menu.addSection("detail menu");
+						menu.addSection(tr("detail menu"));
 						menu.addAction(_ui->actionOpenWatchList);
 						menu.addAction(_ui->actionOpenDirList);
 						menu.addSeparator();
@@ -109,7 +109,7 @@ namespace dg {
 					{
 						// 簡易メニュー
 						QMenu menu(this);
-						menu.addSection("simplified menu");
+						menu.addSection(tr("simplified menu"));
 						menu.addAction(_ui->actionSprinkle);
 						menu.addAction(_ui->actionRe_Sprinkle);
 						menu.exec(QCursor::pos());
