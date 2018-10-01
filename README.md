@@ -32,3 +32,11 @@
 ![](https://github.com/degarashi/sprinkler/blob/images/sprinkler_sc1.jpg)
 
 4. MenuからQuitを選んで終了します
+
+### タスクトレイについて
+メインウィンドウを最小化するとタスクバーから隠れ、タスクトレイから操作可能になります。
+この時アイコンを左クリックすると簡易メニューが、  
+![Tasktray-MenuL](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v003_menu0.png)  
+右クリックで詳細メニューが出ます  
+![Tasktray-MenuR](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v003_menu1.png)  
+再びメインウィンドウを表示したい時は「ウィンドウを表示」を選んで下さい。
