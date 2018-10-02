@@ -324,6 +324,11 @@
     <string>Reset</string>
    </property>
   </action>
+  <action name="actionRemoveKeep">
+   <property name="text">
+    <string>RemoveKeep</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -603,8 +608,8 @@
   <connection>
    <sender>removeKeep</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>removeKeep()</slot>
+   <receiver>actionRemoveKeep</receiver>
+   <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>509</x>
@@ -653,6 +658,22 @@
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>sprinkleReset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>369</x>
+     <y>264</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRemoveKeep</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>removeKeep()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>

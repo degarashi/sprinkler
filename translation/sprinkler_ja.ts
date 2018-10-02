@@ -133,6 +133,11 @@
         <source>Reset</source>
         <translation>リセット</translation>
     </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="329"/>
+        <source>RemoveKeep</source>
+        <translation>キープを削除</translation>
+    </message>
 </context>
 <context>
     <name>WatchList</name>
