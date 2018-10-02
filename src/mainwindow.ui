@@ -201,7 +201,25 @@
           <string>Keep</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="0">
+          <item row="0" column="1">
+           <layout class="QVBoxLayout" name="keepControl">
+            <item>
+             <widget class="QPushButton" name="removeKeep">
+              <property name="text">
+               <string comment="Keep">Remove</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="removeKeepAll">
+              <property name="text">
+               <string comment="Keep">RemoveAll</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="0" column="0" rowspan="2">
            <widget class="QListView" name="listKeep">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -214,13 +232,6 @@
             </property>
             <property name="viewMode">
              <enum>QListView::ListMode</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="removeKeep">
-            <property name="text">
-             <string comment="Keep">Remove</string>
             </property>
            </widget>
           </item>
@@ -327,6 +338,11 @@
   <action name="actionRemoveKeep">
    <property name="text">
     <string>RemoveKeep</string>
+   </property>
+  </action>
+  <action name="actionRemoveKeepAll">
+   <property name="text">
+    <string>RemoveKeepAll</string>
    </property>
   </action>
  </widget>
@@ -616,8 +632,8 @@
      <y>347</y>
     </hint>
     <hint type="destinationlabel">
-     <x>446</x>
-     <y>340</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>
@@ -685,6 +701,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>removeKeepAll</sender>
+   <signal>clicked()</signal>
+   <receiver>actionRemoveKeepAll</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>665</x>
+     <y>251</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRemoveKeepAll</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>removeKeepAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>369</x>
+     <y>264</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>sprinkleCounterChanged(size_t,size_t)</signal>
@@ -696,5 +744,6 @@
   <slot>sprinkleReset()</slot>
   <slot>reSprinkle()</slot>
   <slot>removeKeep()</slot>
+  <slot>removeKeepAll()</slot>
  </slots>
 </ui>

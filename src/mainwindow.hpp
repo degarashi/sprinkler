@@ -103,6 +103,7 @@ namespace dg {
 			void syncImageSizeList(QStandardItem* item);
 			void dirRemoving(QModelIndex index, int first, int last);
 			void removeKeep();
+			void removeKeepAll();
 			void showWindow(bool b);
 
 		public slots:

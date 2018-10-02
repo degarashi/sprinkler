@@ -38,19 +38,19 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="36"/>
-        <location filename="../src/mainwindow.ui" line="279"/>
+        <location filename="../src/mainwindow.ui" line="290"/>
         <source>ImageSource</source>
         <translation>画像ソース</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="58"/>
-        <location filename="../src/mainwindow.ui" line="306"/>
+        <location filename="../src/mainwindow.ui" line="317"/>
         <source>WindowWatch</source>
         <translation>ウィンドウ監視</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="71"/>
-        <location filename="../src/mainwindow.ui" line="290"/>
+        <location filename="../src/mainwindow.ui" line="301"/>
         <source>StayOnTop</source>
         <translation>常に最前面に表示</translation>
     </message>
@@ -66,14 +66,14 @@
         <translation>リセット</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="240"/>
-        <location filename="../src/mainwindow.ui" line="314"/>
+        <location filename="../src/mainwindow.ui" line="251"/>
+        <location filename="../src/mainwindow.ui" line="325"/>
         <source>Sprinkle</source>
         <translation>画像を散布</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="233"/>
-        <location filename="../src/mainwindow.ui" line="319"/>
+        <location filename="../src/mainwindow.ui" line="244"/>
+        <location filename="../src/mainwindow.ui" line="330"/>
         <source>Re-Sprinkle</source>
         <translation>(前回の画像セットを)再度散布</translation>
     </message>
@@ -83,7 +83,7 @@
         <translation>キープ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="223"/>
+        <location filename="../src/mainwindow.ui" line="209"/>
         <source>Remove</source>
         <comment>Keep</comment>
         <translation>削除</translation>
@@ -104,39 +104,50 @@
         <translation>ステータス</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="260"/>
+        <location filename="../src/mainwindow.ui" line="216"/>
+        <source>RemoveAll</source>
+        <comment>Keep</comment>
+        <translation>全て削除</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="271"/>
         <source>Menu</source>
         <translation>メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="282"/>
+        <location filename="../src/mainwindow.ui" line="293"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="295"/>
+        <location filename="../src/mainwindow.ui" line="306"/>
         <source>Quit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="298"/>
+        <location filename="../src/mainwindow.ui" line="309"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="309"/>
+        <location filename="../src/mainwindow.ui" line="320"/>
         <source>Ctrl+D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="324"/>
+        <location filename="../src/mainwindow.ui" line="335"/>
         <source>Reset</source>
         <translation>リセット</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="329"/>
+        <location filename="../src/mainwindow.ui" line="340"/>
         <source>RemoveKeep</source>
         <translation>キープを削除</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="345"/>
+        <source>RemoveKeepAll</source>
+        <translation>キープを全て削除</translation>
     </message>
 </context>
 <context>

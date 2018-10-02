@@ -574,6 +574,10 @@ namespace dg {
 			_keepModel->setData(idx, QVariant::fromValue(kp), Qt::UserRole);
 		}
 	}
+	void MainWindow::removeKeepAll() {
+		_ui->listKeep->selectAll();
+		removeKeep();
+	}
 	void MainWindow::_cleanKeepList() {
 		int nR = _keepModel->rowCount();
 		for(int i=0 ; i<nR ; i++) {
