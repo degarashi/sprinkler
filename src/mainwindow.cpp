@@ -305,7 +305,7 @@ namespace dg {
 		_shown.clear();
 		_shownP.clear();
 		_notshownP = _notshown;
-		_clearKeepList();
+		_cleanKeepList();
 		_emitSprinkleCounterChanged();
 	}
 	void MainWindow::_initDirModel() {
