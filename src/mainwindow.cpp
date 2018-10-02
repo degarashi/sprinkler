@@ -71,8 +71,9 @@ namespace dg {
 	void MainWindow::showWindow(const bool b) {
 		if(b) {
 			show();
-			showNormal();
+			setWindowState(Qt::WindowNoState);
 		} else {
+			setWindowState(Qt::WindowMinimized);
 			hide();
 		}
 		_actionShow->setChecked(b);
@@ -166,7 +167,7 @@ namespace dg {
 			_actionShow->setCheckable(true);
 			_actionShow->setChecked(true);
 			_actionShow->setText(tr("Show Window"));
-			connect(_actionShow, SIGNAL(triggered(bool)), this, SLOT(showWindow(bool)));
+			connect(_actionShow, SIGNAL(toggled(bool)), this, SLOT(showWindow(bool)));
 
 			_workerThread = new QThread(this);
 			_workerThread->start();

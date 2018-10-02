@@ -22,6 +22,8 @@
 #include <QImageReader>
 
 #include "gene_worker.hpp"
+#include "ui_mainwindow.h"
+#include "qtw_notifier.hpp"
 
 Q_DECLARE_METATYPE(dg::KeepData)
 namespace dg {
@@ -161,6 +163,19 @@ namespace dg {
 		// 何も画像が残ってない場合はここで終了
 		if(_notshown.empty())
 			return;
+		// Hide window when sprinkleがONの時はここでウィンドウを隠す
+		if(_ui->actionHideWhenSprinkle->isChecked()) {
+			setWindowState(Qt::WindowMinimized);
+			QMetaObject::invokeMethod(
+				this,
+				[this](){
+					QMetaObject::invokeMethod(_qtntf, &QtWNotifier::onQtGeometryChanged);
+					// DirListWindowとWatchListWindowも閉じる
+					_ui->actionOpenDirList->setChecked(false);
+					_ui->actionOpenWatchList->setChecked(false);
+				}
+			);
+		}
 		// (QLabelの削除が実際に画面へ適用されるまでタイムラグがある為)
 		QTimer::singleShot(10, this, [this](){
 			const auto getData = [model = _reqModel](const int idx, auto type) {

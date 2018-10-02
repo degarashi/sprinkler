@@ -195,6 +195,13 @@
          </property>
         </spacer>
        </item>
+       <item row="1" column="2">
+        <widget class="QPushButton" name="pbCurrent">
+         <property name="text">
+          <string>Re-Sprinkle</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="1" colspan="2">
         <widget class="QGroupBox" name="keepGroup">
          <property name="title">
@@ -238,17 +245,17 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="2">
-        <widget class="QPushButton" name="pbCurrent">
-         <property name="text">
-          <string>Re-Sprinkle</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="1">
         <widget class="QPushButton" name="pbNext">
          <property name="text">
           <string>Sprinkle</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QCheckBox" name="cbHideSprinkle">
+         <property name="text">
+          <string>Hide window when sprinkle</string>
          </property>
         </widget>
        </item>
@@ -343,6 +350,14 @@
   <action name="actionRemoveKeepAll">
    <property name="text">
     <string>RemoveKeepAll</string>
+   </property>
+  </action>
+  <action name="actionHideWhenSprinkle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>HideWhenSprinkle</string>
    </property>
   </action>
  </widget>
@@ -730,6 +745,22 @@
     <hint type="destinationlabel">
      <x>369</x>
      <y>264</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbHideSprinkle</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>actionHideWhenSprinkle</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>441</x>
+     <y>377</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>
