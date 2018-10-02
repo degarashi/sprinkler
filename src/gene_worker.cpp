@@ -165,7 +165,10 @@ namespace dg {
 		ImageV					imgv;
 		SizeV					sizev;
 		lubee::RectI			last;
-		std::mt19937 mt(std::random_device{}());
+		// Window環境でrandom_deviceを使うと毎回同じ乱数列が生成されてしまうので
+		// とりあえずの回避策として現在時刻をシードに使う
+		using Clock = std::chrono::system_clock;
+		std::mt19937 mt(Clock::now().time_since_epoch().count());
 		uint32_t				ld_cur = mt();
 
 		const auto proc = [&ld_cur, minR, maxR, &toPlace, qs, nAsp, &asp, &last, &sizev, &imgv, &remain](const ImageTag& tag, const bool important){
