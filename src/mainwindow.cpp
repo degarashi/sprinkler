@@ -123,6 +123,11 @@ namespace dg {
 				}
 			});
 			_tray->show();
+			// タスクトレイをホバーすると今どの程度のイメージが表示されたのかの割合を表示する
+			connect(this, &MainWindow::sprinkleCounterChanged,
+					this, [this](const size_t shown, const size_t notshown){
+				_tray->setToolTip(QString(tr("[%1 / %2] were displayed")).arg(shown).arg(shown + notshown));
+			});
 		}
 	}
 	MainWindow::MainWindow(QWidget *const parent):
