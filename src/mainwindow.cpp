@@ -68,6 +68,15 @@ namespace dg {
 		_emitSprinkleCounterChanged();
 		_setControlsEnabled(true);
 	}
+	void MainWindow::showWindow(const bool b) {
+		if(b) {
+			show();
+			showNormal();
+		} else {
+			hide();
+		}
+		_actionShow->setChecked(b);
+	}
 	void MainWindow::_setControlsEnabled(const bool b) {
 		_ui->pbCurrent->setEnabled(b);
 		_ui->pbInit->setEnabled(b);
@@ -154,8 +163,10 @@ namespace dg {
 
 			// ウィンドウサイズ復帰
 			_actionShow = new QAction(this);
+			_actionShow->setCheckable(true);
+			_actionShow->setChecked(true);
 			_actionShow->setText(tr("Show Window"));
-			connect(_actionShow, SIGNAL(triggered(bool)), this, SLOT(showNormal()));
+			connect(_actionShow, SIGNAL(triggered(bool)), this, SLOT(showWindow(bool)));
 
 			_workerThread = new QThread(this);
 			_workerThread->start();
@@ -545,9 +556,13 @@ namespace dg {
 	}
 	void MainWindow::changeEvent(QEvent* e) {
 		if(e->type() == QEvent::WindowStateChange) {
-			// 最小化と同時に非表示
-			if(isMinimized()) {
+			const auto state = windowState();
+			if(state == Qt::WindowMinimized) {
+				// 最小化と同時に非表示
 				hide();
+				_actionShow->setChecked(false);
+			} else if(state == Qt::WindowNoState) {
+				_actionShow->setChecked(true);
 			}
 		}
 	}
