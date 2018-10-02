@@ -32,103 +32,104 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <source>MainWindow</source>
-        <translation type="vanished">メインウィンドウ</translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.ui" line="14"/>
         <source>Sprinkler (v0.0.3)</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="36"/>
-        <location filename="../src/mainwindow.ui" line="261"/>
+        <location filename="../src/mainwindow.ui" line="279"/>
         <source>ImageSource</source>
         <translation>画像ソース</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="58"/>
-        <location filename="../src/mainwindow.ui" line="288"/>
+        <location filename="../src/mainwindow.ui" line="306"/>
         <source>WindowWatch</source>
         <translation>ウィンドウ監視</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="71"/>
-        <location filename="../src/mainwindow.ui" line="272"/>
+        <location filename="../src/mainwindow.ui" line="290"/>
         <source>StayOnTop</source>
         <translation>常に最前面に表示</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="100"/>
+        <location filename="../src/mainwindow.ui" line="182"/>
         <source>Controls</source>
         <translation>コントロール</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="131"/>
+        <location filename="../src/mainwindow.ui" line="172"/>
         <source>Reset</source>
         <comment>Sprinkle</comment>
         <translation>リセット</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="138"/>
-        <location filename="../src/mainwindow.ui" line="296"/>
+        <location filename="../src/mainwindow.ui" line="240"/>
+        <location filename="../src/mainwindow.ui" line="314"/>
         <source>Sprinkle</source>
         <translation>画像を散布</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="158"/>
-        <location filename="../src/mainwindow.ui" line="301"/>
+        <location filename="../src/mainwindow.ui" line="233"/>
+        <location filename="../src/mainwindow.ui" line="319"/>
         <source>Re-Sprinkle</source>
         <translation>(前回の画像セットを)再度散布</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="181"/>
+        <location filename="../src/mainwindow.ui" line="201"/>
         <source>Keep</source>
         <translation>キープ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="188"/>
+        <location filename="../src/mainwindow.ui" line="223"/>
         <source>Remove</source>
         <comment>Keep</comment>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="204"/>
+        <location filename="../src/mainwindow.ui" line="100"/>
         <source>ImageCollect-Constraint</source>
         <translation>画像収集条件</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="222"/>
+        <location filename="../src/mainwindow.ui" line="118"/>
         <source>PreferOriginal</source>
         <translation>オリジナルサイズを優先</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="242"/>
+        <location filename="../src/mainwindow.ui" line="128"/>
+        <source>Status</source>
+        <translation>ステータス</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="260"/>
         <source>Menu</source>
         <translation>メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="264"/>
+        <location filename="../src/mainwindow.ui" line="282"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="277"/>
+        <location filename="../src/mainwindow.ui" line="295"/>
         <source>Quit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="280"/>
+        <location filename="../src/mainwindow.ui" line="298"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="291"/>
+        <location filename="../src/mainwindow.ui" line="309"/>
         <source>Ctrl+D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="306"/>
+        <location filename="../src/mainwindow.ui" line="324"/>
         <source>Reset</source>
         <translation>リセット</translation>
     </message>

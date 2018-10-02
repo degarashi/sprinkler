@@ -15,8 +15,8 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0" rowspan="4">
-     <widget class="QGroupBox" name="groupBox_3">
+    <item row="0" column="0" rowspan="8">
+     <widget class="QGroupBox" name="infoGroup">
       <property name="title">
        <string notr="true"/>
       </property>
@@ -88,112 +88,8 @@
       </layout>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QGroupBox" name="groupBox_4">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="title">
-       <string>Controls</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="3" column="0" colspan="2">
-        <widget class="dg::CurIndicator" name="numIndicator">
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>15</pointsize>
-           <weight>50</weight>
-           <italic>true</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
-         </property>
-         <property name="lineWidth">
-          <number>2</number>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QPushButton" name="pbInit">
-         <property name="text">
-          <string comment="Sprinkle">Reset</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QPushButton" name="pbNext">
-         <property name="text">
-          <string>Sprinkle</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="2">
-        <widget class="QProgressBar" name="progressBar">
-         <property name="value">
-          <number>0</number>
-         </property>
-         <property name="textVisible">
-          <bool>true</bool>
-         </property>
-         <property name="invertedAppearance">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QPushButton" name="pbCurrent">
-         <property name="text">
-          <string>Re-Sprinkle</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QListView" name="listKeep">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::ExtendedSelection</enum>
-         </property>
-         <property name="viewMode">
-          <enum>QListView::ListMode</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Keep</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QPushButton" name="removeKeep">
-         <property name="text">
-          <string comment="Keep">Remove</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
     <item row="0" column="1" rowspan="3">
-     <widget class="QGroupBox" name="groupBox_2">
+     <widget class="QGroupBox" name="constraintGroup">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
         <horstretch>0</horstretch>
@@ -220,6 +116,128 @@
          </property>
          <property name="text">
           <string>PreferOriginal</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QGroupBox" name="statusGroup">
+      <property name="title">
+       <string>Status</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="1" column="0">
+        <widget class="QProgressBar" name="progressBar">
+         <property name="value">
+          <number>0</number>
+         </property>
+         <property name="textVisible">
+          <bool>true</bool>
+         </property>
+         <property name="invertedAppearance">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="dg::CurIndicator" name="numIndicator">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>15</pointsize>
+           <weight>50</weight>
+           <italic>true</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <property name="lineWidth">
+          <number>2</number>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="pbInit">
+         <property name="text">
+          <string comment="Sprinkle">Reset</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QGroupBox" name="controlGroup">
+      <property name="title">
+       <string>Controls</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="2" column="1" colspan="2">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="1" colspan="2">
+        <widget class="QGroupBox" name="keepGroup">
+         <property name="title">
+          <string>Keep</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QListView" name="listKeep">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::ExtendedSelection</enum>
+            </property>
+            <property name="viewMode">
+             <enum>QListView::ListMode</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="removeKeep">
+            <property name="text">
+             <string comment="Keep">Remove</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QPushButton" name="pbCurrent">
+         <property name="text">
+          <string>Re-Sprinkle</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="pbNext">
+         <property name="text">
+          <string>Sprinkle</string>
          </property>
         </widget>
        </item>
@@ -513,8 +531,8 @@
      <y>458</y>
     </hint>
     <hint type="destinationlabel">
-     <x>616</x>
-     <y>361</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>
@@ -529,8 +547,8 @@
      <y>458</y>
     </hint>
     <hint type="destinationlabel">
-     <x>527</x>
-     <y>401</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>
@@ -577,8 +595,8 @@
      <y>485</y>
     </hint>
     <hint type="destinationlabel">
-     <x>444</x>
-     <y>310</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>
