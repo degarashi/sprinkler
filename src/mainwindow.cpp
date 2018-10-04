@@ -62,7 +62,8 @@ namespace dg {
 							p.crop,
 							p.offset,
 							p.resize,
-							idx
+							idx,
+							_ctrlMenu
 						);
 					// どれか1つをクリックしたら他の全てのGLabelを前面に持ってくる
 					connect(lb, &GLabel::clicked, this, [this](){
@@ -225,6 +226,16 @@ namespace dg {
 				qApp->quit();
 			}, Qt::QueuedConnection);
 		}
+
+		_ctrlMenu = new QMenu(this);
+		_ctrlMenu->addAction(_actionShow);
+		_ctrlMenu->addAction(_ui->actionOpenDirList);
+		_ctrlMenu->addAction(_ui->actionOpenWatchList);
+		_ctrlMenu->addSeparator();
+		_ctrlMenu->addAction(_ui->actionSprinkle);
+		_ctrlMenu->addAction(_ui->actionRe_Sprinkle);
+		_ctrlMenu->addSeparator();
+		_ctrlMenu->addAction(_ui->actionQuit);
 	}
 	void MainWindow::_setReqData(const int index, const QVariant& v) {
 		_reqModel->setData(_reqModel->index(index, 0), v);

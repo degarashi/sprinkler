@@ -64,6 +64,7 @@ namespace dg {
 			QtWNotifier*		_qtntf;
 			QSystemTrayIcon*	_tray;
 			QAction*			_actionShow;
+			QMenu*				_ctrlMenu;
 			// [path -> modelindex]
 			QHash<QString, QModelIndex> _path2idx;
 

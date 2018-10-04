@@ -6,6 +6,7 @@
 #include "keepdata.hpp"
 
 class QLabel;
+class QMenu;
 namespace dg {
 	class GFrame :
 		public QWidget
@@ -26,6 +27,7 @@ namespace dg {
 			GFrame*					_frame;
 			QString					_path;
 			QPersistentModelIndex	_index;
+			QMenu*					_ctrlMenu;
 
 			bool _getChecked() const;
 		signals:
@@ -38,6 +40,6 @@ namespace dg {
 		public:
 			explicit GLabel(const QString& path, QSize crop,
 							const lubee::PointI ofs, QSize resize,
-							const QModelIndex& index);
+							const QModelIndex& index, QMenu* ctrlMenu);
 	};
 }

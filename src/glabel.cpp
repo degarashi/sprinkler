@@ -32,12 +32,13 @@ namespace dg {
 
 	GLabel::GLabel(const QString& path, const QSize crop,
 					const lubee::PointI ofs, const QSize resize,
-					const QModelIndex& index):
+					const QModelIndex& index, QMenu* ctrlMenu):
 		QWidget(nullptr, Qt::SplashScreen|Qt::FramelessWindowHint),
 		_label(new QLabel(this)),
 		_frame(new GFrame(this)),
 		_path(path),
-		_index(index)
+		_index(index),
+		_ctrlMenu(ctrlMenu)
 	{
 		QImage img(path);
 
@@ -69,23 +70,27 @@ namespace dg {
 		emit clicked();
 	}
 	void GLabel::contextMenuEvent(QContextMenuEvent* e) {
-		if(!_index.isValid())
-			return;
-		QMenu menu(this);
-		QAction* act = menu.addAction(tr("Keep"));
-		act->setShortcut(QKeySequence(tr("k", "Keep")));
-		act->setCheckable(true);
-		act->setChecked(_getChecked());
-		connect(act, &QAction::toggled, this, [this](const bool b){
-			if(_index.isValid()) {
-				auto kp = _index.model()->data(_index, Qt::UserRole).value<KeepData>();
-				if(kp.keep != b) {
-					kp.keep = b;
-					const_cast<QAbstractItemModel*>(_index.model())->setData(_index, QVariant::fromValue(kp), Qt::UserRole);
+		if(e->modifiers() & Qt::ControlModifier) {
+			_ctrlMenu->popup(e->globalPos());
+		} else {
+			QMenu menu(this);
+			if(!_index.isValid())
+				return;
+			QAction* act = menu.addAction(tr("Keep"));
+			act->setShortcut(QKeySequence(tr("k", "Keep")));
+			act->setCheckable(true);
+			act->setChecked(_getChecked());
+			connect(act, &QAction::toggled, this, [this](const bool b){
+				if(_index.isValid()) {
+					auto kp = _index.model()->data(_index, Qt::UserRole).value<KeepData>();
+					if(kp.keep != b) {
+						kp.keep = b;
+						const_cast<QAbstractItemModel*>(_index.model())->setData(_index, QVariant::fromValue(kp), Qt::UserRole);
+					}
 				}
-			}
-		});
-		menu.exec(e->globalPos());
+			});
+			menu.exec(e->globalPos());
+		}
 	}
 	void GLabel::showLabelFrame(const bool b) {
 		_frame->setVisible(b && _getChecked());
