@@ -8,7 +8,7 @@ namespace dg {
 		return 0;
 	}
 	Version::Num Version::Release() noexcept {
-		return 4;
+		return 5;
 	}
 	const std::string& Version::GetString() {
 		static std::string ret =
