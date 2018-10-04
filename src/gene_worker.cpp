@@ -68,7 +68,7 @@ namespace dg {
 				}
 		};
 		constexpr float MinAsp = .25f,
-						MaxAsp = 4.f,
+						MaxAsp = 16.f,
 						DiffAsp = .1f;
 		struct AspSize {
 			float			aspect;
