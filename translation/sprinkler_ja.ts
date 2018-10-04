@@ -89,11 +89,6 @@
         <translation>画像収集条件</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="14"/>
-        <source>Sprinkler (v0.0.4)</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.ui" line="118"/>
         <source>PreferOriginal</source>
         <translation>オリジナルサイズを優先</translation>
