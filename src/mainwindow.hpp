@@ -92,6 +92,7 @@ namespace dg {
 		signals:
 			void sprinkleCounterChanged(size_t shown, size_t notshown);
 			void onProgress(int p);
+			void showLabelFrame(bool b);
 
 		private slots:
 			// ---- from WatchList signal ----

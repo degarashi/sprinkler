@@ -4,14 +4,38 @@
 #include <QTimer>
 #include <QPixmap>
 #include <QLabel>
+#include <QPainter>
 
 Q_DECLARE_METATYPE(dg::KeepData)
 namespace dg {
+	namespace {
+		constexpr int LineWidth = 3;
+	}
+	GFrame::GFrame(QWidget* parent):
+		QWidget(parent)
+	{
+		setAttribute(Qt::WA_NoSystemBackground);
+		setAttribute(Qt::WA_TranslucentBackground);
+		setAttribute(Qt::WA_TransparentForMouseEvents);
+	}
+	void GFrame::paintEvent(QPaintEvent* e) {
+		QPainter pt(this);
+		const QSize s = size();
+		QPen pen;
+		pen.setCapStyle(Qt::FlatCap);
+		pen.setJoinStyle(Qt::MiterJoin);
+		pen.setWidth(LineWidth);
+		pen.setColor(Qt::green);
+		pt.setPen(pen);
+		pt.drawRect(1, 1, s.width()-LineWidth, s.height()-LineWidth);
+	}
+
 	GLabel::GLabel(const QString& path, const QSize crop,
 					const lubee::PointI ofs, const QSize resize,
 					const QModelIndex& index):
 		QWidget(nullptr, Qt::SplashScreen|Qt::FramelessWindowHint),
 		_label(new QLabel(this)),
+		_frame(new GFrame(this)),
 		_path(path),
 		_index(index)
 	{
@@ -32,6 +56,9 @@ namespace dg {
 			move(ofs.x, ofs.y);
 		});
 		this->resize(_label->sizeHint());
+		const QSize lbs = _label->sizeHint();
+		_frame->setGeometry(0,0, lbs.width(), lbs.height());
+		_frame->setVisible(_getChecked());
 		show();
 		update();
 	}
@@ -59,5 +86,8 @@ namespace dg {
 			}
 		});
 		menu.exec(e->globalPos());
+	}
+	void GLabel::showLabelFrame(const bool b) {
+		_frame->setVisible(b && _getChecked());
 	}
 }

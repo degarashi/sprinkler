@@ -23,6 +23,7 @@
 #include "glabel.hpp"
 #include "gene_worker.hpp"
 #include "version.hpp"
+#include <QWindow>
 
 Q_DECLARE_METATYPE(dg::ImageV)
 Q_DECLARE_METATYPE(dg::KeepData)
@@ -64,6 +65,7 @@ namespace dg {
 					for(auto* l : _label)
 						l->raise();
 				});
+				connect(this, SIGNAL(showLabelFrame(bool)), lb, SLOT(showLabelFrame(bool)));
 				_label.emplace_back(lb);
 			}
 			auto itr = _notshown.find(ImageTag{{}, p.path});
@@ -166,6 +168,10 @@ namespace dg {
 			const auto ver = QString("Sprinkler (v%1)").arg(QString::fromStdString(Version::GetString()));
 			setWindowTitle(ver);
 		}
+		connect(qApp, &QGuiApplication::focusWindowChanged, this, [this](QWindow* w){
+			// 何かウィンドウが選択されている時、キープされている画像は枠を表示
+			emit showLabelFrame(static_cast<bool>(w));
+		});
 
 		try {
 			_initDirModel();
@@ -274,6 +280,8 @@ namespace dg {
 			const int row = item->row();
 			const auto kp = item->data(Qt::UserRole).value<KeepData>();
 			_ui->listKeep->setRowHidden(row, !kp.keep);
+
+			emit showLabelFrame(true);
 		});
 		connect(_keepModel, &QStandardItemModel::rowsInserted,
 				this, [this](const QModelIndex&, const int first, const int last){

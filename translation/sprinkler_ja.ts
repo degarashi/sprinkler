@@ -238,12 +238,12 @@
 <context>
     <name>dg::GLabel</name>
     <message>
-        <location filename="../src/glabel.cpp" line="48"/>
+        <location filename="../src/glabel.cpp" line="75"/>
         <source>Keep</source>
         <translation>キープ</translation>
     </message>
     <message>
-        <location filename="../src/glabel.cpp" line="49"/>
+        <location filename="../src/glabel.cpp" line="76"/>
         <source>k</source>
         <comment>Keep</comment>
         <translation></translation>
@@ -252,52 +252,52 @@
 <context>
     <name>dg::MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="114"/>
+        <location filename="../src/mainwindow.cpp" line="116"/>
         <source>detail menu</source>
         <translation>詳細メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="132"/>
+        <location filename="../src/mainwindow.cpp" line="134"/>
         <source>simplified menu</source>
         <translation>簡易メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="147"/>
+        <location filename="../src/mainwindow.cpp" line="149"/>
         <source>[%1 / %2] were displayed</source>
         <translation>%1枚の画像を表示済み(%2枚中)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="182"/>
+        <location filename="../src/mainwindow.cpp" line="188"/>
         <source>Show Window</source>
         <translation>ウィンドウを表示</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="211"/>
+        <location filename="../src/mainwindow.cpp" line="217"/>
         <source>Error occurred</source>
         <translation>エラー発生</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="230"/>
+        <location filename="../src/mainwindow.cpp" line="236"/>
         <source>Max</source>
         <translation>最大</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="237"/>
+        <location filename="../src/mainwindow.cpp" line="243"/>
         <source>Min</source>
         <translation>最小</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="244"/>
+        <location filename="../src/mainwindow.cpp" line="250"/>
         <source>Samp</source>
         <translation>サンプル倍率</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="341"/>
+        <location filename="../src/mainwindow.cpp" line="349"/>
         <source>Path</source>
         <translation>パス</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="342"/>
+        <location filename="../src/mainwindow.cpp" line="350"/>
         <source>ImageCount</source>
         <translation>画像カウント</translation>
     </message>

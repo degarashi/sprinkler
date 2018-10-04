@@ -7,12 +7,23 @@
 
 class QLabel;
 namespace dg {
+	class GFrame :
+		public QWidget
+	{
+		Q_OBJECT
+		protected:
+			void paintEvent(QPaintEvent* e) override;
+		public:
+			GFrame(QWidget* parent = nullptr);
+	};
+
 	class GLabel :
 		public QWidget
 	{
 		Q_OBJECT
 		private:
 			QLabel*					_label;
+			GFrame*					_frame;
 			QString					_path;
 			QPersistentModelIndex	_index;
 
@@ -22,6 +33,8 @@ namespace dg {
 		protected:
 			void contextMenuEvent(QContextMenuEvent* e) override;
 			void mousePressEvent(QMouseEvent* e) override;
+		public slots:
+			void showLabelFrame(bool b);
 		public:
 			explicit GLabel(const QString& path, QSize crop,
 							const lubee::PointI ofs, QSize resize,
