@@ -32,6 +32,9 @@ namespace dg {
 		show();
 		update();
 	}
+	bool GLabel::_getChecked() const {
+		return _index.data(Qt::UserRole).value<KeepData>().keep;
+	}
 	void GLabel::mousePressEvent(QMouseEvent*) {
 		emit clicked();
 	}
@@ -42,7 +45,7 @@ namespace dg {
 		QAction* act = menu.addAction(tr("Keep"));
 		act->setShortcut(QKeySequence(tr("k", "Keep")));
 		act->setCheckable(true);
-		act->setChecked(_index.data(Qt::UserRole).value<KeepData>().keep);
+		act->setChecked(_getChecked());
 		connect(act, &QAction::toggled, this, [this](const bool b){
 			if(_index.isValid()) {
 				auto kp = _index.model()->data(_index, Qt::UserRole).value<KeepData>();

@@ -13,6 +13,8 @@ namespace dg {
 		private:
 			QString					_path;
 			QPersistentModelIndex	_index;
+
+			bool _getChecked() const;
 		signals:
 			void clicked();
 		protected:
