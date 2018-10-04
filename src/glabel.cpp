@@ -3,13 +3,15 @@
 #include <QMenu>
 #include <QTimer>
 #include <QPixmap>
+#include <QLabel>
 
 Q_DECLARE_METATYPE(dg::KeepData)
 namespace dg {
 	GLabel::GLabel(const QString& path, const QSize crop,
 					const lubee::PointI ofs, const QSize resize,
 					const QModelIndex& index):
-		QLabel(nullptr, Qt::SplashScreen|Qt::FramelessWindowHint),
+		QWidget(nullptr, Qt::SplashScreen|Qt::FramelessWindowHint),
+		_label(new QLabel(this)),
 		_path(path),
 		_index(index)
 	{
@@ -23,12 +25,13 @@ namespace dg {
 		img = img.scaled(resize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 		img = img.copy({{0,0}, crop});
 		const QPixmap pix = QPixmap::fromImage(img);
-		setPixmap(pix);
+		_label->setPixmap(pix);
 		move(ofs.x, ofs.y);
 		// ウィンドウマネージャが指定した位置にピッタリ置いてくれない関係で若干のディレイを入れる
 		QTimer::singleShot(1, this, [this, ofs](){
 			move(ofs.x, ofs.y);
 		});
+		this->resize(_label->sizeHint());
 		show();
 		update();
 	}

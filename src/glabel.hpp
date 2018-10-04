@@ -1,16 +1,18 @@
 #pragma once
-#include <QLabel>
+#include <QWidget>
 #include <QPersistentModelIndex>
 #include "lubee/size.hpp"
 #include "lubee/point.hpp"
 #include "keepdata.hpp"
 
+class QLabel;
 namespace dg {
 	class GLabel :
-		public QLabel
+		public QWidget
 	{
 		Q_OBJECT
 		private:
+			QLabel*					_label;
 			QString					_path;
 			QPersistentModelIndex	_index;
 
