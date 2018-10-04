@@ -20,6 +20,7 @@
 #include <QStyle>
 #include <QFileInfo>
 #include <QImageReader>
+#include <QSystemTrayIcon>
 
 #include "gene_worker.hpp"
 #include "ui_mainwindow.h"
@@ -84,8 +85,15 @@ namespace dg {
 		_clearLabels();
 		_cleanKeepList();
 		// 何も画像が残ってない場合はここで終了
-		if(_notshown.empty())
+		if(_notshown.empty()) {
+			_tray->showMessage(
+				tr("No images"),
+				tr("There's no image to show.\n(Image-set runs out)"),
+				QSystemTrayIcon::Information,
+				5000
+			);
 			return;
+		}
 		// Hide window when sprinkleがONの時はここでウィンドウを隠す
 		if(_ui->actionHideWhenSprinkle->isChecked()) {
 			setWindowState(Qt::WindowMinimized);
