@@ -22,6 +22,7 @@
 #include <QSystemTrayIcon>
 #include "glabel.hpp"
 #include "gene_worker.hpp"
+#include "version.hpp"
 
 Q_DECLARE_METATYPE(dg::ImageV)
 Q_DECLARE_METATYPE(dg::KeepData)
@@ -153,6 +154,11 @@ namespace dg {
 		_actionShow(nullptr)
 	{
 		_ui->setupUi(this);
+		{
+			// バージョン番号の表示
+			const auto ver = QString("Sprinkler (v%1)").arg(QString::fromStdString(Version::GetString()));
+			setWindowTitle(ver);
+		}
 
 		try {
 			_initDirModel();

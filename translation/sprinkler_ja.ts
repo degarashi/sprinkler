@@ -252,52 +252,52 @@
 <context>
     <name>dg::MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="106"/>
+        <location filename="../src/mainwindow.cpp" line="107"/>
         <source>detail menu</source>
         <translation>詳細メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="124"/>
+        <location filename="../src/mainwindow.cpp" line="125"/>
         <source>simplified menu</source>
         <translation>簡易メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="139"/>
+        <location filename="../src/mainwindow.cpp" line="140"/>
         <source>[%1 / %2] were displayed</source>
         <translation>%1枚の画像を表示済み(%2枚中)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="169"/>
+        <location filename="../src/mainwindow.cpp" line="175"/>
         <source>Show Window</source>
         <translation>ウィンドウを表示</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="198"/>
+        <location filename="../src/mainwindow.cpp" line="204"/>
         <source>Error occurred</source>
         <translation>エラー発生</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="217"/>
+        <location filename="../src/mainwindow.cpp" line="223"/>
         <source>Max</source>
         <translation>最大</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="224"/>
+        <location filename="../src/mainwindow.cpp" line="230"/>
         <source>Min</source>
         <translation>最小</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="231"/>
+        <location filename="../src/mainwindow.cpp" line="237"/>
         <source>Samp</source>
         <translation>サンプル倍率</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="328"/>
+        <location filename="../src/mainwindow.cpp" line="334"/>
         <source>Path</source>
         <translation>パス</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="329"/>
+        <location filename="../src/mainwindow.cpp" line="335"/>
         <source>ImageCount</source>
         <translation>画像カウント</translation>
     </message>
