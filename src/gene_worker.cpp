@@ -176,21 +176,18 @@ namespace dg {
 			const int tagw = tag.size.width(),
 					tagh = tag.size.height();
 			const float a = float(tagw) / tagh;
-			assert(a <= MaxAsp);
 
 			// アスペクト比を維持したまま拡大縮小して少くとも画面に一枚、配置できる目安サイズを検索
-			bool found = false;
-			lubee::SizeI maxsize;
+			last = asp.back().rect;
+			lubee::SizeI maxsize = last.size() * qs;
 			for(size_t i=0 ; i<nAsp ; i++) {
 				auto& ent = asp[i];
 				if(a <= ent.aspect) {
-					found = true;
 					last = ent.rect;
 					maxsize = ent.rect.size() * qs;
 					break;
 				}
 			}
-			assert(found);
 
 			float aspR = 1;
 			if(tagw > maxsize.width) {
