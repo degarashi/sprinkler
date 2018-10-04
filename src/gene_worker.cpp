@@ -271,6 +271,7 @@ namespace dg {
 		constexpr double MutateP = 0.01;
 		MyFit fit(toPlace, initial, 1.0, 1.0);
 		auto tmp = fit._initial;
+		emit onProgress(0);
 		Env_t env(mt, fit, {}, {MutateP, {}}, {NParent, NChild}, Population, GeneLen);
 		const int NIter = 32;
 		for(int i=0 ; i<NIter; i++) {
