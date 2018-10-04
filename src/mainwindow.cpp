@@ -50,15 +50,22 @@ namespace dg {
 				} else
 					idx = itr.value();
 			}
-			_label.emplace_back(
-				new GLabel(
-					p.path,
-					p.crop,
-					p.offset,
-					p.resize,
-					idx
-				)
-			);
+			{
+				GLabel* lb =
+					new GLabel(
+						p.path,
+						p.crop,
+						p.offset,
+						p.resize,
+						idx
+					);
+				// どれか1つをクリックしたら他の全てのGLabelを前面に持ってくる
+				connect(lb, &GLabel::clicked, this, [this](){
+					for(auto* l : _label)
+						l->raise();
+				});
+				_label.emplace_back(lb);
+			}
 			auto itr = _notshown.find(ImageTag{{}, p.path});
 			if(itr != _notshown.end()) {
 				_shown.emplace(*itr);

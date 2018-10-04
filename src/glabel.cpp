@@ -32,6 +32,9 @@ namespace dg {
 		show();
 		update();
 	}
+	void GLabel::mousePressEvent(QMouseEvent*) {
+		emit clicked();
+	}
 	void GLabel::contextMenuEvent(QContextMenuEvent* e) {
 		if(!_index.isValid())
 			return;

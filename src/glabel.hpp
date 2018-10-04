@@ -13,8 +13,11 @@ namespace dg {
 		private:
 			QString					_path;
 			QPersistentModelIndex	_index;
+		signals:
+			void clicked();
 		protected:
 			void contextMenuEvent(QContextMenuEvent* e) override;
+			void mousePressEvent(QMouseEvent* e) override;
 		public:
 			explicit GLabel(const QString& path, QSize crop,
 							const lubee::PointI ofs, QSize resize,
