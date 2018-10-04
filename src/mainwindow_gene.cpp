@@ -85,7 +85,7 @@ namespace dg {
 		_clearLabels();
 		_cleanKeepList();
 		// 何も画像が残ってない場合はここで終了
-		if(_notshown.empty()) {
+		if(_notshown.empty() && _keepModel->rowCount() == 0) {
 			_tray->showMessage(
 				tr("No images"),
 				tr("There's no image to show.\n(Image-set runs out)"),
