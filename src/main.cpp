@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
 		a.installTranslator(&tr);
 	}
 
+	qApp->setQuitOnLastWindowClosed(false);
 	dg::MainWindow mw;
 	mw.show();
 	return a.exec();

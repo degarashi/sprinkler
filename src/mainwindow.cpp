@@ -574,6 +574,7 @@ namespace dg {
 		_workerThread->quit();
 		_workerThread->wait();
 
+		qApp->setQuitOnLastWindowClosed(true);
 		QMainWindow::closeEvent(e);
 	}
 	void MainWindow::changeEvent(QEvent* e) {
