@@ -34,44 +34,49 @@ namespace dg {
 				c_keepmodel("KeepModel");
 	}
 	void MainWindow::receiveResult(const PlaceV& place) {
-		for(auto& p : place) {
-			QModelIndex idx;
-			{
-				auto itr = _path2idx.find(p.path);
-				if(itr == _path2idx.end()) {
-					auto* item = new QStandardItem;
-					item->setData(QFileInfo(p.path).fileName(), Qt::EditRole);
-					const KeepData kp {
-						.path = p.path,
-						.keep = false
-					};
-					item->setData(QVariant::fromValue(kp), Qt::UserRole);
-					_keepModel->appendRow(item);
-					idx = _keepModel->index(_keepModel->rowCount()-1, 0);
-				} else
-					idx = itr.value();
-			}
-			{
-				GLabel* lb =
-					new GLabel(
-						p.path,
-						p.crop,
-						p.offset,
-						p.resize,
-						idx
-					);
-				// どれか1つをクリックしたら他の全てのGLabelを前面に持ってくる
-				connect(lb, &GLabel::clicked, this, [this](){
-					for(auto* l : _label)
-						l->raise();
-				});
-				connect(this, SIGNAL(showLabelFrame(bool)), lb, SLOT(showLabelFrame(bool)));
-				_label.emplace_back(lb);
-			}
-			auto itr = _notshown.find(ImageTag{{}, p.path});
-			if(itr != _notshown.end()) {
-				_shown.emplace(*itr);
-				_notshown.erase(itr);
+		if(place.empty()) {
+			_tray->showMessage(tr("No image"), tr("There's no image can place"), QSystemTrayIcon::Information, 5000);
+		} else {
+			_tray->showMessage(tr("Image placed"), tr("%n image(s) placed", "", place.size()), QSystemTrayIcon::Information, 5000);
+			for(auto& p : place) {
+				QModelIndex idx;
+				{
+					auto itr = _path2idx.find(p.path);
+					if(itr == _path2idx.end()) {
+						auto* item = new QStandardItem;
+						item->setData(QFileInfo(p.path).fileName(), Qt::EditRole);
+						const KeepData kp {
+							.path = p.path,
+							.keep = false
+						};
+						item->setData(QVariant::fromValue(kp), Qt::UserRole);
+						_keepModel->appendRow(item);
+						idx = _keepModel->index(_keepModel->rowCount()-1, 0);
+					} else
+						idx = itr.value();
+				}
+				{
+					GLabel* lb =
+						new GLabel(
+							p.path,
+							p.crop,
+							p.offset,
+							p.resize,
+							idx
+						);
+					// どれか1つをクリックしたら他の全てのGLabelを前面に持ってくる
+					connect(lb, &GLabel::clicked, this, [this](){
+						for(auto* l : _label)
+							l->raise();
+					});
+					connect(this, SIGNAL(showLabelFrame(bool)), lb, SLOT(showLabelFrame(bool)));
+					_label.emplace_back(lb);
+				}
+				auto itr = _notshown.find(ImageTag{{}, p.path});
+				if(itr != _notshown.end()) {
+					_shown.emplace(*itr);
+					_notshown.erase(itr);
+				}
 			}
 		}
 		_path2idx.clear();
