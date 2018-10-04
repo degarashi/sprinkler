@@ -11,7 +11,7 @@ namespace dg {
 
 		public slots:
 			void calcArea(const dg::RequestParam& param, const dg::CellBoard& initial,
-							const dg::ImageSet& imgkeep, const dg::ImageSet& img,
+							const dg::ImageSet& imgkeep, dg::ImageSet img,
 							size_t qs);
 		signals:
 			void geneResult(const dg::PlaceV& place);

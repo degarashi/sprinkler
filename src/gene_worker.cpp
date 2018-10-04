@@ -146,7 +146,7 @@ namespace dg {
 	}
 	void GeneWorker::calcArea(
 		const dg::RequestParam& param, const dg::CellBoard& initial,
-		const dg::ImageSet& imgkeep, const dg::ImageSet& img,
+		const dg::ImageSet& imgkeep, dg::ImageSet img,
 		const size_t qs
 	){
 		// アスペクト比とサイズの目安
@@ -232,8 +232,12 @@ namespace dg {
 			sizev.emplace_back(tagw2, tagh2);
 		};
 		// 先にKeepした画像を入力
-		for(auto&& img : imgkeep) {
-			proc(img, true);
+		for(auto&& tag : imgkeep) {
+			proc(tag, true);
+			// 候補リストから外す
+			if(auto itr = img.find(tag);
+				itr != img.end())
+				img.erase(itr);
 		}
 		auto itr = img.begin();
 		while(itr != img.end() && remain > 0) {

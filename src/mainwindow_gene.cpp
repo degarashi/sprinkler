@@ -203,7 +203,7 @@ namespace dg {
 			}
 			_setControlsEnabled(false);
 			QTimer::singleShot(0, _geneWorker, [wk=_geneWorker, param, keep, cb=_quantizer->qmap(), ns=_notshown](){
-				wk->calcArea(param, cb, keep, ns, QuantifySize);
+				wk->calcArea(param, cb, keep, std::move(ns), QuantifySize);
 			});
 		});
 	}
