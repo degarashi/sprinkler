@@ -13,6 +13,16 @@
 * (Windows環境にて)仮想スクリーンの追加・削除を最初の一度しか検知できない
 
 ## 更新履歴
+### v0.0.5 (2018/10/04)
+* 画像セットが空になった、画像配置計算した結果一枚も画像が置けなかった等のエラー時、または画像配置の結果、何枚置けたかをメッセージで表示  
+![v005_ntf](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v005_ntf.png)
+![v005_Nntf](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v005_Nntf.png)  
+* 画像をCtrl + 右クリックすることでSprinklerを操作できるようになりました  
+![v005_ctrlmenu](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v005_ctrlmenu.png)  
+* キープした画像を緑色の枠で強調表示(Sprinklerがアクティブになった時のみ)
+![v005_keep](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v005_keep.png)  
+* 配置された画像のどれか1つをクリックすると他の画像も全て前面に出すように変更
+
 ### v0.0.4 (2018/10/02)
 * タスクトレイのアイコンにカーソルを合わせると、現在どのくらいの画像を表示済みかを表示します  
 ![v004_indicator](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v004_indicator.png)  
