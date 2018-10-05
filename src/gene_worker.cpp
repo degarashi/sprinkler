@@ -174,9 +174,8 @@ namespace dg {
 		const auto csz = initial.nboard().getSize();
 		const auto proc = [csz, &ld_cur, minR, maxR, &toPlace, qs, nAsp, &asp, &last, &sizev, &imgv, &remain](const ImageTag& tag, const bool important){
 			// 画像の元サイズ
-			const int tagw = tag.size.width(),
-					tagh = tag.size.height();
-			const float a = float(tagw) / tagh;
+			const QSize orig = tag.size;
+			const float a = float(orig.width()) / orig.height();
 
 			// アスペクト比を維持したまま拡大縮小して少くとも画面に一枚、配置できる目安サイズを検索
 			last = asp.back().rect;
@@ -191,34 +190,33 @@ namespace dg {
 			}
 
 			float aspR = 1;
-			if(tagw > maxsize.width) {
+			if(orig.width() > maxsize.width) {
 				// 横幅をmaxsizeに合わせる
-				aspR = maxsize.width / float(tagw);
+				aspR = maxsize.width / float(orig.width());
 			}
-			if(tagh > maxsize.height) {
+			if(orig.height() > maxsize.height) {
 				// 縦幅をmaxsizeに合わせる
-				aspR = std::min(aspR, maxsize.height / float(tagh));
+				aspR = std::min(aspR, maxsize.height / float(orig.height()));
 			}
 			// } else {
 				// // 拡大する
-				// if(std::abs(tagw - maxsize.width) < std::abs(tagh - maxsize.height)) {
+				// if(std::abs(orig.width() - maxsize.width) < std::abs(orig.height() - maxsize.height)) {
 					// // 横幅をmaxsizeに合わせる
-					// aspR = maxsize.width / float(tagw);
+					// aspR = maxsize.width / float(orig.width());
 				// } else {
 					// // 縦幅をmaxsizeに合わせる
-					// aspR = maxsize.height / float(tagh);
+					// aspR = maxsize.height / float(orig.height());
 				// }
 			// }
-			// const float r = proc(aspR);
 			double lowd;
 			lubee::Halton(&lowd, ld_cur++, 1);
 			lowd = (maxR - minR) * lowd + minR;
-			if(tagw < 384 && tagh < 384)
+			if(orig.width() < 384 && orig.height() < 384)
 				lowd = 1;
 
 			const float r = aspR * lowd;
-			const int tagw2 = std::floor(r * tagw);
-			const int tagh2 = std::floor(r * tagh);
+			const int tagw2 = std::ceil(r * orig.width());
+			const int tagh2 = std::ceil(r * orig.height());
 
 			const lubee::SizeI sz{
 				int((tagw2+qs-1)/qs),
