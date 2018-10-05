@@ -193,9 +193,10 @@ namespace dg {
 			if(tagw > maxsize.width) {
 				// 横幅をmaxsizeに合わせる
 				aspR = maxsize.width / float(tagw);
-			} else if(tagh > maxsize.height) {
+			}
+			if(tagh > maxsize.height) {
 				// 縦幅をmaxsizeに合わせる
-				aspR = maxsize.height / float(tagh);
+				aspR = std::min(aspR, maxsize.height / float(tagh));
 			}
 			// } else {
 				// // 拡大する
