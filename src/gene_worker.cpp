@@ -171,7 +171,8 @@ namespace dg {
 		std::mt19937 mt(Clock::now().time_since_epoch().count());
 		uint32_t				ld_cur = mt();
 
-		const auto proc = [&ld_cur, minR, maxR, &toPlace, qs, nAsp, &asp, &last, &sizev, &imgv, &remain](const ImageTag& tag, const bool important){
+		const auto csz = initial.nboard().getSize();
+		const auto proc = [csz, &ld_cur, minR, maxR, &toPlace, qs, nAsp, &asp, &last, &sizev, &imgv, &remain](const ImageTag& tag, const bool important){
 			// 画像の元サイズ
 			const int tagw = tag.size.width(),
 					tagh = tag.size.height();
@@ -223,6 +224,8 @@ namespace dg {
 				int((tagw2+qs-1)/qs),
 				int((tagh2+qs-1)/qs)
 			};
+			assert(sz.width <= csz.width);
+			assert(sz.height <= csz.height);
 			remain -= int32_t(sz.area());
 
 			imgv.emplace_back(tag);
