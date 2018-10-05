@@ -13,6 +13,13 @@
 * (Windows環境にて)仮想スクリーンの追加・削除を最初の一度しか検知できない
 
 ## 更新履歴
+### v0.0.4 (2018/10/02)
+* タスクトレイのアイコンにカーソルを合わせると、現在どのくらいの画像を表示済みかを表示します  
+![v004_indicator](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v004_indicator.png)  
+* 「画像散布時にウィンドウを隠す」にチェックを入れた上で画像を散布するとウィンドウを隠した後、散布するようにしました  
+![v004_hide](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v004_hide.png)  
+* キープした画像の一括削除ボタンを追加
+
 ### v0.0.3 (2018/09/30)
 * タスクトレイにアイコンを表示し、そこから各種操作をできるようにしました。
 
