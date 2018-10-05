@@ -63,8 +63,8 @@ namespace dg {
 	CellBoard Quantizer::_makeQuantizedMap() {
 		QRegion obstacle;
 		const lubee::SizeI size(
-			(_dset.vscr.width()+_qsize-1) / _qsize,
-			(_dset.vscr.height()+_qsize-1) / _qsize
+			_dset.vscr.width() / _qsize,
+			_dset.vscr.height() / _qsize
 		);
 		obstacle += QRect(0, 0, size.width, size.height);
 		// スクリーン矩形
