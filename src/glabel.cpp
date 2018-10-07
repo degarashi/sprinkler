@@ -102,4 +102,7 @@ namespace dg {
 	const QString& GLabel::path() const noexcept {
 		return _path;
 	}
+	const QPixmap* GLabel::pixmap() const {
+		return _label->pixmap();
+	}
 }
