@@ -78,10 +78,11 @@ namespace dg {
 							idx,
 							_ctrlMenu
 						);
-					// どれか1つをクリックしたら他の全てのGLabelを前面に持ってくる
+					// どれか1つをクリックしたら他の全てのGLabelと自分を前面に持ってくる
 					connect(lb, &GLabel::clicked, this, [this](){
 						for(auto* l : _label)
 							l->raise();
+						raise();
 					});
 					connect(this, SIGNAL(showLabelFrame(bool)), lb, SLOT(showLabelFrame(bool)));
 					_label.emplace_back(lb);
