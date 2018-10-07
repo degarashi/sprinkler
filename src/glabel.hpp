@@ -41,5 +41,6 @@ namespace dg {
 			explicit GLabel(const QString& path, QSize crop,
 							const lubee::PointI ofs, QSize resize,
 							const QModelIndex& index, QMenu* ctrlMenu);
+			const QString& path() const noexcept;
 	};
 }

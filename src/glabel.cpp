@@ -95,4 +95,7 @@ namespace dg {
 	void GLabel::showLabelFrame(const bool b) {
 		_frame->setVisible(b && _getChecked());
 	}
+	const QString& GLabel::path() const noexcept {
+		return _path;
+	}
 }
