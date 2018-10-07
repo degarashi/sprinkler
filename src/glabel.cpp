@@ -1,10 +1,12 @@
 #include "glabel.hpp"
+#include "aux.hpp"
 #include <QContextMenuEvent>
 #include <QMenu>
 #include <QTimer>
 #include <QPixmap>
 #include <QLabel>
 #include <QPainter>
+#include <QImageReader>
 
 Q_DECLARE_METATYPE(dg::KeepData)
 namespace dg {
@@ -40,15 +42,17 @@ namespace dg {
 		_index(index),
 		_ctrlMenu(ctrlMenu)
 	{
-		QImage img(path);
-
+		const auto readImg = [&path](const QSize s){
+			QImageReader reader(path);
+			reader.setScaledSize(AspectKeepScale(s, reader.size()));
+			return reader.read();
+		};
+		const QImage img = readImg(resize).copy({{0,0}, crop});
 		const_cast<QAbstractItemModel*>(index.model())->setData(
 			index,
-			QPixmap::fromImage(img.scaled({64,64}, Qt::KeepAspectRatio, Qt::SmoothTransformation)),
+			QPixmap::fromImage(img.scaled(AspectKeepScale({64,64}, img.size()))),
 			Qt::DecorationRole
 		);
-		img = img.scaled(resize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-		img = img.copy({{0,0}, crop});
 		const QPixmap pix = QPixmap::fromImage(img);
 		_label->setPixmap(pix);
 		move(ofs.x, ofs.y);
