@@ -101,6 +101,7 @@ namespace dg {
 			void _saveInfo();
 			void _pushState(const PlaceV& state);
 			void _applyState(const PlaceV& state);
+			QPixmap _makeThumbnail(const PlaceV& state);
 			static void _CollectImageInDir(PathV& imgv, ImageSet& imgs, const QString& path, bool recursive);
 			static void _CollectImage(PathV& imgv, ImageSet& imgs, const QString& path);
 		public:

@@ -25,6 +25,9 @@
 #include "version.hpp"
 #include <QWindow>
 #include "toast_mgr.hpp"
+#include <QScreen>
+#include "aux.hpp"
+#include <QPainter>
 
 namespace dg {
 	namespace {
@@ -49,7 +52,30 @@ namespace dg {
 		// MainWindow -> Modelの同期
 		QStandardItem* item = new QStandardItem;
 		item->setData(QString("%1 Images").arg(state.size()), Qt::EditRole);
+		QPixmap thumbnail = _makeThumbnail(state);
+		item->setData(thumbnail, Qt::DecorationRole);
 		_stateModel->appendRow(item);
+	}
+	QPixmap MainWindow::_makeThumbnail(const PlaceV& state) {
+		const QSize vsize0 = qApp->primaryScreen()->availableVirtualSize();
+		const QSize vsize = AspectKeepScale({128,128}, vsize0);
+		const float r = float(vsize.width()) / vsize0.width();
+		const QSizeF sizeR{r, r};
+		QPixmap ret(vsize);
+		ret.fill(Qt::gray);
+		QPainter painter(&ret);
+		for(auto& p : state) {
+			QImageReader reader(p.path);
+			reader.setScaledSize(ToQSize(p.resize * sizeR));
+
+			QPixmap pix = QPixmap::fromImage(reader.read());
+			QPoint ofs{
+				static_cast<int>(p.offset.x * r),
+				static_cast<int>(p.offset.y * r)
+			};
+			painter.drawPixmap(QRect{ofs, pix.size()}, pix);
+		}
+		return ret;
 	}
 	void MainWindow::_applyState(const PlaceV& state) {
 		for(auto& p : state) {
