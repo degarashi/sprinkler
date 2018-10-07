@@ -79,3 +79,23 @@ QRect Quantify(const QRect& r, const int n) {
 QRect RectScOfs(const QRect& r, const QSizeF sc, const QPointF ofs) {
 	return ToRect(r * sc + ofs);
 }
+QSize AspectKeepScale(const QSize target, const QSize size) {
+	const auto ar = [](const QSize s){
+		return float(s.width()) / s.height();
+	};
+	const float asp0 = ar(target),
+				asp1 = ar(size);
+	if(asp0 > asp1) {
+		// 縦を補正
+		return QSize{
+			static_cast<int>(size.width() * (float(target.height()) / size.height())),
+			target.height()
+		};
+	} else {
+		// 横を補正
+		return QSize{
+			target.width(),
+			static_cast<int>(size.height() * (float(target.width()) / size.width()))
+		};
+	}
+}

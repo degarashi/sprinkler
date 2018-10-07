@@ -14,3 +14,5 @@ int Quantify(const int val, int n);
 QRect Quantify(const QRect& r, int n);
 QRect RectScOfs(const QRect& r, const QSizeF sc, const QPointF ofs);
 QRect ToRect(const QRectF& r);
+// アスペクト比を保ったままスケーリング
+QSize AspectKeepScale(const QSize target, const QSize size);
