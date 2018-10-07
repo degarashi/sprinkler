@@ -36,7 +36,6 @@ namespace dg {
 					Max,
 					Min,
 					Sample,
-					PreferOriginal,
 					_Num
 				};
 			};

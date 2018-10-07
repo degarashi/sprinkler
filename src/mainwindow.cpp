@@ -281,8 +281,6 @@ namespace dg {
 			samp->setModel(m, Request::Sample);
 			_setReqData(Request::Sample, 4);
 		}
-		_ui->cbPreferOriginal->setModel(m, Request::PreferOriginal);
-		_setReqData(Request::PreferOriginal, false);
 		connect(_reqModel, &QAbstractItemModel::dataChanged,
 				this, [this](const QModelIndex& lt, const QModelIndex& rb, const QVector<int>& role){
 					Q_UNUSED(rb);

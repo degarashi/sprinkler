@@ -100,24 +100,14 @@
        <string>ImageCollect-Constraint</string>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="3" column="0" colspan="2">
+       <item row="2" column="0" colspan="2">
         <widget class="dg::MySliderD" name="slMin" native="true"/>
        </item>
-       <item row="4" column="0" colspan="2">
+       <item row="3" column="0" colspan="2">
         <widget class="dg::MySliderI" name="slSamp" native="true"/>
        </item>
-       <item row="2" column="0" colspan="2">
+       <item row="1" column="0" colspan="2">
         <widget class="dg::MySliderD" name="slMax" native="true"/>
-       </item>
-       <item row="0" column="0">
-        <widget class="dg::MyCheckbox" name="cbPreferOriginal">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>PreferOriginal</string>
-         </property>
-        </widget>
        </item>
       </layout>
      </widget>
@@ -375,11 +365,6 @@
    <slots>
     <slot>onSprinkleCounterChanged(size_t,size_t)</slot>
    </slots>
-  </customwidget>
-  <customwidget>
-   <class>dg::MyCheckbox</class>
-   <extends>QCheckBox</extends>
-   <header>src/mycheckbox.hpp</header>
   </customwidget>
   <customwidget>
    <class>dg::MySliderI</class>
