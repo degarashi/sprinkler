@@ -24,6 +24,7 @@
 #include "gene_worker.hpp"
 #include "version.hpp"
 #include <QWindow>
+#include "toast.hpp"
 
 Q_DECLARE_METATYPE(dg::ImageV)
 Q_DECLARE_METATYPE(dg::KeepData)
@@ -35,9 +36,21 @@ namespace dg {
 	}
 	void MainWindow::receiveResult(const PlaceV& place) {
 		if(place.empty()) {
-			_tray->showMessage(tr("No image"), tr("There's no image can place"), QSystemTrayIcon::Information, 5000);
+			auto* t = new Toast(
+				Toast::Icon::Information,
+				tr("No image"),
+				tr("There's no image can place"),
+				1000, 5000, 1000
+			);
+			t->show();
 		} else {
-			_tray->showMessage(tr("Image placed"), tr("%n image(s) placed", "", place.size()), QSystemTrayIcon::Information, 5000);
+			auto* t = new Toast(
+				Toast::Icon::Information,
+				tr("Image placed"),
+				tr("%n image(s) placed", "", place.size()),
+				1000, 5000, 1000
+			);
+			t->show();
 			for(auto& p : place) {
 				QModelIndex idx;
 				{

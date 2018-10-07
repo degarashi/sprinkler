@@ -20,7 +20,7 @@
 #include <QStyle>
 #include <QFileInfo>
 #include <QImageReader>
-#include <QSystemTrayIcon>
+#include "toast.hpp"
 
 #include "gene_worker.hpp"
 #include "ui_mainwindow.h"
@@ -86,12 +86,13 @@ namespace dg {
 		_cleanKeepList();
 		// 何も画像が残ってない場合はここで終了
 		if(_notshown.empty() && _keepModel->rowCount() == 0) {
-			_tray->showMessage(
+			auto* t = new Toast(
+				Toast::Icon::Information,
 				tr("No images"),
 				tr("There's no image to show.\n(Image-set runs out)"),
-				QSystemTrayIcon::Information,
-				5000
+				1000, 5000, 1000
 			);
+			t->show();
 			return;
 		}
 		// Hide window when sprinkleがONの時はここでウィンドウを隠す
