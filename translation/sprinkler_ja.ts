@@ -233,12 +233,12 @@
 <context>
     <name>dg::GLabel</name>
     <message>
-        <location filename="../src/glabel.cpp" line="82"/>
+        <location filename="../src/glabel.cpp" line="83"/>
         <source>Keep</source>
         <translation>キープ</translation>
     </message>
     <message>
-        <location filename="../src/glabel.cpp" line="83"/>
+        <location filename="../src/glabel.cpp" line="84"/>
         <source>k</source>
         <comment>Keep</comment>
         <translation></translation>

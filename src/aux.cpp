@@ -1,6 +1,12 @@
 #include "aux.hpp"
 #include <cmath>
 
+QSize ToQSize(const QSizeF& s) {
+	return QSize {
+		static_cast<int>(s.width()),
+		static_cast<int>(s.height())
+	};
+}
 QSizeF operator * (const QSizeF s0, const QSizeF s1) {
 	return {s0.width() * s1.width(),
 			s0.height() * s1.height()};
