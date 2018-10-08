@@ -8,7 +8,6 @@
 #include <QPainter>
 #include <QImageReader>
 
-Q_DECLARE_METATYPE(dg::KeepData)
 namespace dg {
 	namespace {
 		constexpr int LineWidth = 3;
@@ -34,12 +33,12 @@ namespace dg {
 
 	GLabel::GLabel(const QString& path, const QSize crop,
 					const lubee::PointI ofs, const QSize resize,
-					const QModelIndex& index, QMenu* ctrlMenu):
+					const bool keep, QMenu* ctrlMenu):
 		Obstacle(nullptr, Qt::SplashScreen|Qt::FramelessWindowHint),
 		_label(new QLabel(this)),
 		_frame(new GFrame(this)),
 		_path(path),
-		_index(index),
+		_keep(keep),
 		_ctrlMenu(ctrlMenu),
 		_offset{ofs.x, ofs.y}
 	{
@@ -49,11 +48,6 @@ namespace dg {
 			return reader.read();
 		};
 		const QImage img = readImg(resize).copy({{0,0}, crop});
-		const_cast<QAbstractItemModel*>(index.model())->setData(
-			index,
-			QPixmap::fromImage(img.scaled(AspectKeepScale({64,64}, img.size()))),
-			Qt::DecorationRole
-		);
 		const QPixmap pix = QPixmap::fromImage(img);
 		_label->setPixmap(pix);
 		move(ofs.x, ofs.y);
@@ -65,7 +59,7 @@ namespace dg {
 		update();
 	}
 	bool GLabel::_getChecked() const {
-		return _index.data(Qt::UserRole).value<KeepData>().keep;
+		return _keep;
 	}
 	void GLabel::mousePressEvent(QMouseEvent*) {
 		emit clicked();
@@ -81,20 +75,13 @@ namespace dg {
 			_ctrlMenu->popup(e->globalPos());
 		} else {
 			QMenu menu(this);
-			if(!_index.isValid())
-				return;
 			QAction* act = menu.addAction(tr("Keep"));
 			act->setShortcut(QKeySequence(tr("k", "Keep")));
 			act->setCheckable(true);
 			act->setChecked(_getChecked());
 			connect(act, &QAction::toggled, this, [this](const bool b){
-				if(_index.isValid()) {
-					auto kp = _index.model()->data(_index, Qt::UserRole).value<KeepData>();
-					if(kp.keep != b) {
-						kp.keep = b;
-						const_cast<QAbstractItemModel*>(_index.model())->setData(_index, QVariant::fromValue(kp), Qt::UserRole);
-					}
-				}
+				_keep = !_keep;
+				emit keepChanged(_path, _keep);
 			});
 			menu.exec(e->globalPos());
 		}
@@ -107,5 +94,11 @@ namespace dg {
 	}
 	const QPixmap* GLabel::pixmap() const {
 		return _label->pixmap();
+	}
+	void GLabel::setKeep(const QString& path, bool b) {
+		if(_path == path) {
+			_keep = b;
+			emit keepChanged(_path, _keep);
+		}
 	}
 }

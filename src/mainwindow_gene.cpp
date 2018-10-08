@@ -26,7 +26,6 @@
 #include "ui_mainwindow.h"
 #include "qtw_notifier.hpp"
 
-Q_DECLARE_METATYPE(dg::KeepData)
 namespace dg {
 	namespace {
 		struct SizePrio {
@@ -83,7 +82,6 @@ namespace dg {
 	const size_t MainWindow::QuantifySize = 32;
 	void MainWindow::_sprinkle() {
 		_clearLabels();
-		_cleanKeepList();
 		// 何も画像が残ってない場合はここで終了
 		if(_notshown.empty() && _keepModel->rowCount() == 0) {
 			mgr_toast.bake(
@@ -119,17 +117,13 @@ namespace dg {
 				.nSample = getData(Request::Sample, size_t())
 			};
 			ImageSet keep;
-			{
-				const int nR = _keepModel->rowCount();
-				for(int i=0 ; i<nR ; i++) {
-					const QModelIndex idx = _keepModel->index(i,0);
-					const auto kp = _keepModel->data(idx, Qt::UserRole).value<KeepData>();
-					keep.emplace(ImageTag{
-						.size = QImageReader(kp.path).size(),
-						.path = kp.path
-					});
-					_path2idx.insert(kp.path, idx);
-				}
+			for(auto& path : _keepSet) {
+				keep.emplace(
+					ImageTag{
+						.size = QImageReader(path).size(),
+						.path = path
+					}
+				);
 			}
 			_setControlsEnabled(false);
 			QTimer::singleShot(0, _geneWorker, [wk=_geneWorker, param, keep, cb=_quantizer->qmap(), ns=_notshown](){

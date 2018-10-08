@@ -5,6 +5,7 @@
 #include <unordered_set>
 #include <QModelIndex>
 #include "gene_param.hpp"
+#include <QSet>
 
 namespace Ui {
 	class MainWindow;
@@ -53,6 +54,7 @@ namespace dg {
 			QStandardItemModel	*_dirModel,		// 画像フォルダデータ実体
 								*_reqModel,
 								*_keepModel;
+			QSet<QString>		_keepSet;
 			// [1: DirectoryPath() + Size_PathV(User), 2: Image-Count]
 			DirList				*_dirList;		// 画像フォルダダイアログ
 			// Label: 配置した画像(QLabel)
@@ -68,8 +70,6 @@ namespace dg {
 			QAction*			_actionShow;
 			QMenu*				_ctrlMenu;
 			bool				_obstacle;
-			// [path -> modelindex]
-			QHash<QString, QModelIndex> _path2idx;
 
 			void _initDirModel();
 			void _initDirList();
@@ -77,8 +77,6 @@ namespace dg {
 			void _initRequestModel();
 			void _initKeepModel();
 			void _initSystemTray();
-			void _cleanKeepList();
-			void _clearKeepList();
 			void _saveDirModel(QSettings& s);
 			void _saveKeepModel(QSettings& s);
 			// 表示中のラベルを全て削除
@@ -97,6 +95,7 @@ namespace dg {
 			void sprinkleCounterChanged(size_t shown, size_t notshown);
 			void onProgress(int p);
 			void showLabelFrame(bool b);
+			void keepChanged(const QString& path, bool b);
 
 		private slots:
 			// ---- from WatchList signal ----
@@ -110,6 +109,7 @@ namespace dg {
 			void removeKeep();
 			void removeKeepAll();
 			void showWindow(bool b);
+			void setKeep(const QString& path, bool b);
 
 		public slots:
 			void showWatchList(bool show);

@@ -1,9 +1,7 @@
 #pragma once
 #include "obstacle.hpp"
-#include <QPersistentModelIndex>
 #include "lubee/size.hpp"
 #include "lubee/point.hpp"
-#include "keepdata.hpp"
 
 class QLabel;
 class QMenu;
@@ -26,23 +24,25 @@ namespace dg {
 			QLabel*					_label;
 			GFrame*					_frame;
 			QString					_path;
-			QPersistentModelIndex	_index;
 			QMenu*					_ctrlMenu;
 			QPoint					_offset;
+			bool					_keep;
 
 			bool _getChecked() const;
 		signals:
 			void clicked();
+			void keepChanged(const QString& path, bool b);
 		protected:
 			void contextMenuEvent(QContextMenuEvent* e) override;
 			void mousePressEvent(QMouseEvent* e) override;
 			void moveEvent(QMoveEvent* e) override;
 		public slots:
 			void showLabelFrame(bool b);
+			void setKeep(const QString& path, bool b);
 		public:
 			explicit GLabel(const QString& path, QSize crop,
 							const lubee::PointI ofs, QSize resize,
-							const QModelIndex& index, QMenu* ctrlMenu);
+							bool keep, QMenu* ctrlMenu);
 			const QString& path() const noexcept;
 			const QPixmap* pixmap() const;
 	};

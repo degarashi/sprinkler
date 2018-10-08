@@ -27,7 +27,6 @@
 #include "toast_mgr.hpp"
 
 Q_DECLARE_METATYPE(dg::ImageV)
-Q_DECLARE_METATYPE(dg::KeepData)
 namespace dg {
 	namespace {
 		QString c_mainwindow("MainWindow"),
@@ -48,22 +47,6 @@ namespace dg {
 				tr("%n image(s) placed", "", place.size())
 			);
 			for(auto& p : place) {
-				QModelIndex idx;
-				{
-					auto itr = _path2idx.find(p.path);
-					if(itr == _path2idx.end()) {
-						auto* item = new QStandardItem;
-						item->setData(QFileInfo(p.path).fileName(), Qt::EditRole);
-						const KeepData kp {
-							.path = p.path,
-							.keep = false
-						};
-						item->setData(QVariant::fromValue(kp), Qt::UserRole);
-						_keepModel->appendRow(item);
-						idx = _keepModel->index(_keepModel->rowCount()-1, 0);
-					} else
-						idx = itr.value();
-				}
 				{
 					GLabel* lb =
 						new GLabel(
@@ -71,7 +54,7 @@ namespace dg {
 							p.crop,
 							p.offset,
 							p.resize,
-							idx,
+							_keepSet.find(p.path) != _keepSet.end(),
 							_ctrlMenu
 						);
 					// どれか1つをクリックしたら他の全てのGLabelと自分を前面に持ってくる
@@ -81,6 +64,8 @@ namespace dg {
 						raise();
 					});
 					connect(this, SIGNAL(showLabelFrame(bool)), lb, SLOT(showLabelFrame(bool)));
+					connect(this, SIGNAL(keepChanged(QString,bool)), lb, SLOT(setKeep(QString,bool)));
+					connect(lb, SIGNAL(keepChanged(QString,bool)), this, SLOT(setKeep(QString,bool)));
 					_label.emplace_back(lb);
 				}
 				auto itr = _notshown.find(ImageTag{{}, p.path});
@@ -90,9 +75,43 @@ namespace dg {
 				}
 			}
 		}
-		_path2idx.clear();
 		_emitSprinkleCounterChanged();
 		_setControlsEnabled(true);
+	}
+	void MainWindow::setKeep(const QString& path, const bool b) {
+		auto* m = _keepModel;
+		const auto itr = _keepSet.find(path);
+		if(b) {
+			if(itr != _keepSet.end())
+				return;
+			_keepSet.insert(path);
+
+			m->appendRow(new QStandardItem);
+			const QModelIndex idx = m->index(m->rowCount()-1, 0);
+			m->setData(idx, QFileInfo(path).fileName(), Qt::EditRole);
+			m->setData(idx, path, Qt::UserRole);
+			// サムネイル生成
+			QImage img(path);
+			m->setData(
+				idx,
+				QPixmap::fromImage(img.scaled({64,64}, Qt::KeepAspectRatio, Qt::SmoothTransformation)),
+				Qt::DecorationRole
+			);
+		} else {
+			if(itr == _keepSet.end())
+				return;
+			_keepSet.erase(itr);
+
+			const int nk = m->rowCount();
+			for(int i=0 ; i<nk ; i++) {
+				if(m->item(i)->data(Qt::UserRole).toString() == path) {
+					m->removeRow(i);
+					break;
+				}
+			}
+		}
+		emit keepChanged(path, b);
+		emit showLabelFrame(true);
 	}
 	void MainWindow::showWindow(const bool b) {
 		if(b) {
@@ -303,46 +322,14 @@ namespace dg {
 		Q_ASSERT(!_keepModel);
 		_keepModel = new QStandardItemModel(this);
 		_ui->listKeep->setModel(_keepModel);
-		connect(_keepModel, &QStandardItemModel::itemChanged,
-				this, [this](QStandardItem* item){
-			const int row = item->row();
-			const auto kp = item->data(Qt::UserRole).value<KeepData>();
-			_ui->listKeep->setRowHidden(row, !kp.keep);
-
-			emit showLabelFrame(true);
-		});
-		connect(_keepModel, &QStandardItemModel::rowsInserted,
-				this, [this](const QModelIndex&, const int first, const int last){
-			for(int i=first ; i<=last ; i++) {
-				const auto kp = _keepModel->data(_keepModel->index(i,0), Qt::UserRole).value<KeepData>();
-				_ui->listKeep->setRowHidden(i, !kp.keep);
-			}
-		});
 
 		// 前回のパスリストを反映
 		QSettings s;
 		s.beginGroup(c_mainwindow);
 		const int n = s.beginReadArray(c_keepmodel);
-		{
-			auto* m = _keepModel;
-			for(int i=0 ; i<n ; i++) {
-				s.setArrayIndex(i);
-				QString path = s.value("path").toString();
-				m->appendRow(new QStandardItem);
-				QModelIndex idx = m->index(i, 0);
-				m->setData(idx, QFileInfo(path).fileName(), Qt::EditRole);
-				KeepData kp;
-				kp.path = path;
-				kp.keep = true;
-				m->setData(idx, QVariant::fromValue(kp), Qt::UserRole);
-
-				QImage img(path);
-				m->setData(
-					idx,
-					QPixmap::fromImage(img.scaled({64,64}, Qt::KeepAspectRatio, Qt::SmoothTransformation)),
-					Qt::DecorationRole
-				);
-			}
+		for(int i=0 ; i<n ; i++) {
+			s.setArrayIndex(i);
+			setKeep(s.value("path").toString(), true);
 		}
 		s.endArray();
 	}
@@ -355,7 +342,6 @@ namespace dg {
 		_shown.clear();
 		_shownP.clear();
 		_notshownP = _notshown;
-		_cleanKeepList();
 		_emitSprinkleCounterChanged();
 	}
 	void MainWindow::_initDirModel() {
@@ -556,15 +542,14 @@ namespace dg {
 		s.endArray();
 	}
 	void MainWindow::_saveKeepModel(QSettings& s) {
-		_cleanKeepList();
 		s.beginWriteArray(c_keepmodel);
 		{
 			auto* m = _keepModel;
 			const int n = m->rowCount();
 			for(int i=0 ; i<n ; i++) {
 				s.setArrayIndex(i);
-				const KeepData data = m->data(m->index(i,0), Qt::UserRole).value<KeepData>();
-				s.setValue("path", data.path);
+				const QString path = m->data(m->index(i,0), Qt::UserRole).toString();
+				s.setValue("path", path);
 			}
 		}
 		s.endArray();
@@ -627,28 +612,22 @@ namespace dg {
 	}
 	void MainWindow::removeKeep() {
 		QModelIndexList sel = _ui->listKeep->selectionModel()->selectedRows();
-		for(auto&& idx : sel) {
-			auto kp = _keepModel->data(idx, Qt::UserRole).value<KeepData>();
-			kp.keep = false;
-			_keepModel->setData(idx, QVariant::fromValue(kp), Qt::UserRole);
+		std::vector<int> idx;
+		for(auto&& i : sel) {
+			idx.emplace_back(i.row());
+		}
+		std::sort(idx.begin(), idx.end());
+		int diff = 0;
+		for(auto i : idx) {
+			setKeep(
+				_keepModel->data(_keepModel->index(i + diff,0), Qt::UserRole).toString(),
+				false
+			);
+			--diff;
 		}
 	}
 	void MainWindow::removeKeepAll() {
-		_ui->listKeep->selectAll();
-		removeKeep();
-	}
-	void MainWindow::_cleanKeepList() {
-		int nR = _keepModel->rowCount();
-		for(int i=0 ; i<nR ; i++) {
-			QStandardItem* item = _keepModel->item(i);
-			if(!item->data(Qt::UserRole).value<KeepData>().keep) {
-				_keepModel->removeRow(i);
-				--i;
-				--nR;
-			}
-		}
-	}
-	void MainWindow::_clearKeepList() {
-		_keepModel->removeRows(0, _keepModel->rowCount());
+		while(!_keepSet.empty())
+			setKeep(*_keepSet.begin(), false);
 	}
 }
