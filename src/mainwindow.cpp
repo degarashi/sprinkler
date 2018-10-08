@@ -115,6 +115,8 @@ namespace dg {
 
 		_ui->listKeep->setEnabled(b);
 		_ui->removeKeep->setEnabled(b);
+		_ui->removeKeepAll->setEnabled(b);
+		_ui->cbHideSprinkle->setEnabled(b);
 
 		_tray->setIcon(QApplication::style()->standardIcon(
 			b ? QStyle::SP_TitleBarMenuButton : QStyle::SP_BrowserReload));
