@@ -13,6 +13,8 @@ namespace dg {
 		Q_PROPERTY(float alpha READ alpha WRITE setAlpha)
 		private:
 			std::shared_ptr<Ui::Toast> _ui;
+			void setAlpha(float val);
+			float alpha();
 		public:
 			struct Icon {
 				enum e {
@@ -32,7 +34,5 @@ namespace dg {
 				int durationMS,
 				int fadeOutMS
 			);
-			void setAlpha(float val);
-			float alpha();
 	};
 }
