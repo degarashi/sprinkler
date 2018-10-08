@@ -20,7 +20,7 @@
 #include <QStyle>
 #include <QFileInfo>
 #include <QImageReader>
-#include "toast.hpp"
+#include "toast_mgr.hpp"
 
 #include "gene_worker.hpp"
 #include "ui_mainwindow.h"
@@ -86,13 +86,11 @@ namespace dg {
 		_cleanKeepList();
 		// 何も画像が残ってない場合はここで終了
 		if(_notshown.empty() && _keepModel->rowCount() == 0) {
-			auto* t = new Toast(
+			mgr_toast.bake(
 				Toast::Icon::Information,
 				tr("No images"),
-				tr("There's no image to show.\n(Image-set runs out)"),
-				1000, 5000, 1000
+				tr("There's no image to show.\n(Image-set runs out)")
 			);
-			t->show();
 			return;
 		}
 		// Hide window when sprinkleがONの時はここでウィンドウを隠す

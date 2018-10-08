@@ -15,6 +15,7 @@ namespace dg {
 	class DirList;
 	class Quantizer;
 	class QtWNotifier;
+	class ToastMgr;
 }
 class QSettings;
 class QStandardItemModel;
@@ -41,9 +42,11 @@ namespace dg {
 			};
 			using LabelV = std::vector<GLabel*>;
 			using UI_S = std::shared_ptr<Ui::MainWindow>;
+			using Toast_S = std::shared_ptr<ToastMgr>;
 
 		private:
 			UI_S				_ui;
+			Toast_S				_toast;
 			dg::Watcher			*_watcher;		// XWindowによるウィンドウ位置監視
 			dg::Quantizer		*_quantizer;	// ウィンドウ位置変更を検知、量子化
 			WatchList			*_watchList;	// 監視ウィンドウダイアログ

@@ -24,7 +24,7 @@
 #include "gene_worker.hpp"
 #include "version.hpp"
 #include <QWindow>
-#include "toast.hpp"
+#include "toast_mgr.hpp"
 
 Q_DECLARE_METATYPE(dg::ImageV)
 Q_DECLARE_METATYPE(dg::KeepData)
@@ -36,21 +36,17 @@ namespace dg {
 	}
 	void MainWindow::receiveResult(const PlaceV& place) {
 		if(place.empty()) {
-			auto* t = new Toast(
+			mgr_toast.bake(
 				Toast::Icon::Information,
 				tr("No image"),
-				tr("There's no image can place"),
-				1000, 5000, 1000
+				tr("There's no image can place")
 			);
-			t->show();
 		} else {
-			auto* t = new Toast(
+			mgr_toast.bake(
 				Toast::Icon::Information,
 				tr("Image placed"),
-				tr("%n image(s) placed", "", place.size()),
-				1000, 5000, 1000
+				tr("%n image(s) placed", "", place.size())
 			);
-			t->show();
 			for(auto& p : place) {
 				QModelIndex idx;
 				{
@@ -173,6 +169,7 @@ namespace dg {
 	MainWindow::MainWindow(QWidget *const parent):
 		QMainWindow(parent),
 		_ui(new Ui::MainWindow),
+		_toast(new ToastMgr),
 		_watchList(nullptr),
 		_watcher(nullptr),
 		_dirModel(nullptr),
@@ -602,6 +599,7 @@ namespace dg {
 		_workerThread->quit();
 		_workerThread->wait();
 
+		_toast.reset();
 		qApp->setQuitOnLastWindowClosed(true);
 		QMainWindow::closeEvent(e);
 	}
