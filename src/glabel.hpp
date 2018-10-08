@@ -28,6 +28,7 @@ namespace dg {
 			QString					_path;
 			QPersistentModelIndex	_index;
 			QMenu*					_ctrlMenu;
+			QPoint					_offset;
 
 			bool _getChecked() const;
 		signals:
@@ -35,6 +36,7 @@ namespace dg {
 		protected:
 			void contextMenuEvent(QContextMenuEvent* e) override;
 			void mousePressEvent(QMouseEvent* e) override;
+			void moveEvent(QMoveEvent* e) override;
 		public slots:
 			void showLabelFrame(bool b);
 		public:

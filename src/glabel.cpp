@@ -40,7 +40,8 @@ namespace dg {
 		_frame(new GFrame(this)),
 		_path(path),
 		_index(index),
-		_ctrlMenu(ctrlMenu)
+		_ctrlMenu(ctrlMenu),
+		_offset{ofs.x, ofs.y}
 	{
 		const auto readImg = [&path](const QSize s){
 			QImageReader reader(path);
@@ -56,10 +57,6 @@ namespace dg {
 		const QPixmap pix = QPixmap::fromImage(img);
 		_label->setPixmap(pix);
 		move(ofs.x, ofs.y);
-		// ウィンドウマネージャが指定した位置にピッタリ置いてくれない関係で若干のディレイを入れる
-		QTimer::singleShot(1, this, [this, ofs](){
-			move(ofs.x, ofs.y);
-		});
 		this->resize(_label->sizeHint());
 		const QSize lbs = _label->sizeHint();
 		_frame->setGeometry(0,0, lbs.width(), lbs.height());
@@ -72,6 +69,12 @@ namespace dg {
 	}
 	void GLabel::mousePressEvent(QMouseEvent*) {
 		emit clicked();
+	}
+	void GLabel::moveEvent(QMoveEvent* e) {
+		// (ウィンドウマネージャが指定した位置にピッタリ置いてくれない関係で)位置が違っていたら補正する
+		if(e->pos() != _offset) {
+			move(_offset);
+		}
 	}
 	void GLabel::contextMenuEvent(QContextMenuEvent* e) {
 		if(e->modifiers() & Qt::ControlModifier) {
