@@ -50,6 +50,11 @@ namespace dg {
 			auto& rv = _dset.rv[DomainType::Qt];
 			rv.clear();
 			for(const QWindow *const w : qApp->topLevelWindows()) {
+				if(QVariant v = w->property("obstacle");
+					!v.isValid() || !v.toBool())
+				{
+					continue;
+				}
 				if(w->isExposed() && w->isVisible()) {
 					rv.emplace_back(dg::Rect_Name{
 						w->frameGeometry(),

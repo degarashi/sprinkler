@@ -67,6 +67,7 @@ namespace dg {
 			QSystemTrayIcon*	_tray;
 			QAction*			_actionShow;
 			QMenu*				_ctrlMenu;
+			bool				_obstacle;
 			// [path -> modelindex]
 			QHash<QString, QModelIndex> _path2idx;
 
@@ -123,5 +124,6 @@ namespace dg {
 		protected:
 			void closeEvent(QCloseEvent* e) override;
 			void changeEvent(QEvent* e) override;
+			void showEvent(QShowEvent* e) override;
 	};
 }

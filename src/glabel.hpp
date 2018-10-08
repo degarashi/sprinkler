@@ -1,5 +1,5 @@
 #pragma once
-#include <QWidget>
+#include "obstacle.hpp"
 #include <QPersistentModelIndex>
 #include "lubee/size.hpp"
 #include "lubee/point.hpp"
@@ -19,7 +19,7 @@ namespace dg {
 	};
 
 	class GLabel :
-		public QWidget
+		public Obstacle
 	{
 		Q_OBJECT
 		private:

@@ -35,7 +35,7 @@ namespace dg {
 	GLabel::GLabel(const QString& path, const QSize crop,
 					const lubee::PointI ofs, const QSize resize,
 					const QModelIndex& index, QMenu* ctrlMenu):
-		QWidget(nullptr, Qt::SplashScreen|Qt::FramelessWindowHint),
+		Obstacle(nullptr, Qt::SplashScreen|Qt::FramelessWindowHint),
 		_label(new QLabel(this)),
 		_frame(new GFrame(this)),
 		_path(path),

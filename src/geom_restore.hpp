@@ -1,9 +1,9 @@
 #pragma once
-#include <QWidget>
+#include "obstacle.hpp"
 
 namespace dg {
 	class GeomRestore :
-		public QWidget
+		public Obstacle
 	{
 		Q_OBJECT
 

@@ -284,37 +284,37 @@
         <translation>%1枚の画像を表示済み(%2枚中)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="205"/>
+        <location filename="../src/mainwindow.cpp" line="206"/>
         <source>Show Window</source>
         <translation>ウィンドウを表示</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="234"/>
+        <location filename="../src/mainwindow.cpp" line="235"/>
         <source>Error occurred</source>
         <translation>エラー発生</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="263"/>
+        <location filename="../src/mainwindow.cpp" line="264"/>
         <source>Max</source>
         <translation>最大</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="270"/>
+        <location filename="../src/mainwindow.cpp" line="271"/>
         <source>Min</source>
         <translation>最小</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="277"/>
+        <location filename="../src/mainwindow.cpp" line="278"/>
         <source>Samp</source>
         <translation>サンプル倍率</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="374"/>
+        <location filename="../src/mainwindow.cpp" line="375"/>
         <source>Path</source>
         <translation>パス</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="375"/>
+        <location filename="../src/mainwindow.cpp" line="376"/>
         <source>ImageCount</source>
         <translation>画像カウント</translation>
     </message>

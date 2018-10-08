@@ -177,7 +177,8 @@ namespace dg {
 		_keepModel(nullptr),
 		_dirList(nullptr),
 		_tray(nullptr),
-		_actionShow(nullptr)
+		_actionShow(nullptr),
+		_obstacle(false)
 	{
 		_ui->setupUi(this);
 		{
@@ -614,6 +615,13 @@ namespace dg {
 				_actionShow->setChecked(true);
 			}
 		}
+	}
+	void MainWindow::showEvent(QShowEvent* e) {
+		if(!_obstacle) {
+			_obstacle = true;
+			windowHandle()->setProperty("obstacle", QVariant::fromValue(true));
+		}
+		QMainWindow::showEvent(e);
 	}
 	void MainWindow::removeKeep() {
 		QModelIndexList sel = _ui->listKeep->selectionModel()->selectedRows();
