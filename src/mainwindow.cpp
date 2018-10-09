@@ -318,10 +318,24 @@ namespace dg {
 					}
 				});
 	}
+	void MainWindow::keepRemoving(const QModelIndex& parent, const int first, const int last) {
+		Q_UNUSED(parent)
+		auto* m = _keepModel;
+		for(int i=first ; i<=last ; i++) {
+			const QString path = m->data(m->index(i, 0), Qt::UserRole).toString();
+			const auto itr = _keepSet.find(path);
+			if(itr != _keepSet.end())
+				_keepSet.erase(itr);
+			emit keepChanged(path, false);
+		}
+		emit showLabelFrame(true);
+	}
 	void MainWindow::_initKeepModel() {
 		Q_ASSERT(!_keepModel);
 		_keepModel = new QStandardItemModel(this);
 		_ui->listKeep->setModel(_keepModel);
+		connect(_keepModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
+				this, SLOT(keepRemoving(QModelIndex,int,int)));
 
 		// 前回のパスリストを反映
 		QSettings s;
@@ -612,22 +626,15 @@ namespace dg {
 	}
 	void MainWindow::removeKeep() {
 		QModelIndexList sel = _ui->listKeep->selectionModel()->selectedRows();
-		std::vector<int> idx;
-		for(auto&& i : sel) {
-			idx.emplace_back(i.row());
-		}
-		std::sort(idx.begin(), idx.end());
+		std::sort(sel.begin(), sel.end());
 		int diff = 0;
-		for(auto i : idx) {
-			setKeep(
-				_keepModel->data(_keepModel->index(i + diff,0), Qt::UserRole).toString(),
-				false
-			);
+		for(auto i : sel) {
+			_keepModel->removeRow(i.row() + diff);
 			--diff;
 		}
 	}
 	void MainWindow::removeKeepAll() {
-		while(!_keepSet.empty())
-			setKeep(*_keepSet.begin(), false);
+		_ui->listKeep->selectAll();
+		_ui->actionRemoveKeep->trigger();
 	}
 }

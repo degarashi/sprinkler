@@ -110,6 +110,7 @@ namespace dg {
 			void removeKeepAll();
 			void showWindow(bool b);
 			void setKeep(const QString& path, bool b);
+			void keepRemoving(const QModelIndex& index, int first, int last);
 
 		public slots:
 			void showWatchList(bool show);
