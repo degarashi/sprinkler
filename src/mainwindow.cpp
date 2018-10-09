@@ -26,7 +26,6 @@
 #include <QWindow>
 #include "toast_mgr.hpp"
 
-Q_DECLARE_METATYPE(dg::ImageV)
 namespace dg {
 	namespace {
 		QString c_mainwindow("MainWindow"),
@@ -68,9 +67,9 @@ namespace dg {
 					connect(lb, SIGNAL(keepChanged(QString,bool)), this, SLOT(setKeep(QString,bool)));
 					_label.emplace_back(lb);
 				}
-				auto itr = _notshown.find(ImageTag{{}, p.path});
+				auto itr = _notshown.find(p.path);
 				if(itr != _notshown.end()) {
-					_shown.emplace(*itr);
+					_shown.insert(*itr);
 					_notshown.erase(itr);
 				}
 			}
@@ -351,8 +350,8 @@ namespace dg {
 		emit sprinkleCounterChanged(_shown.size(), _notshown.size());
 	}
 	void MainWindow::sprinkleReset() {
-		for(auto& tag : _shown)
-			_notshown.emplace(tag);
+		for(auto& path : _shown)
+			_notshown.insert(path);
 		_shown.clear();
 		_shownP.clear();
 		_notshownP = _notshown;
@@ -433,37 +432,40 @@ namespace dg {
 		auto* m = _dirModel;
 		const auto prevSize = _notshown.size();
 		for(int i=first ; i<=last ; i++) {
-			_removeImage(m->item(i,0));
+			_removeDirItem(m->item(i,0));
 		}
 		qDebug() << "dirRemove: " << prevSize << " -> " << _notshown.size();
 		_emitSprinkleCounterChanged();
 	}
-	void MainWindow::_removeImage(QStandardItem* item) {
+	void MainWindow::_removeDirItem(QStandardItem* item) {
 		const QVariant var = item->data(Qt::UserRole);
-		if(!var.canConvert<const ImageV&>())
+		if(!var.canConvert<const PathV&>())
 			return;
 
 		const auto prevSize = _notshown.size();
-		const ImageV& img = var.value<ImageV>();
-		for(auto& tag : img) {
+		const PathV& pathv = var.value<PathV>();
+		for(auto& path : pathv) {
 			// shownかnotshown何れかのセットにパスが登録してあるはずなので、削除
-			if(auto itr = _shown.find(tag);
+			if(auto itr = _shown.find(path);
 					itr != _shown.end())
 				_shown.erase(itr);
-			else if(auto itr = _notshown.find(tag);
+			else if(auto itr = _notshown.find(path);
 					itr != _notshown.end())
 				_notshown.erase(itr);
 			else {
 				Q_ASSERT(false);
 			}
+			auto itr = _imageSet.find(path);
+			Q_ASSERT(itr != _imageSet.end());
+			_imageSet.erase(itr);
 		}
 		_shownP = _shown;
 		_notshownP = _notshown;
-		qDebug() << "_removeImage: " << prevSize << " -> " << _notshown.size();
+		qDebug() << "_removeDirItem: " << prevSize << " -> " << _notshown.size();
 		item->setData(QVariant(), Qt::EditRole);
 		item->setData(QVariant(), Qt::UserRole);
 	}
-	void MainWindow::_CollectImageInDir(ImageV& imgv, ImageSet& imgs, const QString& path, const bool recursive) {
+	void MainWindow::_CollectImageInDir(PathV& imgv, ImageSet& imgs, const QString& path, const bool recursive) {
 		QDir dir(path);
 		Q_ASSERT(dir.exists());
 		const auto files = dir.entryInfoList(
@@ -486,12 +488,13 @@ namespace dg {
 			}
 		}
 	}
-	void MainWindow::_CollectImage(ImageV& imgv, ImageSet& imgs, const QString& path) {
+	void MainWindow::_CollectImage(PathV& imgv, ImageSet& imgs, const QString& path) {
 		QImageReader reader(path);
 		// 有効な画像だけ読み込む
 		if(reader.canRead()) {
-			imgv.emplace_back(ImageTag{reader.size(), path});
-			imgs.emplace(imgv.back());
+			imgv.push_back(path);
+			Q_ASSERT(!imgs.contains(path));
+			imgs.insert(path, reader.size());
 		}
 	}
 	void MainWindow::syncImageSizeList(QStandardItem* item) {
@@ -499,11 +502,13 @@ namespace dg {
 		const QString path = item->data(Qt::EditRole).toString();
 		if(path.isEmpty())
 			return;
-		// 全部QImageReaderで読み込んでサイズだけ格納
-
 		// ディレクトリ内の画像を列挙してリスト化
-		ImageV imgv;
-		_CollectImageInDir(imgv, _notshown, path, true);
+		PathV imgv;
+		_CollectImageInDir(imgv, _imageSet, path, true);
+		for(auto&& path : imgv) {
+			Q_ASSERT(!_notshown.contains(path));
+			_notshown.insert(path);
+		}
 
 		// ModelにはImageBag-Idの配列(ImageV)を記録しておく
 		auto* m = _dirModel;
@@ -512,7 +517,7 @@ namespace dg {
 			const auto row = item->row();
 			QStandardItem* item0 = m->itemFromIndex(m->index(row, 0));
 			// 古い画像リストはセットから除く
-			_removeImage(item0);
+			_removeDirItem(item0);
 			// 1列目のUserRoleに画像ファイルパス & サイズのリストを記録
 			item0->setData(QVariant::fromValue(imgv), Qt::UserRole);
 			// 2列目に画像ファイル数のカウントを表示

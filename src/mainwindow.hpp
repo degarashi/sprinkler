@@ -52,15 +52,17 @@ namespace dg {
 			dg::Watcher			*_watcher;		// XWindowによるウィンドウ位置監視
 			dg::Quantizer		*_quantizer;	// ウィンドウ位置変更を検知、量子化
 			WatchList			*_watchList;	// 監視ウィンドウダイアログ
-			QStandardItemModel	*_dirModel,		// 画像フォルダデータ実体
+			QStandardItemModel	*_dirModel,		// [1>Display: フルパス(QString), 1>User: ファイルリスト(PathV), 2>Display: ファイルカウント(int)]
 								*_reqModel,
-								*_keepModel;
-			QSet<QString>		_keepSet;
+								*_keepModel;	// [Display: ファイル名(QString), User: フルパス(QString), Decoration: サムネイル(QPixmap)]
+			PathS				_keepSet;
 			// [1: DirectoryPath() + Size_PathV(User), 2: Image-Count]
 			DirList				*_dirList;		// 画像フォルダダイアログ
 			// Label: 配置した画像(QLabel)
 			LabelV				_label;
-			ImageSet			_shown,
+			// 全画像セット(shown + notshown)にサイズを対応付けた物
+			ImageSet			_imageSet;
+			PathS				_shown,
 								_notshown,
 								_shownP,
 								_notshownP;
@@ -83,14 +85,14 @@ namespace dg {
 			// 表示中のラベルを全て削除
 			void _clearLabels();
 			void _emitSprinkleCounterChanged();
-			void _removeImage(QStandardItem* item);
+			void _removeDirItem(QStandardItem* item);
 			void _setReqData(int index, const QVariant& v);
 			QVariant _getReqData(int index) const;
 			void _sprinkle();
 			void _setControlsEnabled(bool b);
 			void _saveInfo();
-			static void _CollectImageInDir(ImageV& imgv, ImageSet& imgs, const QString& path, bool recursive);
-			static void _CollectImage(ImageV& imgv, ImageSet& imgs, const QString& path);
+			static void _CollectImageInDir(PathV& imgv, ImageSet& imgs, const QString& path, bool recursive);
+			static void _CollectImage(PathV& imgv, ImageSet& imgs, const QString& path);
 
 		signals:
 			void sprinkleCounterChanged(size_t shown, size_t notshown);

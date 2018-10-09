@@ -145,8 +145,11 @@ namespace dg {
 		}
 	}
 	void GeneWorker::calcArea(
-		const dg::RequestParam& param, const dg::CellBoard& initial,
-		const dg::ImageSet& imgkeep, dg::ImageSet img,
+		const dg::RequestParam& param,
+		const dg::CellBoard& initial,
+		const dg::PathS& keepset,
+		const dg::PathS& notshown,
+		const dg::ImageSet& img2size,
 		const size_t qs
 	){
 		// アスペクト比とサイズの目安
@@ -162,8 +165,8 @@ namespace dg {
 		// 空き面積から、適当に画像を選別
 		SizePrioV				toPlace;
 		int32_t					remain = initial.getNEmptyCell() * SampleR;
-		ImageV					imgv;
-		SizeV					sizev;
+		PathV					selected;
+		SizeV					modifiedSize;
 		lubee::RectI			last;
 		// Window環境でrandom_deviceを使うと毎回同じ乱数列が生成されてしまうので
 		// とりあえずの回避策として現在時刻をシードに使う
@@ -172,9 +175,21 @@ namespace dg {
 		uint32_t				ld_cur = mt();
 
 		const auto csz = initial.nboard().getSize();
-		const auto proc = [csz, &ld_cur, minR, maxR, &toPlace, qs, nAsp, &asp, &last, &sizev, &imgv, &remain](const ImageTag& tag, const bool important){
+		const auto addCandidate = [
+			csz,
+			&ld_cur,
+			minR, maxR,
+			&toPlace,
+			qs,
+			nAsp, &asp,
+			&last,
+			&modifiedSize,
+			&selected,
+			&remain,
+			&img2size
+		](const QString& path, const bool important){
 			// 画像の元サイズ
-			const QSize orig = tag.size;
+			const QSize orig = *img2size.constFind(path);
 			const float a = float(orig.width()) / orig.height();
 
 			// アスペクト比を維持したまま拡大縮小して少くとも画面に一枚、配置できる目安サイズを検索
@@ -226,33 +241,29 @@ namespace dg {
 			assert(sz.height <= csz.height);
 			remain -= int32_t(sz.area());
 
-			imgv.emplace_back(tag);
+			selected.push_back(path);
 			toPlace.emplace_back(SizePrio{sz, important});
-			sizev.emplace_back(tagw2, tagh2);
+			modifiedSize.emplace_back(tagw2, tagh2);
 		};
 		// 先にKeepした画像を入力
-		for(auto&& tag : imgkeep) {
-			proc(tag, true);
-			// 候補リストから外す
-			if(auto itr = img.find(tag);
-				itr != img.end())
-				img.erase(itr);
+		for(auto&& path : keepset) {
+			addCandidate(path, true);
 		}
-		auto itr = img.begin();
-		while(itr != img.end() && remain > 0) {
-			proc(*itr, false);
+		auto itr = notshown.begin();
+		while(itr != notshown.end() && remain > 0) {
+			addCandidate(*itr, false);
 			++itr;
 		}
-		qDebug() << imgv.size() << "Selected";
+		qDebug() << selected.size() << "Selected";
 
 		// 画像が一枚しかない場合は推奨サイズを適用
-		if(sizev.size() == 1) {
+		if(selected.size() == 1) {
 			PlaceV place = {
 				PlaceResult{
 					.resize = ToQSize(last.size()*qs),
 					.crop = ToQSize(last.size()*qs),
 					.offset = {int(last.offset().x*qs), int(last.offset().y*qs)},
-					.path = imgv[0].path
+					.path = selected[0]
 				}
 			};
 			emit onProgress(100);
@@ -291,11 +302,10 @@ namespace dg {
 		for(size_t i=0 ; i<GeneLen ; i++) {
 			const auto idx = gene[i];
 			const auto sz = toPlace[idx].size;
-			const auto& tag = imgv[idx];
 			if(cb.place(sz)) {
 				// 画像をブロック枠サイズにピッタリ合わせる
 				const lubee::SizeI szRect = sz * qs,
-								szOriginal = sizev[idx];
+								szOriginal = modifiedSize[idx];
 				const int dx = szRect.width - szOriginal.width,
 						dy = szRect.height - szOriginal.height;
 				Q_ASSERT(dx>=0 && dy>=0);
@@ -317,12 +327,12 @@ namespace dg {
 				ofs.x *= qs;
 				ofs.y *= qs;
 
-				place.emplace_back(
+				place.push_back(
 					PlaceResult {
 						.resize = ToQSize(target),
 						.crop = ToQSize(szRect),
 						.offset = {ofs.x, ofs.y},
-						.path = imgv[idx].path
+						.path = selected[idx]
 					}
 				);
 			}

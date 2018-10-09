@@ -10,5 +10,5 @@ namespace dg {
 		lubee::PointI	offset;
 		QString			path;
 	};
-	using PlaceV = std::vector<PlaceResult>;
+	using PlaceV = QVector<PlaceResult>;
 }

@@ -27,6 +27,13 @@
 #include "qtw_notifier.hpp"
 
 namespace dg {
+	// struct ImageTag {
+		// QSize			size;
+		// QString			path;
+		// bool operator == (const ImageTag& t) const noexcept {
+			// return path == t.path;
+		// }
+	// };
 	namespace {
 		struct SizePrio {
 			lubee::SizeI	size;
@@ -106,6 +113,8 @@ namespace dg {
 		}
 		// (QLabelの削除が実際に画面へ適用されるまでタイムラグがある為)
 		QTimer::singleShot(10, this, [this](){
+			_setControlsEnabled(false);
+
 			const auto getData = [model = _reqModel](const int idx, auto type) {
 				return model->data(model->index(idx,0), Qt::EditRole).value<decltype(type)>();
 			};
@@ -116,19 +125,19 @@ namespace dg {
 				},
 				.nSample = getData(Request::Sample, size_t())
 			};
-			ImageSet keep;
-			for(auto& path : _keepSet) {
-				keep.emplace(
-					ImageTag{
-						.size = QImageReader(path).size(),
-						.path = path
-					}
-				);
-			}
-			_setControlsEnabled(false);
-			QTimer::singleShot(0, _geneWorker, [wk=_geneWorker, param, keep, cb=_quantizer->qmap(), ns=_notshown](){
-				wk->calcArea(param, cb, keep, std::move(ns), QuantifySize);
-			});
+			QTimer::singleShot(0, _geneWorker,
+				[
+					worker = _geneWorker,
+					param,
+					cellb = _quantizer->qmap(),
+					keepset = _keepSet,
+					notshown = _notshown,
+					img2size = _imageSet
+				]()
+				{
+					worker->calcArea(param, cellb, keepset, notshown, img2size, QuantifySize);
+				}
+			);
 		});
 	}
 	void MainWindow::reSprinkle() {

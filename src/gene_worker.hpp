@@ -11,9 +11,14 @@ namespace dg {
 		Q_OBJECT
 
 		public slots:
-			void calcArea(const dg::RequestParam& param, const dg::CellBoard& initial,
-							const dg::ImageSet& imgkeep, dg::ImageSet img,
-							size_t qs);
+			void calcArea(
+				const dg::RequestParam& param,
+				const dg::CellBoard& initial,
+				const dg::PathS& keepset,
+				const dg::PathS& notshown,
+				const dg::ImageSet& img2size,
+				size_t qs
+			);
 		signals:
 			void geneResult(const dg::PlaceV& place);
 			void onProgress(int p);
