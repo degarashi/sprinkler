@@ -11,7 +11,6 @@ namespace dg {
 		lubee::RangeF	sizeRange;
 		size_t			nSample;
 	};
-	using PathV = std::vector<QString>;
 	struct PlaceResult {
 		QSize			resize;
 		QSize			crop;
