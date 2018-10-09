@@ -1,5 +1,6 @@
 #pragma once
 #include "gene_param.hpp"
+#include "place_result.hpp"
 #include <QObject>
 
 namespace dg {

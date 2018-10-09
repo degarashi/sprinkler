@@ -11,14 +11,6 @@ namespace dg {
 		lubee::RangeF	sizeRange;
 		size_t			nSample;
 	};
-	struct PlaceResult {
-		QSize			resize;
-		QSize			crop;
-		lubee::PointI	offset;
-		QString			path;
-	};
-	using PlaceV = std::vector<PlaceResult>;
-
 	// DirModelのUserRole用
 	struct ImageTag {
 		QSize			size;

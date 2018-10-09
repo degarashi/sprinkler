@@ -5,6 +5,7 @@
 #include <unordered_set>
 #include <QModelIndex>
 #include "gene_param.hpp"
+#include "place_result.hpp"
 #include <QSet>
 
 namespace Ui {
