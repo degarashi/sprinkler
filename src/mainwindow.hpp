@@ -3,7 +3,6 @@
 #include <QMainWindow>
 #include <memory>
 #include <unordered_set>
-#include <QModelIndex>
 #include "gene_param.hpp"
 #include "place_result.hpp"
 #include <QSet>
@@ -19,10 +18,12 @@ namespace dg {
 	class QtWNotifier;
 	class ToastMgr;
 }
+class QModelIndex;
 class QSettings;
 class QStandardItemModel;
 class QStandardItem;
 class QSystemTrayIcon;
+class QItemSelection;
 namespace dg {
 	class GeneWorker;
 	class GLabel;
@@ -54,7 +55,10 @@ namespace dg {
 			WatchList			*_watchList;	// 監視ウィンドウダイアログ
 			QStandardItemModel	*_dirModel,		// [1>Display: フルパス(QString), 1>User: ファイルリスト(PathV), 2>Display: ファイルカウント(int)]
 								*_reqModel,
-								*_keepModel;	// [Display: ファイル名(QString), User: フルパス(QString), Decoration: サムネイル(QPixmap)]
+								*_keepModel,	// [Display: ファイル名(QString), User: フルパス(QString), Decoration: サムネイル(QPixmap)]
+								// 画像の配置状態モデル
+								// [1>Display:(none), User:State-Index, Decoration: サムネイル(QPixmap)]
+								*_stateModel;
 			PathS				_keepSet;
 			// [1: DirectoryPath() + Size_PathV(User), 2: Image-Count]
 			DirList				*_dirList;		// 画像フォルダダイアログ
@@ -73,6 +77,9 @@ namespace dg {
 			QAction*			_actionShow;
 			QMenu*				_ctrlMenu;
 			bool				_obstacle;
+			using StateV = std::vector<PlaceV>;
+			// 画像の配置状態リスト
+			StateV				_state;
 
 			void _initDirModel();
 			void _initDirList();
@@ -80,6 +87,7 @@ namespace dg {
 			void _initRequestModel();
 			void _initKeepModel();
 			void _initSystemTray();
+			void _initStateModel();
 			void _saveDirModel(QSettings& s);
 			void _saveKeepModel(QSettings& s);
 			// 表示中のラベルを全て削除
@@ -91,14 +99,19 @@ namespace dg {
 			void _sprinkle();
 			void _setControlsEnabled(bool b);
 			void _saveInfo();
+			void _pushState(const PlaceV& state);
+			void _applyState(const PlaceV& state);
 			static void _CollectImageInDir(PathV& imgv, ImageSet& imgs, const QString& path, bool recursive);
 			static void _CollectImage(PathV& imgv, ImageSet& imgs, const QString& path);
+		public:
+			size_t stateCount() const noexcept;
 
 		signals:
 			void sprinkleCounterChanged(size_t shown, size_t notshown);
 			void onProgress(int p);
 			void showLabelFrame(bool b);
 			void keepChanged(const QString& path, bool b);
+			void stateChanged(int idx);
 
 		private slots:
 			// ---- from WatchList signal ----
@@ -108,12 +121,13 @@ namespace dg {
 			// ---- from DirModel signal ----
 			// DirModelのアイテムに対応するサイズリストを構築 -> SizeMに格納
 			void syncImageSizeList(QStandardItem* item);
-			void dirRemoving(QModelIndex index, int first, int last);
+			void dirRemoving(const QModelIndex& index, int first, int last);
 			void removeKeep();
 			void removeKeepAll();
 			void showWindow(bool b);
 			void setKeep(const QString& path, bool b);
 			void keepRemoving(const QModelIndex& index, int first, int last);
+			void stateSelect(const QItemSelection& sel);
 
 		public slots:
 			void showWatchList(bool show);
@@ -124,6 +138,8 @@ namespace dg {
 			void sprinkle();
 			void reSprinkle();
 			void receiveResult(const dg::PlaceV& place);
+			void setState(size_t n);
+			void setLastState();
 
 		protected:
 			void closeEvent(QCloseEvent* e) override;

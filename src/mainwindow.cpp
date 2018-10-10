@@ -32,43 +32,66 @@ namespace dg {
 				c_dirmodel("DirModel"),
 				c_keepmodel("KeepModel");
 	}
-	void MainWindow::receiveResult(const PlaceV& place) {
+	void MainWindow::setLastState() {
+		setState(stateCount() - 1);
+	}
+	size_t MainWindow::stateCount() const noexcept {
+		return _state.size();
+	}
+	void MainWindow::setState(const size_t n) {
+		_clearLabels();
+		_applyState(_state.at(n));
+		emit stateChanged(n);
+	}
+	void MainWindow::_pushState(const PlaceV& state) {
+		_state.emplace_back(state);
+
+		// MainWindow -> Modelの同期
+		QStandardItem* item = new QStandardItem;
+		item->setData(QString("%1 Images").arg(state.size()), Qt::EditRole);
+		_stateModel->appendRow(item);
+	}
+	void MainWindow::_applyState(const PlaceV& state) {
+		for(auto& p : state) {
+			{
+				GLabel* lb =
+					new GLabel(
+						p.path,
+						p.crop,
+						p.offset,
+						p.resize,
+						_keepSet.find(p.path) != _keepSet.end(),
+						_ctrlMenu
+					);
+				// どれか1つをクリックしたら他の全てのGLabelと自分を前面に持ってくる
+				connect(lb, &GLabel::clicked, this, [this](){
+					for(auto* l : _label)
+						l->raise();
+					raise();
+				});
+				connect(this, SIGNAL(showLabelFrame(bool)), lb, SLOT(showLabelFrame(bool)));
+				connect(this, SIGNAL(keepChanged(QString,bool)), lb, SLOT(setKeep(QString,bool)));
+				connect(lb, SIGNAL(keepChanged(QString,bool)), this, SLOT(setKeep(QString,bool)));
+				_label.emplace_back(lb);
+			}
+			auto itr = _notshown.find(p.path);
+			if(itr != _notshown.end()) {
+				_shown.insert(*itr);
+				_notshown.erase(itr);
+			}
+		}
+	}
+	void MainWindow::receiveResult(const PlaceV& state) {
 		QString title,
 				msg;
-		if(place.empty()) {
+		if(state.empty()) {
 			title = tr("No image");
 			msg = tr("There's no image can place");
 		} else {
 			title = tr("Image placed");
-			msg = tr("%n image(s) placed", "", place.size());
-			for(auto& p : place) {
-				{
-					GLabel* lb =
-						new GLabel(
-							p.path,
-							p.crop,
-							p.offset,
-							p.resize,
-							_keepSet.find(p.path) != _keepSet.end(),
-							_ctrlMenu
-						);
-					// どれか1つをクリックしたら他の全てのGLabelと自分を前面に持ってくる
-					connect(lb, &GLabel::clicked, this, [this](){
-						for(auto* l : _label)
-							l->raise();
-						raise();
-					});
-					connect(this, SIGNAL(showLabelFrame(bool)), lb, SLOT(showLabelFrame(bool)));
-					connect(this, SIGNAL(keepChanged(QString,bool)), lb, SLOT(setKeep(QString,bool)));
-					connect(lb, SIGNAL(keepChanged(QString,bool)), this, SLOT(setKeep(QString,bool)));
-					_label.emplace_back(lb);
-				}
-				auto itr = _notshown.find(p.path);
-				if(itr != _notshown.end()) {
-					_shown.insert(*itr);
-					_notshown.erase(itr);
-				}
-			}
+			msg = tr("%n image(s) placed", "", state.size());
+			_pushState(state);
+			setLastState();
 		}
 		mgr_toast.bake(
 			Toast::Icon::Information,
@@ -187,6 +210,37 @@ namespace dg {
 			});
 		}
 	}
+	void MainWindow::_initStateModel() {
+		_stateModel = new QStandardItemModel(0, 1, this);
+		_ui->listState->setModel(_stateModel);
+		QListView* lview = _ui->listState;
+		// 項目をクリックしたらそのステートを読み込み
+		connect(
+			lview->selectionModel(),
+			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+			this,
+			SLOT(stateSelect(QItemSelection))
+		);
+		// setStateしたらViewにそれを反映
+		connect(
+			this,
+			&MainWindow::stateChanged,
+			lview,
+			[lview](const int idx){
+				QItemSelectionModel* sel = lview->selectionModel();
+				sel->setCurrentIndex(sel->model()->index(idx, 0), QItemSelectionModel::ClearAndSelect);
+			}
+		);
+
+		// セーブされたステートのロードなど
+	}
+	void MainWindow::stateSelect(const QItemSelection& sel) {
+		if(sel.empty())
+			return;
+		const QModelIndexList lst = sel.indexes();
+		Q_ASSERT(lst.size() == 1);
+		setState(lst[0].row());
+	}
 	MainWindow::MainWindow(QWidget *const parent):
 		QMainWindow(parent),
 		_ui(new Ui::MainWindow),
@@ -196,6 +250,7 @@ namespace dg {
 		_dirModel(nullptr),
 		_reqModel(nullptr),
 		_keepModel(nullptr),
+		_stateModel(nullptr),
 		_dirList(nullptr),
 		_tray(nullptr),
 		_actionShow(nullptr),
@@ -219,6 +274,7 @@ namespace dg {
 			_initRequestModel();
 			_initKeepModel();
 			_initSystemTray();
+			_initStateModel();
 
 			// ウィンドウサイズ復帰
 			_actionShow = new QAction(this);
@@ -428,7 +484,7 @@ namespace dg {
 	void MainWindow::dirListClosed() {
 		_ui->actionOpenDirList->setChecked(false);
 	}
-	void MainWindow::dirRemoving(const QModelIndex index, const int first, const int last) {
+	void MainWindow::dirRemoving(const QModelIndex& index, const int first, const int last) {
 		Q_UNUSED(index);
 		auto* m = _dirModel;
 		const auto prevSize = _notshown.size();

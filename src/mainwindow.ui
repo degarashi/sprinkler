@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>740</width>
-    <height>529</height>
+    <height>532</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -84,30 +84,6 @@
           </sizepolicy>
          </property>
         </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="0" column="1" rowspan="3">
-     <widget class="QGroupBox" name="constraintGroup">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="title">
-       <string>ImageCollect-Constraint</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="2" column="0" colspan="2">
-        <widget class="dg::MySliderD" name="slMin" native="true"/>
-       </item>
-       <item row="3" column="0" colspan="2">
-        <widget class="dg::MySliderI" name="slSamp" native="true"/>
-       </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="dg::MySliderD" name="slMax" native="true"/>
        </item>
       </layout>
      </widget>
@@ -251,6 +227,33 @@
        </item>
       </layout>
      </widget>
+    </item>
+    <item row="0" column="1" rowspan="3">
+     <widget class="QGroupBox" name="constraintGroup">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="title">
+       <string>ImageCollect-Constraint</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="2" column="0" colspan="2">
+        <widget class="dg::MySliderD" name="slMin" native="true"/>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="dg::MySliderI" name="slSamp" native="true"/>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="dg::MySliderD" name="slMax" native="true"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="8" column="0" colspan="2">
+     <widget class="QListView" name="listState"/>
     </item>
    </layout>
   </widget>
