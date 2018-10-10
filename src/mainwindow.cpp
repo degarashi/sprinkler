@@ -33,18 +33,14 @@ namespace dg {
 				c_keepmodel("KeepModel");
 	}
 	void MainWindow::receiveResult(const PlaceV& place) {
+		QString title,
+				msg;
 		if(place.empty()) {
-			mgr_toast.bake(
-				Toast::Icon::Information,
-				tr("No image"),
-				tr("There's no image can place")
-			);
+			title = tr("No image");
+			msg = tr("There's no image can place");
 		} else {
-			mgr_toast.bake(
-				Toast::Icon::Information,
-				tr("Image placed"),
-				tr("%n image(s) placed", "", place.size())
-			);
+			title = tr("Image placed");
+			msg = tr("%n image(s) placed", "", place.size());
 			for(auto& p : place) {
 				{
 					GLabel* lb =
@@ -74,6 +70,11 @@ namespace dg {
 				}
 			}
 		}
+		mgr_toast.bake(
+			Toast::Icon::Information,
+			title,
+			msg
+		);
 		_emitSprinkleCounterChanged();
 		_setControlsEnabled(true);
 	}
