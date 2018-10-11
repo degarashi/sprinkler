@@ -64,6 +64,7 @@ namespace dg {
 		QPixmap ret(vsize);
 		ret.fill(Qt::gray);
 		QPainter painter(&ret);
+		// 配置された画像の縮図
 		for(auto& p : state) {
 			QImageReader reader(p.path);
 			reader.setScaledSize(ToQSize(p.resize * sizeR));
@@ -75,6 +76,16 @@ namespace dg {
 			};
 			painter.drawPixmap(QRect{ofs, pix.size()}, pix);
 		}
+
+		QWidget* cw = centralWidget();
+		// メインウィンドウの縮図
+		QPixmap main = cw->grab();
+		main = main.scaled(ToQSize(cw->size() * sizeR));
+		const QPointF gpos(cw->mapToGlobal(cw->pos()));
+		painter.drawPixmap(QRect{
+			ToQPoint(gpos * sizeR),
+			ToQSize(QSizeF(cw->size()) * sizeR)
+		}, main);
 		return ret;
 	}
 	void MainWindow::_applyState(const PlaceV& state) {
