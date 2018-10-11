@@ -19,7 +19,6 @@
 #include <QApplication>
 #include <QStyle>
 #include <QFileInfo>
-#include <QImageReader>
 #include "toast_mgr.hpp"
 
 #include "gene_worker.hpp"
