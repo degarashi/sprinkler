@@ -1,6 +1,25 @@
 #include "aux.hpp"
 #include <cmath>
 
+QPointF operator * (const QPointF& p, const QSizeF& s) {
+	return QPointF {
+		p.x() * s.width(),
+		p.y() * s.height()
+	};
+}
+QPoint operator * (const QPoint& p, const QSize& s) {
+	return QPoint {
+		p.x() * s.width(),
+		p.y() * s.height()
+	};
+}
+QPoint ToQPoint(const QPointF& p) {
+	return QPoint {
+		static_cast<int>(p.x()),
+		static_cast<int>(p.y())
+	};
+}
+
 QSize ToQSize(const QSizeF& s) {
 	return QSize {
 		static_cast<int>(s.width()),
