@@ -76,16 +76,17 @@ namespace dg {
 			};
 			painter.drawPixmap(QRect{ofs, pix.size()}, pix);
 		}
-
-		QWidget* cw = centralWidget();
-		// メインウィンドウの縮図
-		QPixmap main = cw->grab();
-		main = main.scaled(ToQSize(cw->size() * sizeR));
-		const QPointF gpos(cw->mapToGlobal(cw->pos()));
-		painter.drawPixmap(QRect{
-			ToQPoint(gpos * sizeR),
-			ToQSize(QSizeF(cw->size()) * sizeR)
-		}, main);
+		if(isWindowShowing()) {
+			// メインウィンドウの縮図
+			QWidget* cw = centralWidget();
+			QPixmap main = cw->grab();
+			main = main.scaled(ToQSize(cw->size() * sizeR));
+			const QPointF gpos(cw->mapToGlobal(cw->pos()));
+			painter.drawPixmap(QRect{
+				ToQPoint(gpos * sizeR),
+				ToQSize(QSizeF(cw->size()) * sizeR)
+			}, main);
+		}
 		return ret;
 	}
 	void MainWindow::_applyState(const PlaceV& state) {
