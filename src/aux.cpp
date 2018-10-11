@@ -94,14 +94,14 @@ QSize AspectKeepScale(const QSize target, const QSize size) {
 	if(asp0 > asp1) {
 		// 縦を補正
 		return QSize{
-			static_cast<int>(size.width() * (float(target.height()) / size.height())),
+			int(std::floor(size.width() * (float(target.height()) / size.height()) + .5f)),
 			target.height()
 		};
 	} else {
 		// 横を補正
 		return QSize{
 			target.width(),
-			static_cast<int>(size.height() * (float(target.width()) / size.width()))
+			int(std::floor(size.height() * (float(target.width()) / size.width()) + .5f)),
 		};
 	}
 }
