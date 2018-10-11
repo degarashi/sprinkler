@@ -77,7 +77,12 @@ namespace dg {
 			QAction*			_actionShow;
 			QMenu*				_ctrlMenu;
 			bool				_obstacle;
-			using StateV = std::vector<PlaceV>;
+			struct State {
+				PlaceV	place;
+				bool	showMain;
+				QRect	mainRect;
+			};
+			using StateV = std::vector<State>;
 			// 画像の配置状態リスト
 			StateV				_state;
 
@@ -99,9 +104,9 @@ namespace dg {
 			void _sprinkle();
 			void _setControlsEnabled(bool b);
 			void _saveInfo();
-			void _pushState(const PlaceV& state);
-			void _applyState(const PlaceV& state);
-			QPixmap _makeThumbnail(const PlaceV& state);
+			void _pushState(const State& state);
+			void _applyState(const State& state);
+			QPixmap _makeThumbnail(const State& state);
 			static void _CollectImageInDir(PathV& imgv, ImageSet& imgs, const QString& path, bool recursive);
 			static void _CollectImage(PathV& imgv, ImageSet& imgs, const QString& path);
 		public:

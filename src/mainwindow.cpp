@@ -46,17 +46,17 @@ namespace dg {
 		_applyState(_state.at(n));
 		emit stateChanged(n);
 	}
-	void MainWindow::_pushState(const PlaceV& state) {
+	void MainWindow::_pushState(const State& state) {
 		_state.emplace_back(state);
 
 		// MainWindow -> Modelの同期
 		QStandardItem* item = new QStandardItem;
-		item->setData(QString("%1 Images").arg(state.size()), Qt::EditRole);
+		item->setData(QString("%1 Images").arg(state.place.size()), Qt::EditRole);
 		QPixmap thumbnail = _makeThumbnail(state);
 		item->setData(thumbnail, Qt::DecorationRole);
 		_stateModel->appendRow(item);
 	}
-	QPixmap MainWindow::_makeThumbnail(const PlaceV& state) {
+	QPixmap MainWindow::_makeThumbnail(const State& state) {
 		const QSize vsize0 = qApp->primaryScreen()->availableVirtualSize();
 		const QSize vsize = AspectKeepScale({128,128}, vsize0);
 		const float r = float(vsize.width()) / vsize0.width();
@@ -65,7 +65,7 @@ namespace dg {
 		ret.fill(Qt::gray);
 		QPainter painter(&ret);
 		// 配置された画像の縮図
-		for(auto& p : state) {
+		for(auto& p : state.place) {
 			QImageReader reader(p.path);
 			reader.setScaledSize(ToQSize(p.resize * sizeR));
 
@@ -89,8 +89,8 @@ namespace dg {
 		}
 		return ret;
 	}
-	void MainWindow::_applyState(const PlaceV& state) {
-		for(auto& p : state) {
+	void MainWindow::_applyState(const State& state) {
+		for(auto& p : state.place) {
 			{
 				GLabel* lb =
 					new GLabel(
@@ -118,17 +118,26 @@ namespace dg {
 				_notshown.erase(itr);
 			}
 		}
+		showWindow(state.showMain);
+		if(state.showMain)
+			setGeometry(state.mainRect);
 	}
-	void MainWindow::receiveResult(const PlaceV& state) {
+	void MainWindow::receiveResult(const PlaceV& place) {
 		QString title,
 				msg;
-		if(state.empty()) {
+		if(place.empty()) {
 			title = tr("No image");
 			msg = tr("There's no image can place");
 		} else {
 			title = tr("Image placed");
-			msg = tr("%n image(s) placed", "", state.size());
-			_pushState(state);
+			msg = tr("%n image(s) placed", "", place.size());
+			_pushState(
+				State{
+					.place = place,
+					.showMain = isWindowShowing(),
+					.mainRect = this->geometry()
+				}
+			);
 			setLastState();
 		}
 		mgr_toast.bake(

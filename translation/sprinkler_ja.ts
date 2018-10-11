@@ -247,74 +247,74 @@
 <context>
     <name>dg::MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="126"/>
+        <location filename="../src/mainwindow.cpp" line="129"/>
         <source>No image</source>
         <translation>該当なし</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="127"/>
+        <location filename="../src/mainwindow.cpp" line="130"/>
         <source>There&apos;s no image can place</source>
         <translation>配置できる画像がありませんでした</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="129"/>
+        <location filename="../src/mainwindow.cpp" line="132"/>
         <source>Image placed</source>
         <translation>配置完了</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="130"/>
+        <location filename="../src/mainwindow.cpp" line="133"/>
         <source>%n image(s) placed</source>
         <translation>
             <numerusform>%n個の画像を配置しました</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="217"/>
+        <location filename="../src/mainwindow.cpp" line="226"/>
         <source>detail menu</source>
         <translation>詳細メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="235"/>
+        <location filename="../src/mainwindow.cpp" line="244"/>
         <source>simplified menu</source>
         <translation>簡易メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="250"/>
+        <location filename="../src/mainwindow.cpp" line="259"/>
         <source>[%1 / %2] were displayed</source>
         <translation>%1枚の画像を表示済み(%2枚中)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="324"/>
+        <location filename="../src/mainwindow.cpp" line="333"/>
         <source>Show Window</source>
         <translation>ウィンドウを表示</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="353"/>
+        <location filename="../src/mainwindow.cpp" line="362"/>
         <source>Error occurred</source>
         <translation>エラー発生</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="382"/>
+        <location filename="../src/mainwindow.cpp" line="391"/>
         <source>Max</source>
         <translation>最大</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="389"/>
+        <location filename="../src/mainwindow.cpp" line="398"/>
         <source>Min</source>
         <translation>最小</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="396"/>
+        <location filename="../src/mainwindow.cpp" line="405"/>
         <source>Samp</source>
         <translation>サンプル倍率</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="474"/>
+        <location filename="../src/mainwindow.cpp" line="483"/>
         <source>Path</source>
         <translation>パス</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="475"/>
+        <location filename="../src/mainwindow.cpp" line="484"/>
         <source>ImageCount</source>
         <translation>画像カウント</translation>
     </message>
