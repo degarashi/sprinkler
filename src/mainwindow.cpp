@@ -365,6 +365,13 @@ namespace dg {
 				qApp->quit();
 			}, Qt::QueuedConnection);
 		}
+		_pushState(
+			State{
+				.place = {},
+				.showMain = true,
+				.mainRect = this->geometry()
+			}
+		);
 
 		_ctrlMenu = new QMenu(this);
 		_ctrlMenu->addAction(_actionShow);
