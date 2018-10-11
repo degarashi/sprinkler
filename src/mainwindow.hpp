@@ -106,6 +106,7 @@ namespace dg {
 			static void _CollectImage(PathV& imgv, ImageSet& imgs, const QString& path);
 		public:
 			size_t stateCount() const noexcept;
+			bool isWindowShowing() const;
 
 		signals:
 			void sprinkleCounterChanged(size_t shown, size_t notshown);

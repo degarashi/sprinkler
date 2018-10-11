@@ -183,6 +183,9 @@ namespace dg {
 		}
 		_actionShow->setChecked(b);
 	}
+	bool MainWindow::isWindowShowing() const {
+		return windowState() == Qt::WindowNoState;
+	}
 	void MainWindow::_setControlsEnabled(const bool b) {
 		_ui->pbCurrent->setEnabled(b);
 		_ui->pbInit->setEnabled(b);
