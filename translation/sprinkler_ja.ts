@@ -319,12 +319,12 @@
         <translation>画像カウント</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_gene.cpp" line="95"/>
+        <location filename="../src/mainwindow_gene.cpp" line="88"/>
         <source>No images</source>
         <translation>画像無し</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_gene.cpp" line="96"/>
+        <location filename="../src/mainwindow_gene.cpp" line="89"/>
         <source>There&apos;s no image to show.
 (Image-set runs out)</source>
         <translation>表示できる画像がありません

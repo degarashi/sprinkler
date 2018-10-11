@@ -26,13 +26,6 @@
 #include "qtw_notifier.hpp"
 
 namespace dg {
-	// struct ImageTag {
-		// QSize			size;
-		// QString			path;
-		// bool operator == (const ImageTag& t) const noexcept {
-			// return path == t.path;
-		// }
-	// };
 	namespace {
 		struct SizePrio {
 			lubee::SizeI	size;
