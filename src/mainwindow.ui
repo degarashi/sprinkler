@@ -253,7 +253,11 @@
      </widget>
     </item>
     <item row="8" column="0" colspan="2">
-     <widget class="QListView" name="listState"/>
+     <widget class="QListView" name="listState">
+      <property name="viewMode">
+       <enum>QListView::IconMode</enum>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

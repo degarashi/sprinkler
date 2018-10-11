@@ -33,19 +33,19 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="36"/>
-        <location filename="../src/mainwindow.ui" line="290"/>
+        <location filename="../src/mainwindow.ui" line="294"/>
         <source>ImageSource</source>
         <translation>画像ソース</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="58"/>
-        <location filename="../src/mainwindow.ui" line="317"/>
+        <location filename="../src/mainwindow.ui" line="321"/>
         <source>WindowWatch</source>
         <translation>ウィンドウ監視</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="71"/>
-        <location filename="../src/mainwindow.ui" line="301"/>
+        <location filename="../src/mainwindow.ui" line="305"/>
         <source>StayOnTop</source>
         <translation>常に最前面に表示</translation>
     </message>
@@ -62,13 +62,13 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="217"/>
-        <location filename="../src/mainwindow.ui" line="325"/>
+        <location filename="../src/mainwindow.ui" line="329"/>
         <source>Sprinkle</source>
         <translation>画像を散布</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="167"/>
-        <location filename="../src/mainwindow.ui" line="330"/>
+        <location filename="../src/mainwindow.ui" line="334"/>
         <source>Re-Sprinkle</source>
         <translation>(前回の画像セットを)再度散布</translation>
     </message>
@@ -105,47 +105,47 @@
         <translation>画像散布時にウィンドウを隠す</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="271"/>
+        <location filename="../src/mainwindow.ui" line="275"/>
         <source>Menu</source>
         <translation>メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="293"/>
+        <location filename="../src/mainwindow.ui" line="297"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="306"/>
+        <location filename="../src/mainwindow.ui" line="310"/>
         <source>Quit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="309"/>
+        <location filename="../src/mainwindow.ui" line="313"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="320"/>
+        <location filename="../src/mainwindow.ui" line="324"/>
         <source>Ctrl+D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="335"/>
+        <location filename="../src/mainwindow.ui" line="339"/>
         <source>Reset</source>
         <translation>リセット</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="340"/>
+        <location filename="../src/mainwindow.ui" line="344"/>
         <source>RemoveKeep</source>
         <translation>キープを削除</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="345"/>
+        <location filename="../src/mainwindow.ui" line="349"/>
         <source>RemoveKeepAll</source>
         <translation>キープを全て削除</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="353"/>
+        <location filename="../src/mainwindow.ui" line="357"/>
         <source>HideWhenSprinkle</source>
         <translation>画像散布時にウィンドウを隠す</translation>
     </message>
