@@ -14,7 +14,6 @@
 #include "request_param.hpp"
 
 #include "glabel.hpp"
-#include <QDebug>
 #include <QTimer>
 #include <QStandardItemModel>
 #include <QApplication>
