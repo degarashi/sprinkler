@@ -11,6 +11,7 @@
 #include "histgram/src/fit_cell.hpp"
 #include "histgram/src/maxrect.hpp"
 #include "boolarray.hpp"
+#include "request_param.hpp"
 
 #include "glabel.hpp"
 #include <QDebug>

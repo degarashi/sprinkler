@@ -3,6 +3,7 @@
 #include "histgram/src/cell.hpp"
 #include "histgram/src/maxrect.hpp"
 #include "boolarray.hpp"
+#include "request_param.hpp"
 
 #include "genetic/src/gene_order.hpp"
 #include "genetic/src/environment.hpp"

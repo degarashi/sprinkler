@@ -5,6 +5,7 @@
 
 namespace dg {
 	class CellBoard;
+	class RequestParam;
 	class GeneWorker :
 		public QObject
 	{
