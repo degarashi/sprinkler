@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>740</width>
-    <height>532</height>
+    <height>547</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -240,14 +240,8 @@
        <string>ImageCollect-Constraint</string>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="2" column="0" colspan="2">
-        <widget class="dg::MySliderD" name="slMin" native="true"/>
-       </item>
-       <item row="3" column="0" colspan="2">
-        <widget class="dg::MySliderI" name="slSamp" native="true"/>
-       </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="dg::MySliderD" name="slMax" native="true"/>
+       <item row="0" column="0">
+        <widget class="dg::Request" name="request" native="true"/>
        </item>
       </layout>
      </widget>
@@ -374,15 +368,9 @@
    </slots>
   </customwidget>
   <customwidget>
-   <class>dg::MySliderI</class>
+   <class>dg::Request</class>
    <extends>QWidget</extends>
-   <header>src/myslider_i.hpp</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>dg::MySliderD</class>
-   <extends>QWidget</extends>
-   <header>src/myslider_d.hpp</header>
+   <header>src/request.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

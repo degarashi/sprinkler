@@ -24,6 +24,7 @@
 #include "gene_worker.hpp"
 #include "ui_mainwindow.h"
 #include "qtw_notifier.hpp"
+#include "request.hpp"
 
 namespace dg {
 	namespace {
@@ -107,16 +108,7 @@ namespace dg {
 		QTimer::singleShot(10, this, [this](){
 			_setControlsEnabled(false);
 
-			const auto getData = [model = _reqModel](const int idx, auto type) {
-				return model->data(model->index(idx,0), Qt::EditRole).value<decltype(type)>();
-			};
-			const RequestParam param {
-				.sizeRange = {
-					getData(Request::Min, float()),
-					getData(Request::Max, float()),
-				},
-				.nSample = getData(Request::Sample, size_t())
-			};
+			const RequestParam param = _ui->request->param();
 			QTimer::singleShot(0, _geneWorker,
 				[
 					worker = _geneWorker,

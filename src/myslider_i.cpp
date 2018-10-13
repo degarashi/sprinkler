@@ -5,10 +5,13 @@ namespace dg {
 	QString MySliderI::_makeValueString(const int value) const {
 		return QString("%1").arg(value);
 	}
-	int MySliderI::_fromVariant(const QVariant& v) {
-		return v.toInt();
+	void MySliderI::setRange(const lubee::RangeI r) {
+		_slider()->setRange(r.from, r.to);
 	}
-	QVariant MySliderI::_toModel(const int value) {
-		return QVariant(value);
+	void MySliderI::_onValueChanged() {
+		emit valueChanged(_slider()->value());
+	}
+	void MySliderI::setValue(const int value) {
+		_slider()->setValue(value);
 	}
 }

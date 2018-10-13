@@ -1,17 +1,23 @@
 #pragma once
 #include "myslider.hpp"
+#include "lubee/range.hpp"
 
 namespace dg {
 	class MySliderD :
 		public MySlider
 	{
 		Q_OBJECT
-
-		public:
-			using MySlider::MySlider;
+		private:
+			static float FromUi(int value);
+			static int ToUi(float value);
 		protected:
 			QString _makeValueString(int value) const override;
-			int _fromVariant(const QVariant& v) override;
-			QVariant _toModel(int value) override;
+			void _onValueChanged() override;
+		signals:
+			void valueChanged(float v);
+		public:
+			using MySlider::MySlider;
+			void setRange(lubee::RangeF r);
+			void setValue(float value);
 	};
 }

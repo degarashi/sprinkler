@@ -28,6 +28,7 @@
 #include <QScreen>
 #include "aux.hpp"
 #include <QPainter>
+#include "request.hpp"
 
 namespace dg {
 	namespace {
@@ -201,9 +202,7 @@ namespace dg {
 		_ui->pbInit->setEnabled(b);
 		_ui->pbNext->setEnabled(b);
 
-		_ui->slMax->setEnabled(b);
-		_ui->slMin->setEnabled(b);
-		_ui->slSamp->setEnabled(b);
+		_ui->request->setEnabled(b);
 
 		_ui->listKeep->setEnabled(b);
 		_ui->removeKeep->setEnabled(b);
@@ -298,7 +297,6 @@ namespace dg {
 		_watchList(nullptr),
 		_watcher(nullptr),
 		_dirModel(nullptr),
-		_reqModel(nullptr),
 		_keepModel(nullptr),
 		_stateModel(nullptr),
 		_dirList(nullptr),
@@ -321,7 +319,6 @@ namespace dg {
 			_initDirModel();
 			_initDirList();
 			_initWatchList();
-			_initRequestModel();
 			_initKeepModel();
 			_initSystemTray();
 			_initStateModel();
@@ -382,54 +379,6 @@ namespace dg {
 		_ctrlMenu->addAction(_ui->actionRe_Sprinkle);
 		_ctrlMenu->addSeparator();
 		_ctrlMenu->addAction(_ui->actionQuit);
-	}
-	void MainWindow::_setReqData(const int index, const QVariant& v) {
-		_reqModel->setData(_reqModel->index(index, 0), v);
-	}
-	QVariant MainWindow::_getReqData(const int index) const {
-		return _reqModel->data(_reqModel->index(index, 0), Qt::EditRole);
-	}
-	void MainWindow::_initRequestModel() {
-		Q_ASSERT(!_reqModel);
-		_reqModel = new QStandardItemModel(Request::_Num, 1, this);
-		auto* m = _reqModel;
-		{
-			auto* mag = _ui->slMax;
-			mag->setName(tr("Max"));
-			mag->refSlider()->setRange(10, 100);
-			mag->setModel(m, Request::Max);
-			_setReqData(Request::Max, 0.6);
-		}
-		{
-			auto* min = _ui->slMin;
-			min->setName(tr("Min"));
-			min->refSlider()->setRange(10, 100);
-			min->setModel(m, Request::Min);
-			_setReqData(Request::Min, 0.3);
-		}
-		{
-			auto* samp = _ui->slSamp;
-			samp->setName(tr("Samp"));
-			samp->refSlider()->setRange(1, 8);
-			samp->setModel(m, Request::Sample);
-			_setReqData(Request::Sample, 4);
-		}
-		connect(_reqModel, &QAbstractItemModel::dataChanged,
-				this, [this](const QModelIndex& lt, const QModelIndex& rb, const QVector<int>& role){
-					Q_UNUSED(rb);
-					Q_UNUSED(role);
-					const float min = _getReqData(Request::Min).toFloat();
-					const float max = _getReqData(Request::Max).toFloat();
-					if(lt.row() == Request::Max) {
-						if(min > max) {
-							_setReqData(Request::Min, max);
-						}
-					} else if(lt.row() == Request::Min) {
-						if(min > max) {
-							_setReqData(Request::Max, min);
-						}
-					}
-				});
 	}
 	void MainWindow::keepRemoving(const QModelIndex& parent, const int first, const int last) {
 		Q_UNUSED(parent)

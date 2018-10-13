@@ -33,19 +33,19 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="36"/>
-        <location filename="../src/mainwindow.ui" line="294"/>
+        <location filename="../src/mainwindow.ui" line="288"/>
         <source>ImageSource</source>
         <translation>画像ソース</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="58"/>
-        <location filename="../src/mainwindow.ui" line="321"/>
+        <location filename="../src/mainwindow.ui" line="315"/>
         <source>WindowWatch</source>
         <translation>ウィンドウ監視</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="71"/>
-        <location filename="../src/mainwindow.ui" line="305"/>
+        <location filename="../src/mainwindow.ui" line="299"/>
         <source>StayOnTop</source>
         <translation>常に最前面に表示</translation>
     </message>
@@ -62,13 +62,13 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="217"/>
-        <location filename="../src/mainwindow.ui" line="329"/>
+        <location filename="../src/mainwindow.ui" line="323"/>
         <source>Sprinkle</source>
         <translation>画像を散布</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="167"/>
-        <location filename="../src/mainwindow.ui" line="334"/>
+        <location filename="../src/mainwindow.ui" line="328"/>
         <source>Re-Sprinkle</source>
         <translation>(前回の画像セットを)再度散布</translation>
     </message>
@@ -105,47 +105,59 @@
         <translation>画像散布時にウィンドウを隠す</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="275"/>
+        <source>Min</source>
+        <translation type="obsolete">最小</translation>
+    </message>
+    <message>
+        <source>Samp</source>
+        <translation type="obsolete">サンプル倍率</translation>
+    </message>
+    <message>
+        <source>Max</source>
+        <translation type="obsolete">最大</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="269"/>
         <source>Menu</source>
         <translation>メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="297"/>
+        <location filename="../src/mainwindow.ui" line="291"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="310"/>
+        <location filename="../src/mainwindow.ui" line="304"/>
         <source>Quit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="313"/>
+        <location filename="../src/mainwindow.ui" line="307"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="324"/>
+        <location filename="../src/mainwindow.ui" line="318"/>
         <source>Ctrl+D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="339"/>
+        <location filename="../src/mainwindow.ui" line="333"/>
         <source>Reset</source>
         <translation>リセット</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="344"/>
+        <location filename="../src/mainwindow.ui" line="338"/>
         <source>RemoveKeep</source>
         <translation>キープを削除</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="349"/>
+        <location filename="../src/mainwindow.ui" line="343"/>
         <source>RemoveKeepAll</source>
         <translation>キープを全て削除</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="357"/>
+        <location filename="../src/mainwindow.ui" line="351"/>
         <source>HideWhenSprinkle</source>
         <translation>画像散布時にウィンドウを隠す</translation>
     </message>
@@ -247,88 +259,91 @@
 <context>
     <name>dg::MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="129"/>
+        <location filename="../src/mainwindow.cpp" line="130"/>
         <source>No image</source>
         <translation>該当なし</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="130"/>
+        <location filename="../src/mainwindow.cpp" line="131"/>
         <source>There&apos;s no image can place</source>
         <translation>配置できる画像がありませんでした</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="132"/>
+        <location filename="../src/mainwindow.cpp" line="133"/>
         <source>Image placed</source>
         <translation>配置完了</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="133"/>
+        <location filename="../src/mainwindow.cpp" line="134"/>
         <source>%n image(s) placed</source>
         <translation>
             <numerusform>%n個の画像を配置しました</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="226"/>
+        <location filename="../src/mainwindow.cpp" line="225"/>
         <source>detail menu</source>
         <translation>詳細メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="244"/>
+        <location filename="../src/mainwindow.cpp" line="243"/>
         <source>simplified menu</source>
         <translation>簡易メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="259"/>
+        <location filename="../src/mainwindow.cpp" line="258"/>
         <source>[%1 / %2] were displayed</source>
         <translation>%1枚の画像を表示済み(%2枚中)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="333"/>
+        <location filename="../src/mainwindow.cpp" line="330"/>
         <source>Show Window</source>
         <translation>ウィンドウを表示</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="362"/>
+        <location filename="../src/mainwindow.cpp" line="359"/>
         <source>Error occurred</source>
         <translation>エラー発生</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="398"/>
-        <source>Max</source>
-        <translation>最大</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="405"/>
-        <source>Min</source>
-        <translation>最小</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="412"/>
-        <source>Samp</source>
-        <translation>サンプル倍率</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="490"/>
+        <location filename="../src/mainwindow.cpp" line="439"/>
         <source>Path</source>
         <translation>パス</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="491"/>
+        <location filename="../src/mainwindow.cpp" line="440"/>
         <source>ImageCount</source>
         <translation>画像カウント</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_gene.cpp" line="88"/>
+        <location filename="../src/mainwindow_gene.cpp" line="89"/>
         <source>No images</source>
         <translation>画像無し</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_gene.cpp" line="89"/>
+        <location filename="../src/mainwindow_gene.cpp" line="90"/>
         <source>There&apos;s no image to show.
 (Image-set runs out)</source>
         <translation>表示できる画像がありません
 (画像セットが空になりました)</translation>
+    </message>
+</context>
+<context>
+    <name>dg::Request</name>
+    <message>
+        <location filename="../src/request.cpp" line="26"/>
+        <source>Max</source>
+        <translation>最大</translation>
+    </message>
+    <message>
+        <location filename="../src/request.cpp" line="34"/>
+        <source>Min</source>
+        <translation>最小</translation>
+    </message>
+    <message>
+        <location filename="../src/request.cpp" line="42"/>
+        <source>Samp</source>
+        <translation>サンプル倍率</translation>
     </message>
 </context>
 <context>

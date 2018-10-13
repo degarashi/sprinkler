@@ -35,14 +35,6 @@ namespace dg {
 			explicit MainWindow(QWidget* parent=nullptr);
 		private:
 			const static size_t QuantifySize;
-			struct Request {
-				enum {
-					Max,
-					Min,
-					Sample,
-					_Num
-				};
-			};
 			using LabelV = std::vector<GLabel*>;
 			using UI_S = std::shared_ptr<Ui::MainWindow>;
 			using Toast_S = std::shared_ptr<ToastMgr>;
@@ -54,7 +46,6 @@ namespace dg {
 			dg::Quantizer		*_quantizer;	// ウィンドウ位置変更を検知、量子化
 			WatchList			*_watchList;	// 監視ウィンドウダイアログ
 			QStandardItemModel	*_dirModel,		// [1>Display: フルパス(QString), 1>User: ファイルリスト(PathV), 2>Display: ファイルカウント(int)]
-								*_reqModel,
 								*_keepModel,	// [Display: ファイル名(QString), User: フルパス(QString), Decoration: サムネイル(QPixmap)]
 								// 画像の配置状態モデル
 								// [1>Display:(none), User:State-Index, Decoration: サムネイル(QPixmap)]
@@ -89,7 +80,6 @@ namespace dg {
 			void _initDirModel();
 			void _initDirList();
 			void _initWatchList();
-			void _initRequestModel();
 			void _initKeepModel();
 			void _initSystemTray();
 			void _initStateModel();
@@ -99,8 +89,6 @@ namespace dg {
 			void _clearLabels();
 			void _emitSprinkleCounterChanged();
 			void _removeDirItem(QStandardItem* item);
-			void _setReqData(int index, const QVariant& v);
-			QVariant _getReqData(int index) const;
 			void _sprinkle();
 			void _setControlsEnabled(bool b);
 			void _saveInfo();
