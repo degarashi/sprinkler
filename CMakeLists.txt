@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.1.0)
 project(sprinkler)
 
 set(without-unittest YES)
-add_subdirectory(src/histgram)
+add_subdirectory(histgram)
 
 set(CXX_VERSION 17)
-include(src/lubee/cxx_options.cmake)
+include(lubee/cxx_options.cmake)
 
 if(${CMAKE_CXX_COMPILER_ID} MATCHES ".*(C|c)lang")
 	message(STATUS "Using clang...")
@@ -30,6 +30,7 @@ if(${UNIX})
 	find_package(X11 REQUIRED)
 	aux_source_directory(src/dep_linux SRC)
 	include_directories(
+		${CMAKE_CURRENT_SOURCE_DIR}
 		src/dep_linux
 		${X11_INCLUDE_DIR}
 	)

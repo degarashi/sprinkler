@@ -1,7 +1,7 @@
 #pragma once
 #include "obstacle.hpp"
-#include "lubee/size.hpp"
-#include "lubee/point.hpp"
+#include "lubee/src/size.hpp"
+#include "lubee/src/point.hpp"
 
 class QLabel;
 class QMenu;

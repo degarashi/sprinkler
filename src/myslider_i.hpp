@@ -1,6 +1,6 @@
 #pragma once
 #include "myslider.hpp"
-#include "lubee/range.hpp"
+#include "lubee/src/range.hpp"
 
 namespace dg {
 	class MySliderI :

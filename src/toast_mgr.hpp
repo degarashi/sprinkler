@@ -1,5 +1,5 @@
 #pragma once
-#include "spine/singleton.hpp"
+#include "spine/src/singleton.hpp"
 #include "toast.hpp"
 
 namespace dg {

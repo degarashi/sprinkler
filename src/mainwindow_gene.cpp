@@ -1,6 +1,6 @@
 #include "mainwindow.hpp"
 #include "quantizer.hpp"
-#include "lubee/low_discrepancy.hpp"
+#include "lubee/src/low_discrepancy.hpp"
 
 #include "genetic/src/gene_order.hpp"
 #include "genetic/src/environment.hpp"

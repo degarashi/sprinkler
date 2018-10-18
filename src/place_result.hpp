@@ -1,5 +1,5 @@
 #pragma once
-#include "lubee/point.hpp"
+#include "lubee/src/point.hpp"
 #include <QString>
 #include <QSize>
 

@@ -1,5 +1,5 @@
 #include "gene_worker.hpp"
-#include "lubee/low_discrepancy.hpp"
+#include "lubee/src/low_discrepancy.hpp"
 #include "histgram/src/cell.hpp"
 #include "histgram/src/maxrect.hpp"
 #include "boolarray.hpp"
