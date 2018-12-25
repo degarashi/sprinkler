@@ -5,3 +5,5 @@ __pycache__
 *.pyc
 *.kdev4
 _MEMO
+CMakeLists.txt.user*
+compile_commands.json
