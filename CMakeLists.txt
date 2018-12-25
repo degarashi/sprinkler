@@ -8,6 +8,7 @@ set(without-unittest ${WITHOUT_UNITTEST_BKUP})
 
 set(CXX_VERSION 17)
 include(lubee/cxx_options.cmake)
+string(CONCAT CMAKE_CXX_FLAGS " -Wno-c99-extensions")
 
 if(${CMAKE_CXX_COMPILER_ID} MATCHES ".*(C|c)lang")
 	message(STATUS "Using clang...")
