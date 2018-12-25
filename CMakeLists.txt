@@ -24,6 +24,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(Qt5 COMPONENTS
 	Widgets
 	LinguistTools
+	Sql
 	REQUIRED
 )
 find_package(Threads REQUIRED)
@@ -76,6 +77,7 @@ target_link_libraries(
 	${PROJECT_NAME}
 	histgram
 	Qt5::Widgets
+	Qt5::Sql
 	${CMAKE_THREAD_LIBS_INIT}
 	${LINK_LIBS}
 )
