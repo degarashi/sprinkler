@@ -6,8 +6,8 @@
 #include "qtw_notifier.hpp"
 
 namespace dg {
-	WatchList::WatchList(QAbstractItemModel* model, QWidget *parent) :
-		GeomRestore("WatchList", parent),
+	WatchList::WatchList(QAbstractItemModel *const model, QWidget *const parent) :
+		GeomRestore_Widget("WatchList", parent),
 		_ui(new Ui::WatchList)
 	{
 		_ui->setupUi(this);
@@ -20,7 +20,7 @@ namespace dg {
 	void WatchList::on_actionRemoveWatch_triggered() {
 		const QModelIndex index = _ui->watchList->currentIndex();
 		if(index.isValid()) {
-			QAbstractItemModel* model = _ui->watchList->model();
+			QAbstractItemModel *const model = _ui->watchList->model();
 			model->removeRow(index.row());
 		}
 	}

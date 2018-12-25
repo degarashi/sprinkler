@@ -1,11 +1,11 @@
-#include <QDebug>
-#include <unistd.h>
 #include <QApplication>
 #include <QStandardItemModel>
-#include "watcher.hpp"
-#include "clientwin.h"
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QDebug>
+#include <unistd.h>
+#include "watcher.hpp"
+#include "clientwin.h"
 #include "../localize_str.hpp"
 
 namespace dg {
@@ -28,8 +28,8 @@ namespace dg {
 		QObject(parent),
 		_model(new QStandardItemModel(this))
 	{
-		connect(_model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-				 this, SLOT(_removeRow(QModelIndex,int,int)));
+		connect(_model, &QStandardItemModel::rowsAboutToBeRemoved,
+				 this, &Watcher::_removeRow);
 	}
 	void Watcher::makeArea(QHBoxLayout* addArea) {
 		QPushButton* pb = new QPushButton();
@@ -38,7 +38,8 @@ namespace dg {
 		addArea->addWidget(pb);
 
 		// GUIからXWindow追加の指示があったらwatchスレッドへ通知
-		connect(pb, SIGNAL(clicked()), this, SLOT(addWatch()));
+		connect(pb, &QPushButton::clicked,
+				this, &Watcher::addWatch);
 	}
 	void Watcher::_removeRow(const QModelIndex idx, const int first, const int last) {
 		for(int i=first ; i<=last ; i++) {
@@ -234,13 +235,13 @@ namespace dg {
 		_model->insertColumns(0, _entry.size());
 
 		// シグナルで送る矩形リストを構築
-		Rect_NameV rect;
+		DomainV rect;
 		const auto nE = _entry.size();
 		for(size_t i=0 ; i<nE ; i++) {
 			auto& e = _entry[i];
 			if(!e.rect.isEmpty()) {
 				rect.emplace_back(
-					Rect_Name {
+					Domain {
 						.rect = e.rect,
 						.name = QString(e.name.c_str())
 					}
@@ -252,7 +253,7 @@ namespace dg {
 			_model->setData(index, e.id, Qt::UserRole);
 		}
 		qDebug() << "Watcher::_onStateChanged()" << _entry.size();
-		emit onRectChanged(std::move(rect));
+		emit onWatchedRectChanged(std::move(rect));
 	}
 	void Watcher::_onExit(const bool bError) {
 		if(bError)
@@ -324,7 +325,7 @@ namespace dg {
 			return nullptr;
 		return &(*itr);
 	}
-	QStandardItemModel* Watcher::model() const noexcept {
+	QAbstractItemModel* Watcher::model() const noexcept {
 		return _model;
 	}
 	bool Watcher::_cursorOnQtWindow() {

@@ -23,7 +23,7 @@ namespace dg::lcl {
 	}
 	namespace Watcher_Win {
 		QString DragHereToAppend() {
-			return QCoreApplication::translate("Watcher_Win", "Drag here to append...");
+			return QCoreApplication::translate("Watcher_Win", "Drag cursor from here to target window...");
 		}
 	}
 }

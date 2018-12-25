@@ -1,7 +1,8 @@
 #include "toast_mgr.hpp"
 
 namespace dg {
-	ToastMgr::ToastMgr():
+	ToastMgr::ToastMgr(QObject *const parent):
+		QObject(parent),
 		_toast(nullptr)
 	{}
 	void ToastMgr::toastDestroyed() {
@@ -25,7 +26,8 @@ namespace dg {
 
 		_toast = new Toast(iconType, title, msg, fadeInMS, durationMS, fadeOutMS);
 		_toast->show();
-		connect(_toast, SIGNAL(destroyed(QObject*)), this, SLOT(toastDestroyed()));
+		connect(_toast, &QObject::destroyed,
+				this, &ToastMgr::toastDestroyed);
 	}
 	void ToastMgr::closeToast() {
 		if(_toast)

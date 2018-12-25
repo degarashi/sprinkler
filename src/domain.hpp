@@ -4,22 +4,18 @@
 #include <vector>
 
 namespace dg {
-	struct Rect_Name {
+	struct Domain {
 		QRect		rect;
 		QString		name;
 	};
-	using Rect_NameV = std::vector<Rect_Name>;
+	using DomainV = std::vector<Domain>;
 
-	struct DomainType {
-		enum {
-			Screen,
-			Qt,
-			Other,
-			_Num
-		};
-	};
 	struct DomainSet {
 		QRect			vscr;
-		Rect_NameV		rv[DomainType::_Num];
+		struct {
+			DomainV		screen,
+						qt,
+						other;
+		} domain;
 	};
 }

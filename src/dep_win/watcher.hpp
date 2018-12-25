@@ -17,7 +17,7 @@ namespace dg {
 		public:
 			Watcher(QObject* parent=nullptr);
 
-			QStandardItemModel* model() const noexcept;
+			QAbstractItemModel* model() const noexcept;
 			void startLoop();
 			void makeArea(QHBoxLayout* addArea);
 		public slots:
@@ -26,7 +26,7 @@ namespace dg {
 			void _removeRow(QModelIndex idx, int first, int last);
 			void _refreshWindowRect();
 		signals:
-			void onRectChanged(dg::Rect_NameV rect);
+			void onWatchedRectChanged(const dg::DomainV& rect);
 
 		private:
 			using HWNDSet = std::unordered_set<HWND>;

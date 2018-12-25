@@ -29,7 +29,7 @@ namespace dg {
 
 		signals:
 			// 監視対象ウィンドウのどれかが変化した
-			void onRectChanged(dg::Rect_NameV rect);
+			void onWatchedRectChanged(const dg::DomainV& rect);
 		public slots:
 			// マウスカーソルでウィンドウを選択してウィンドウ監視
 			// ウィンドウが閉じられたら自動で監視対象から削除
@@ -73,7 +73,7 @@ namespace dg {
 		public:
 			Watcher(QObject* parent=nullptr);
 			~Watcher();
-			QStandardItemModel* model() const noexcept;
+			QAbstractItemModel* model() const noexcept;
 			// Xlibイベントループを開始
 			void startLoop();
 			void makeArea(QHBoxLayout* addArea);

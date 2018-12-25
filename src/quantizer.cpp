@@ -1,5 +1,6 @@
 #include "quantizer.hpp"
 #include "aux.hpp"
+#include "widget/obstacle.hpp"
 #include <QApplication>
 #include <QScreen>
 #include <QWindow>
@@ -23,11 +24,11 @@ namespace dg {
 		QObject(parent),
 		_value([this](Value& v){
 			_collectRects();
-			auto qm = _makeQuantizedMap();
+			auto qm = _makeCellBoard();
 			if(v.qmap != qm) {
 				v.qmap = std::move(qm);
+				emit onGridChanged(_dset, v.qmap, _qsize);
 			}
-			emit onGridChanged(_dset, v.qmap, _qsize);
 		}),
 		_qsize(qs)
 	{}
@@ -36,10 +37,10 @@ namespace dg {
 		_dset.vscr = qApp->screens()[0]->virtualGeometry();
 		// スクリーン矩形
 		{
-			auto& rv = _dset.rv[DomainType::Screen];
+			auto& rv = _dset.domain.screen;
 			rv.clear();
 			for(const QScreen *const s : qApp->screens()) {
-				rv.emplace_back(dg::Rect_Name{
+				rv.emplace_back(Domain{
 					s->geometry(),
 					s->name()
 				});
@@ -47,25 +48,25 @@ namespace dg {
 		}
 		// Qtが管理するウィンドウ
 		{
-			auto& rv = _dset.rv[DomainType::Qt];
+			auto& rv = _dset.domain.qt;
 			rv.clear();
 			for(const QWindow *const w : qApp->topLevelWindows()) {
-				if(QVariant v = w->property("obstacle");
-					!v.isValid() || !v.toBool())
-				{
+				if(!widget::ObstacleBase::IsObstacle(w))
 					continue;
-				}
-				if(w->isExposed() && w->isVisible()) {
-					rv.emplace_back(dg::Rect_Name{
+				if(w->isExposed() &&
+					w->isVisible() &&
+					w->windowState() != Qt::WindowState::WindowMinimized)
+				{
+					rv.emplace_back(Domain{
 						w->frameGeometry(),
-						w->objectName()
+						w->title()
 					});
 				}
 			}
 		}
-		// (監視対象のウィンドウはonRectChanged()でセットする)
+		// (監視対象のウィンドウはonWatchedRectChanged()でセットする)
 	}
-	CellBoard Quantizer::_makeQuantizedMap() {
+	CellBoard Quantizer::_makeCellBoard() {
 		QRegion obstacle;
 		const lubee::SizeI size(
 			_dset.vscr.width() / _qsize,
@@ -73,16 +74,16 @@ namespace dg {
 		);
 		obstacle += QRect(0, 0, size.width, size.height);
 		// スクリーン矩形
-		for(auto& r : _dset.rv[DomainType::Screen]) {
+		for(auto& r : _dset.domain.screen) {
 			obstacle -= QuantifyS(r.rect, _qsize);
 		}
 		// Qtが管理するウィンドウ
-		for(auto& r : _dset.rv[DomainType::Qt]) {
+		for(auto& r : _dset.domain.qt) {
 			QRegion reg(r.rect);
 			obstacle += QuantifyS(reg.boundingRect(), _qsize);
 		}
 		// 監視対象のウィンドウ
-		for(auto& r : _dset.rv[DomainType::Other]) {
+		for(auto& r : _dset.domain.other) {
 			QRegion reg(r.rect);
 			obstacle += QuantifyS(reg.boundingRect(), _qsize);
 		}
@@ -92,9 +93,9 @@ namespace dg {
 			obs.emplace_back(ToLRect(o));
 		return CellBoard(obs.data(), obs.size(), size);
 	}
-	void Quantizer::onRectChanged(dg::Rect_NameV rect) {
-		qDebug() << "Quantizer: onRectChanged";
-		_dset.rv[DomainType::Other] = std::move(rect);
+	void Quantizer::onWatchedRectChanged(const DomainV& rect) {
+		qDebug() << "Quantizer: onWatchedRectChanged";
+		_dset.domain.other = rect;
 		_value.setDirty();
 		_value.get();
 	}

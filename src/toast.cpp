@@ -23,6 +23,7 @@ namespace dg {
 		const int durationMS,
 		const int fadeOutMS
 	):
+		base_t(nullptr, Qt::SplashScreen),
 		_ui(new Ui::Toast)
 	{
 		_ui->setupUi(this);
@@ -43,18 +44,21 @@ namespace dg {
 		animation->setEasingCurve(QEasingCurve::OutCubic);
 		animation->setDuration(fadeInMS);
 		animation->start(QAbstractAnimation::DeleteWhenStopped);
-		connect(animation, &QPropertyAnimation::finished, this, [fadeInMS, durationMS, fadeOutMS, this](){
-			QTimer::singleShot(durationMS + fadeInMS, this, [fadeOutMS, this](){
-				QPropertyAnimation *animation = new QPropertyAnimation(this, "alpha", this);
-				animation->setKeyValueAt(0, 1.f);
-				animation->setKeyValueAt(1, 0.f);
-				animation->setEasingCurve(QEasingCurve::InQuad);
-				animation->setDuration(fadeOutMS);
-				animation->start(QAbstractAnimation::DeleteWhenStopped);
-				connect(animation, &QPropertyAnimation::finished, this, [this](){
-					deleteLater();
+		connect(
+			animation, &QPropertyAnimation::finished,
+			this, [fadeInMS, durationMS, fadeOutMS, this](){
+				QTimer::singleShot(durationMS + fadeInMS, this, [fadeOutMS, this](){
+					QPropertyAnimation *animation = new QPropertyAnimation(this, "alpha", this);
+					animation->setKeyValueAt(0, 1.f);
+					animation->setKeyValueAt(1, 0.f);
+					animation->setEasingCurve(QEasingCurve::InQuad);
+					animation->setDuration(fadeOutMS);
+					animation->start(QAbstractAnimation::DeleteWhenStopped);
+					connect(animation, &QPropertyAnimation::finished,
+							this, [this](){
+								deleteLater();
+							});
 				});
-			});
 		});
 
 		const QSize sz = size();

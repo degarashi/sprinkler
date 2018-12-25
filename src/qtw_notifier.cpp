@@ -1,4 +1,5 @@
 #include "qtw_notifier.hpp"
+#include "widget/obstacle.hpp"
 #include <QApplication>
 #include <QScreen>
 #include <QDebug>
@@ -6,44 +7,47 @@
 #include <QTimer>
 
 namespace dg {
-	namespace {
-		constexpr int DelayInterval = 200;
-	}
-	QtWNotifier::QtWNotifier(QObject *const parent):
+	QtWNotifier::QtWNotifier(const size_t delayMS, QObject *const parent):
 		QObject(parent),
 		_delayTimer(new QTimer(this))
 	{
-		_delayTimer->setInterval(DelayInterval);
+		_delayTimer->setInterval(static_cast<int>(delayMS));
 		connect(_delayTimer, &QTimer::timeout,
 				this, [this](){
 					_delayTimer->stop();
+					qDebug() << "QtWNotifier: onQtGeometryChanged";
 					emit onQtGeometryChanged();
 				}
 		);
 		// スクリーンのサイズが変わったり、追加削除があった時には通知を受け取る
-		for(QScreen *const s : qApp->screens())
-			connect(s, SIGNAL(geometryChanged(QRect)), this, SLOT(onScreenGeometryChanged()));
-		connect(qApp, SIGNAL(screenAdded(QScreen*)), this, SLOT(onScreenAdded(QScreen*)));
-		connect(qApp, SIGNAL(screenRemoved(QScreen*)), this, SLOT(onScreenRemoved(QScreen*)));
+		for(QScreen *const s : qApp->screens()) {
+			connect(s, &QScreen::geometryChanged,
+					this, &QtWNotifier::onScreenGeometryChanged);
+		}
+		connect(qApp, &QGuiApplication::screenAdded,
+				this, &QtWNotifier::onScreenAdded);
+		connect(qApp, &QGuiApplication::screenRemoved,
+				this, &QtWNotifier::onScreenRemoved);
 
 		// Qtのウィンドウを監視
 		qApp->installEventFilter(this);
 	}
 	bool QtWNotifier::eventFilter(QObject *const obj, QEvent *const e) {
-		if(!obj->parent()) {
-			// Qtの管理するウィンドウがどれか動いたらupdateをかける
-			if(QWidget *const w = qobject_cast<QWidget*>(obj)) {
-				switch(e->type()) {
-					case QEvent::Resize:
-					case QEvent::Move:
-					case QEvent::Hide:
-					case QEvent::Show:
-					case QEvent::Close:
-						_delayTimer->start();
-						break;
-					default:
-						break;
-				}
+		// Qtの管理するウィンドウがどれか動いたらupdateをかける
+		if(widget::ObstacleBase::IsObstacle(obj)) {
+			switch(e->type()) {
+				case QEvent::Resize:
+				case QEvent::Move:
+				case QEvent::Show:
+				case QEvent::Hide:
+				case QEvent::Expose:
+				case QEvent::Close:
+				case QEvent::WindowTitleChange:
+				case QEvent::WindowStateChange:
+					_delayTimer->start();
+					break;
+				default:
+					break;
 			}
 		}
 		return false;

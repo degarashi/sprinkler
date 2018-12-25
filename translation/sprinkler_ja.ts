@@ -1,165 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ja_JP" sourcelanguage="en">
+<TS version="2.1" language="ja_JP">
 <context>
-    <name>DirList</name>
+    <name>ImageDirWindow</name>
     <message>
-        <location filename="../src/dirlist.ui" line="14"/>
+        <location filename="../src/imagedir_window.ui" line="14"/>
         <source>ImageSource</source>
-        <translation>画像ソース</translation>
+        <translation>イメージソース</translation>
     </message>
     <message>
-        <location filename="../src/dirlist.ui" line="44"/>
+        <location filename="../src/imagedir_window.ui" line="32"/>
         <source>Add</source>
         <translation>追加</translation>
     </message>
     <message>
-        <location filename="../src/dirlist.ui" line="55"/>
+        <location filename="../src/imagedir_window.ui" line="43"/>
         <source>Remove</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="../src/dirlist.ui" line="81"/>
+        <location filename="../src/imagedir_window.ui" line="69"/>
         <source>AddDir</source>
         <translation>追加</translation>
     </message>
     <message>
-        <location filename="../src/dirlist.ui" line="86"/>
+        <location filename="../src/imagedir_window.ui" line="74"/>
         <source>RemDir</source>
-        <translation>削除</translation>
+        <translation>追加</translation>
+    </message>
+</context>
+<context>
+    <name>ImageTagWindow</name>
+    <message>
+        <location filename="../src/imagetag_window.ui" line="14"/>
+        <source>ImageTag Preview</source>
+        <translation>タグプレビュー</translation>
+    </message>
+    <message>
+        <location filename="../src/imagetag_window.ui" line="67"/>
+        <source>Preview</source>
+        <translation>プレビュー</translation>
+    </message>
+    <message>
+        <location filename="../src/imagetag_window.ui" line="74"/>
+        <source>Search</source>
+        <translation>検索</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.ui" line="36"/>
-        <location filename="../src/mainwindow.ui" line="288"/>
-        <source>ImageSource</source>
-        <translation>画像ソース</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="58"/>
-        <location filename="../src/mainwindow.ui" line="315"/>
-        <source>WindowWatch</source>
-        <translation>ウィンドウ監視</translation>
+        <location filename="../src/mainwindow.ui" line="26"/>
+        <source>Sprinkler</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="71"/>
-        <location filename="../src/mainwindow.ui" line="299"/>
-        <source>StayOnTop</source>
-        <translation>常に最前面に表示</translation>
+        <source>tag selection</source>
+        <translation>タグ選択</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="148"/>
-        <source>Controls</source>
-        <translation>コントロール</translation>
+        <location filename="../src/mainwindow.ui" line="78"/>
+        <source>Reset-ViewFlag</source>
+        <translation>表示済みフラグをクリア</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="138"/>
-        <source>Reset</source>
-        <comment>Sprinkle</comment>
-        <translation>リセット</translation>
+        <location filename="../src/mainwindow.ui" line="85"/>
+        <source>collection parameter</source>
+        <translation>収集パラメータ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="217"/>
-        <location filename="../src/mainwindow.ui" line="323"/>
+        <location filename="../src/mainwindow.ui" line="102"/>
+        <location filename="../src/mainwindow.ui" line="202"/>
         <source>Sprinkle</source>
-        <translation>画像を散布</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="167"/>
-        <location filename="../src/mainwindow.ui" line="328"/>
-        <source>Re-Sprinkle</source>
-        <translation>(前回の画像セットを)再度散布</translation>
+        <location filename="../src/mainwindow.ui" line="112"/>
+        <source>HideOnSprinkle</source>
+        <translation>Sprinkle時にウィンドウを隠す</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="174"/>
-        <source>Keep</source>
-        <translation>キープ</translation>
+        <location filename="../src/mainwindow.ui" line="145"/>
+        <source>&amp;Application</source>
+        <translation>アプリケーション(&amp;a)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="182"/>
-        <source>Remove</source>
-        <comment>Keep</comment>
+        <location filename="../src/mainwindow.ui" line="151"/>
+        <source>&amp;Window</source>
+        <translation>ウィンドウ(&amp;w)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="158"/>
+        <source>A&amp;ction</source>
+        <translation>アクション(&amp;c)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="168"/>
+        <source>toolBar</source>
+        <translation>ツールバー</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="193"/>
+        <source>&amp;StayOnTop</source>
+        <translation>常に最前面に表示(&amp;t)</translation>
+    </message>
+</context>
+<context>
+    <name>RectWindow</name>
+    <message>
+        <location filename="../src/rectwindow.ui" line="14"/>
+        <source>RectView</source>
+        <translation>矩形ビュー</translation>
+    </message>
+    <message>
+        <location filename="../src/rectwindow.ui" line="23"/>
+        <source>QuantizedView</source>
+        <translation>マス目ビュー</translation>
+    </message>
+</context>
+<context>
+    <name>TagSelector</name>
+    <message>
+        <location filename="../src/widget/tagselector.ui" line="20"/>
+        <source>Form</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/widget/tagselector.ui" line="29"/>
+        <source>TagName here</source>
+        <translation>ここにタグを入力</translation>
+    </message>
+    <message>
+        <location filename="../src/widget/tagselector.ui" line="60"/>
+        <source>&gt;&gt;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/widget/tagselector.ui" line="73"/>
+        <source>&lt;&lt;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/widget/tagselector.ui" line="135"/>
+        <source>Add</source>
+        <translation>追加</translation>
+    </message>
+    <message>
+        <location filename="../src/widget/tagselector.ui" line="143"/>
+        <source>Rem</source>
         <translation>削除</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="240"/>
-        <source>ImageCollect-Constraint</source>
-        <translation>画像収集条件</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="94"/>
-        <source>Status</source>
-        <translation>ステータス</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="189"/>
-        <source>RemoveAll</source>
-        <comment>Keep</comment>
-        <translation>全て削除</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="224"/>
-        <source>Hide window when sprinkle</source>
-        <translation>画像散布時にウィンドウを隠す</translation>
-    </message>
-    <message>
-        <source>Min</source>
-        <translation type="obsolete">最小</translation>
-    </message>
-    <message>
-        <source>Samp</source>
-        <translation type="obsolete">サンプル倍率</translation>
-    </message>
-    <message>
-        <source>Max</source>
-        <translation type="obsolete">最大</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="269"/>
-        <source>Menu</source>
-        <translation>メニュー</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="291"/>
-        <source>Ctrl+O</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="304"/>
-        <source>Quit</source>
-        <translation>終了</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="307"/>
-        <source>Ctrl+Q</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="318"/>
-        <source>Ctrl+D</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="333"/>
-        <source>Reset</source>
-        <translation>リセット</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="338"/>
-        <source>RemoveKeep</source>
-        <translation>キープを削除</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="343"/>
-        <source>RemoveKeepAll</source>
-        <translation>キープを全て削除</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="351"/>
-        <source>HideWhenSprinkle</source>
-        <translation>画像散布時にウィンドウを隠す</translation>
     </message>
 </context>
 <context>
@@ -177,7 +167,7 @@
     <message>
         <location filename="../src/watchlist.ui" line="54"/>
         <source>RemoveWatch</source>
-        <translation>削除</translation>
+        <translation>ウォッチ解除</translation>
     </message>
     <message>
         <location filename="../src/watchlist.ui" line="57"/>
@@ -195,7 +185,7 @@
     <message>
         <location filename="../src/localize_str.cpp" line="9"/>
         <source>unable to connect to display</source>
-        <translation>ディスプレイへの接続に失敗</translation>
+        <translation>ディスプレイと接続できない</translation>
     </message>
     <message>
         <location filename="../src/localize_str.cpp" line="12"/>
@@ -205,153 +195,165 @@
     <message>
         <location filename="../src/localize_str.cpp" line="15"/>
         <source>error in select()</source>
-        <translation>select()関数でエラー発生</translation>
+        <translation>select()でエラー発生</translation>
     </message>
     <message>
         <location filename="../src/localize_str.cpp" line="18"/>
         <source>Not running thread</source>
-        <translation>スレッドがまだスタートしていません</translation>
+        <translation>スレッドが動いていない</translation>
     </message>
     <message>
         <location filename="../src/localize_str.cpp" line="21"/>
         <source>Already running</source>
-        <translation>スレッドは既にスタート済み</translation>
+        <translation>既にスレッドが動いている(二度目以降の初期化)</translation>
     </message>
 </context>
 <context>
     <name>Watcher_Win</name>
     <message>
-        <location filename="../src/localize_str.cpp" line="26"/>
         <source>Drag here to append...</source>
-        <translation>ここをドラッグして追加...</translation>
+        <translation type="vanished">ここから監視したいウィンドウをドラッグ...</translation>
+    </message>
+    <message>
+        <location filename="../src/localize_str.cpp" line="26"/>
+        <source>Drag cursor from here to target window...</source>
+        <translation>ここから監視したいウィンドウをドラッグ...</translation>
     </message>
 </context>
 <context>
-    <name>dg::CurIndicator</name>
+    <name>dg::ImageDirWindow</name>
     <message>
-        <location filename="../src/cur_indicator.cpp" line="5"/>
-        <source>&lt;b&gt;%1&lt;/b&gt; images (out of &lt;b&gt;%2&lt;/b&gt;) were displayed</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt;枚の画像を表示済み(&lt;b&gt;%2&lt;/b&gt;枚中)</translation>
-    </message>
-</context>
-<context>
-    <name>dg::DirList</name>
-    <message>
-        <location filename="../src/dirlist.cpp" line="15"/>
+        <location filename="../src/imagedir_window.cpp" line="16"/>
         <source>Select Image Directory</source>
-        <translation>画像フォルダを選択して下さい</translation>
+        <translation>ディレクトリを選択</translation>
     </message>
 </context>
 <context>
-    <name>dg::GLabel</name>
+    <name>dg::Sprinkler</name>
     <message>
-        <location filename="../src/glabel.cpp" line="78"/>
-        <source>Keep</source>
-        <translation>キープ</translation>
+        <source>Open&amp;Dir</source>
+        <translation type="vanished">画像ソースウィンドウを開く(&amp;d)</translation>
     </message>
     <message>
-        <location filename="../src/glabel.cpp" line="79"/>
-        <source>k</source>
-        <comment>Keep</comment>
-        <translation></translation>
+        <location filename="../src/sprinkler.cpp" line="108"/>
+        <source>OpenImageSource&amp;Dir</source>
+        <translation>画像ソースウィンドウを開く(&amp;d)</translation>
+    </message>
+    <message>
+        <location filename="../src/sprinkler.cpp" line="109"/>
+        <source>Open&amp;Tag</source>
+        <translation>タグ検索ウィンドウを開く(&amp;t)</translation>
+    </message>
+    <message>
+        <location filename="../src/sprinkler.cpp" line="110"/>
+        <source>Open&amp;RectView</source>
+        <translation>矩形ビューを開く(&amp;r)</translation>
+    </message>
+    <message>
+        <location filename="../src/sprinkler.cpp" line="111"/>
+        <source>Open&amp;Watch</source>
+        <translation>監視ウィンドウを開く(&amp;w)</translation>
+    </message>
+    <message>
+        <location filename="../src/sprinkler.cpp" line="112"/>
+        <source>Open&amp;MainWindow</source>
+        <translation>メインウィンドウを開く(&amp;m)</translation>
+    </message>
+    <message>
+        <location filename="../src/sprinkler.cpp" line="113"/>
+        <source>&amp;Quit</source>
+        <translation>終了(&amp;q)</translation>
+    </message>
+    <message>
+        <location filename="../src/sprinkler.cpp" line="114"/>
+        <source>&amp;ResetViewFlag</source>
+        <translation>表示フラグをリセット(&amp;r)</translation>
     </message>
 </context>
 <context>
-    <name>dg::MainWindow</name>
+    <name>dg::widget::CurIndicator</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="130"/>
-        <source>No image</source>
-        <translation>該当なし</translation>
+        <location filename="../src/widget/cur_indicator.cpp" line="5"/>
+        <source>&lt;b&gt;%1&lt;/b&gt; images (out of &lt;b&gt;%2&lt;/b&gt;) were displayed</source>
+        <translation>&lt;b&gt;%2&lt;/b&gt;枚中、&lt;b&gt;%1&lt;/b&gt;枚が表示済み</translation>
     </message>
+</context>
+<context>
+    <name>dg::widget::MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="131"/>
-        <source>There&apos;s no image can place</source>
-        <translation>配置できる画像がありませんでした</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="133"/>
-        <source>Image placed</source>
-        <translation>配置完了</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="134"/>
-        <source>%n image(s) placed</source>
-        <translation>
-            <numerusform>%n個の画像を配置しました</numerusform>
-        </translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="225"/>
+        <location filename="../src/mainwindow.cpp" line="106"/>
         <source>detail menu</source>
         <translation>詳細メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="243"/>
+        <location filename="../src/mainwindow.cpp" line="126"/>
         <source>simplified menu</source>
         <translation>簡易メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="258"/>
-        <source>[%1 / %2] were displayed</source>
-        <translation>%1枚の画像を表示済み(%2枚中)</translation>
+        <location filename="../src/mainwindow.cpp" line="145"/>
+        <source>showing: %1
+[%2 / %3] were displayed</source>
+        <translation>%1枚の画像を表示中\n[%2 / %3]枚が表示済み</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="330"/>
-        <source>Show Window</source>
-        <translation>ウィンドウを表示</translation>
+        <location filename="../src/mainwindow_proc.cpp" line="48"/>
+        <source>No image</source>
+        <translation>候補画像なし</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="359"/>
-        <source>Error occurred</source>
-        <translation>エラー発生</translation>
+        <location filename="../src/mainwindow_proc.cpp" line="49"/>
+        <source>There&apos;s no image can place</source>
+        <translation>配置する画像が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="439"/>
-        <source>Path</source>
-        <translation>パス</translation>
+        <location filename="../src/mainwindow_proc.cpp" line="51"/>
+        <source>Image placed</source>
+        <translation>配置完了</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/mainwindow_proc.cpp" line="52"/>
+        <source>%n image(s) placed</source>
+        <translation>
+            <numerusform>%n枚の画像を配置済み</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="440"/>
-        <source>ImageCount</source>
-        <translation>画像カウント</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow_gene.cpp" line="89"/>
+        <location filename="../src/mainwindow_idle.cpp" line="18"/>
         <source>No images</source>
-        <translation>画像無し</translation>
+        <translation>候補画像なし</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_gene.cpp" line="90"/>
+        <location filename="../src/mainwindow_idle.cpp" line="19"/>
         <source>There&apos;s no image to show.
 (Image-set runs out)</source>
-        <translation>表示できる画像がありません
-(画像セットが空になりました)</translation>
+        <translation>配置する画像が見つかりませんでした (残り画像なし)</translation>
     </message>
 </context>
 <context>
-    <name>dg::Request</name>
+    <name>dg::widget::Request</name>
     <message>
-        <location filename="../src/request.cpp" line="26"/>
+        <location filename="../src/widget/request.cpp" line="26"/>
         <source>Max</source>
         <translation>最大</translation>
     </message>
     <message>
-        <location filename="../src/request.cpp" line="34"/>
+        <location filename="../src/widget/request.cpp" line="35"/>
         <source>Min</source>
         <translation>最小</translation>
     </message>
     <message>
-        <location filename="../src/request.cpp" line="42"/>
+        <location filename="../src/widget/request.cpp" line="44"/>
         <source>Samp</source>
-        <translation>サンプル倍率</translation>
+        <translation>サンプル面積</translation>
     </message>
 </context>
 <context>
-    <name>rectwindow</name>
+    <name>dg::widget::TagSelector</name>
     <message>
-        <location filename="../src/rectwindow.ui" line="23"/>
-        <source>QuantizedView</source>
-        <translation>マス目表示</translation>
+        <location filename="../src/widget/tagselector.cpp" line="56"/>
+        <source>%1 tags selected	(%2 images found, %3 images already shown)</source>
+        <translation>%1個のタグを選択中 (%2枚の画像が該当。%3枚の画像が表示済み)</translation>
     </message>
 </context>
 </TS>

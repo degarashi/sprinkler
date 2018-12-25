@@ -30,6 +30,8 @@ find_package(Qt5 COMPONENTS
 find_package(Threads REQUIRED)
 
 aux_source_directory(src SRC)
+aux_source_directory(src/widget SRC)
+aux_source_directory(src/sql SRC)
 if(${UNIX})
 	find_package(X11 REQUIRED)
 	aux_source_directory(src/dep_linux SRC)

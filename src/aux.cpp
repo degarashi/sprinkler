@@ -1,69 +1,7 @@
 #include "aux.hpp"
+#include "q_rs_op.hpp"
 #include <cmath>
 
-QPointF operator * (const QPointF& p, const QSizeF& s) {
-	return QPointF {
-		p.x() * s.width(),
-		p.y() * s.height()
-	};
-}
-QPoint operator * (const QPoint& p, const QSize& s) {
-	return QPoint {
-		p.x() * s.width(),
-		p.y() * s.height()
-	};
-}
-QPoint ToQPoint(const QPointF& p) {
-	return QPoint {
-		static_cast<int>(p.x()),
-		static_cast<int>(p.y())
-	};
-}
-
-QSize ToQSize(const QSizeF& s) {
-	return QSize {
-		static_cast<int>(s.width()),
-		static_cast<int>(s.height())
-	};
-}
-QSizeF operator * (const QSizeF s0, const QSizeF s1) {
-	return {s0.width() * s1.width(),
-			s0.height() * s1.height()};
-}
-QRect operator * (const QRect& r, const QSize s) {
-	const auto w = s.width(),
-				h = s.height();
-	return {
-		r.x() * w,
-		r.y() * h,
-		r.width() * w,
-		r.height() * h
-	};
-}
-QRectF operator * (const QRectF& r, const QSizeF s) {
-	const auto w = s.width(),
-				h = s.height();
-	return {
-		r.x() * w,
-		r.y() * h,
-		r.width() * w,
-		r.height() * h
-	};
-}
-QRectF& operator *= (QRectF& r, const QSizeF s) {
-	return r = r * s;
-}
-QRectF operator + (const QRectF& r, const QPointF ofs) {
-	return {
-		r.x() + ofs.x(),
-		r.y() + ofs.y(),
-		r.width(),
-		r.height()
-	};
-}
-QRectF& operator += (QRectF& r, const QPointF s) {
-	return r = r + s;
-}
 float GetRatio(const QSizeF orig, const QSizeF scr) {
 	const float asp0 = orig.width() / orig.height(),
 				asp1 = scr.width() / scr.height();
@@ -72,14 +10,6 @@ float GetRatio(const QSizeF orig, const QSizeF scr) {
 	} else {
 		return scr.height() / orig.height();
 	}
-}
-QRect ToRect(const QRectF& r) {
-	return {
-		int(std::floor(r.x())),
-		int(std::floor(r.y())),
-		int(std::floor(r.right()) - std::floor(r.x())),
-		int(std::floor(r.bottom() - std::floor(r.y())))
-	};
 }
 QRect QuantifyS(const QRect r, const int n) {
 	return {

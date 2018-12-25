@@ -15,7 +15,7 @@ namespace dg {
 		private slots:
 			void toastDestroyed();
 		public:
-			ToastMgr();
+			explicit ToastMgr(QObject* parent=nullptr);
 			~ToastMgr();
 			void closeToast();
 

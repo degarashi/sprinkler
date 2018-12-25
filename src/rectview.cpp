@@ -1,5 +1,6 @@
 #include "rectview.hpp"
 #include "aux.hpp"
+#include "q_rs_op.hpp"
 #include <QPainter>
 #include <cmath>
 #include <QPaintEvent>
@@ -30,21 +31,21 @@ namespace dg {
 		_maxrect.setColor(QColor(0,0,255, 200));
 		_maxrect.setStyle(Qt::SolidPattern);
 		{
-			auto& scr = _guiobj[DomainType::Screen];
+			auto& scr = _guiobj.screen;
 			scr.bkg = QBrush(Qt::white);
 			scr.text = QPen(Qt::black);
 			scr.frame = QPen(Qt::black);
 			scr.textSize = 16;
 		}
 		{
-			auto& qt = _guiobj[DomainType::Qt];
+			auto& qt = _guiobj.qt;
 			qt.bkg = QBrush(QColor(255,0,0,200));
 			qt.text = QPen(Qt::white);
 			qt.frame = QPen(Qt::black);
 			qt.textSize = 16;
 		}
 		{
-			auto& oth = _guiobj[DomainType::Other];
+			auto& oth = _guiobj.other;
 			oth.bkg = QBrush(QColor(128,128,255,200));
 			oth.text = QPen(Qt::white);
 			oth.frame = QPen(Qt::black);
@@ -85,9 +86,9 @@ namespace dg {
 	void RectView::_paintRects(QPainter& p, const QSizeF sc, const QPoint ofs) const {
 		QRegion reg;
 		{
-			auto& go = _guiobj[DomainType::Screen];
+			auto& go = _guiobj.screen;
 			go.fontsize(p);
-			for(auto& r : _dset.rv[DomainType::Screen]) {
+			for(auto& r : _dset.domain.screen) {
 				const QRect r2 = RectScOfs(r.rect, sc, ofs).marginsRemoved(QMargins(1,1,0,0));
 				reg += r2;
 				go.draw(p, r2, r.name);
@@ -96,26 +97,21 @@ namespace dg {
 		p.setClipRegion(reg);
 		p.setClipping(true);
 		{
-			auto& go = _guiobj[DomainType::Qt];
+			auto& go = _guiobj.qt;
 			go.fontsize(p);
-			for(auto& r : _dset.rv[DomainType::Qt]) {
+			for(auto& r : _dset.domain.qt) {
 				const QRect r2 = RectScOfs(r.rect, sc, ofs).marginsRemoved(QMargins(1,1,0,0));
 				go.draw(p, r2, r.name);
 			}
 		}
 		{
-			auto& go = _guiobj[DomainType::Other];
+			auto& go = _guiobj.other;
 			go.fontsize(p);
-			for(auto& r : _dset.rv[DomainType::Other]) {
+			for(auto& r : _dset.domain.other) {
 				const QRect r2 = RectScOfs(r.rect, sc, ofs).marginsRemoved(QMargins(1,1,0,0));
 				go.draw(p, r2, r.name);
 			}
 		}
-		// {
-			// p.setBrush(_maxrect);
-			// auto qm = _qmapMax * QSizeF(_qsize, _qsize);
-			// p.drawRect(RectScOfs(ToRect(qm), sc, ofs));
-		// }
 	}
 	void RectView::_paintRectQuantized(QPainter& p, const QSizeF sc, const QPoint ofs) const {
 		const auto& nb = _qmap.nboard();

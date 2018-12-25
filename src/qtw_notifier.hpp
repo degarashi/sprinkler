@@ -14,7 +14,7 @@ namespace dg {
 		signals:
 			void onQtGeometryChanged();
 		public:
-			QtWNotifier(QObject* parent=nullptr);
+			QtWNotifier(size_t delayMS = 200, QObject* parent=nullptr);
 			bool eventFilter(QObject* obj, QEvent* e) override;
 	};
 }

@@ -1,11 +1,13 @@
 #include "domain.hpp"
-#include "histgram/src/cell.hpp"
 #include "cache.hpp"
+#include "histgram/src/cell.hpp"
 #include <QObject>
 
 namespace dg {
 	// ウィンドウ移動やスクリーン追加削除の通知を受けてその領域情報を量子化
-	class Quantizer : public QObject {
+	class Quantizer :
+		public QObject
+	{
 		Q_OBJECT
 		private:
 			DomainSet		_dset;
@@ -17,10 +19,10 @@ namespace dg {
 			size_t			_qsize;
 
 			void _collectRects();
-			CellBoard _makeQuantizedMap();
+			CellBoard _makeCellBoard();
 
 		public slots:
-			void onRectChanged(dg::Rect_NameV rect);
+			void onWatchedRectChanged(const dg::DomainV& rect);
 			void onQtGeometryChanged();
 		signals:
 			void onGridChanged(const dg::DomainSet& ds, const dg::CellBoard& qm, size_t qs);

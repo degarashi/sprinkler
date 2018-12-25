@@ -1,27 +1,27 @@
 #pragma once
-#include "gene_param.hpp"
-#include "place_result.hpp"
 #include <QObject>
 
 namespace dg {
 	class CellBoard;
-	class RequestParam;
+	namespace place {
+		struct Selected;
+		using SelectedV = std::vector<Selected>;
+		struct Result;
+		using ResultV = QVector<Result>;
+	}
 	class GeneWorker :
 		public QObject
 	{
 		Q_OBJECT
 
 		public slots:
-			void calcArea(
-				const dg::RequestParam& param,
+			void sprinkle(
 				const dg::CellBoard& initial,
-				const dg::PathS& keepset,
-				const dg::PathS& notshown,
-				const dg::ImageSet& img2size,
+				const dg::place::SelectedV&	selected,
 				size_t qs
 			);
 		signals:
-			void geneResult(const dg::PlaceV& place);
-			void onProgress(int p);
+			void sprinkleResult(const dg::place::ResultV& result);
+			void sprinkleProgress(int p);
 	};
 }

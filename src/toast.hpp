@@ -12,6 +12,7 @@ namespace dg {
 		Q_OBJECT
 		Q_PROPERTY(float alpha READ alpha WRITE setAlpha)
 		private:
+			using base_t = QWidget;
 			std::shared_ptr<Ui::Toast> _ui;
 			void setAlpha(float val);
 			float alpha();

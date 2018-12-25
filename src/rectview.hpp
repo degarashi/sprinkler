@@ -16,7 +16,12 @@ namespace dg {
 
 				void draw(QPainter& p, const QRect& r, const QString& t) const;
 				void fontsize(QPainter& p) const;
-			} _guiobj[DomainType::_Num];
+			};
+			struct {
+				GuiObj	screen,
+						qt,
+						other;
+			} _guiobj;
 
 			DomainSet	_dset;
 			CellBoard	_qmap;

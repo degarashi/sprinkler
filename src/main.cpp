@@ -1,20 +1,21 @@
-#include "mainwindow.hpp"
+#include "sprinkler.hpp"
 #include <QApplication>
-#include "dirlist.hpp"
 #include <QTranslator>
 #include <QTextCodec>
 #include <QLibraryInfo>
 
 int main(int argc, char *argv[]) {
-	// for XmbTextPropertyToTextList
+	// for XmbTextPropertyToTextList(for Linux)
 	std::setlocale(LC_ALL, "");
 
 	QApplication a(argc, argv);
+
+	// set organization name etc...
 	QCoreApplication::setOrganizationName("DegarashiLab");
 	QCoreApplication::setOrganizationDomain("Degarashi.deg");
 	QCoreApplication::setApplicationName("sprinkler");
 
-	// Install Translation
+	// install translation
 	QTranslator tr;
 	{
 		QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf8"));
@@ -27,8 +28,6 @@ int main(int argc, char *argv[]) {
 		a.installTranslator(&tr);
 	}
 
-	qApp->setQuitOnLastWindowClosed(false);
-	dg::MainWindow mw;
-	mw.show();
+	const dg::Sprinkler spr;
 	return a.exec();
 }

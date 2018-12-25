@@ -1,22 +1,22 @@
 #pragma once
-#include <QWidget>
+#include "widget/gr_widget.hpp"
 #include <memory>
 
 namespace Ui {
-	class rectwindow;
+	class RectWindow;
 }
 namespace dg {
 	class CellBoard;
 	struct DomainSet;
-	class rectwindow :
-		public QWidget
+	class RectWindow :
+		public widget::GeomRestore_Widget
 	{
 		Q_OBJECT
 		private:
-			std::shared_ptr<Ui::rectwindow>	_ui;
+			std::shared_ptr<Ui::RectWindow>	_ui;
 		public slots:
 			void onGridChanged(const dg::DomainSet& ds, const dg::CellBoard& qm, size_t qs);
 		public:
-			explicit rectwindow(QWidget* parent=nullptr);
+			explicit RectWindow(QWidget* parent=nullptr);
 	};
 }

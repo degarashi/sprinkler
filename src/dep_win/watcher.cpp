@@ -24,15 +24,16 @@ namespace dg {
 	{
 		WinNotifier* ntf = new WinNotifier(this);
 		// ウィンドウの移動、追加削除などがあったら通知
-		connect(ntf, SIGNAL(onEvent()), this, SLOT(_refreshWindowRect()));
+		connect(ntf, &WinNotifier::onEvent,
+				this, &Watcher::_refreshWindowRect);
 		// リスト項目が削除されたら通知
-		connect(_model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-				 this, SLOT(_removeRow(QModelIndex,int,int)));
+		connect(_model, &QStandardItemModel::rowsAboutToBeRemoved,
+				 this, &Watcher::_removeRow);
 	}
 	void Watcher::_refreshWindowRect() {
 		QThread::currentThread()->msleep(100);
 		// シグナルで送る矩形リストを構築
-		Rect_NameV rv;
+		DomainV rv;
 		TCHAR buf[256];
 		RECT rect;
 		for(auto itr = _wset.begin(); itr != _wset.end();) {
@@ -43,7 +44,7 @@ namespace dg {
 				GetWindowRect(*itr, &rect);
 				GetWindowText(*itr, buf, sizeof(buf)/sizeof(buf[0]));
 				rv.emplace_back(
-					Rect_Name {
+					Domain {
 						.rect = ToQRect(rect),
 						.name = QString(buf)
 					}
@@ -51,7 +52,7 @@ namespace dg {
 				++itr;
 			}
 		}
-		emit onRectChanged(std::move(rv));
+		emit onWatchedRectChanged(std::move(rv));
 		_makeModelFromWSet();
 	}
 	void Watcher::_removeRow(const QModelIndex idx, const int first, const int last) {
@@ -70,7 +71,7 @@ namespace dg {
 	void Watcher::startLoop() {
 		// 特に何もしない
 	}
-	QStandardItemModel* Watcher::model() const noexcept {
+	QAbstractItemModel* Watcher::model() const noexcept {
 		return _model;
 	}
 	void Watcher::makeArea(QHBoxLayout* addArea) {
@@ -79,7 +80,8 @@ namespace dg {
 		dp->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 		dp->setFrameShape(QFrame::Panel);
 		// Window指定されたらWatcherへ通知
-		connect(dp, SIGNAL(dragPosition(QPoint)), this, SLOT(draggedPosition(QPoint)));
+		connect(dp, &DragPos::dragPosition,
+				this, &Watcher::draggedPosition);
 
 		addArea->addWidget(dp);
 	}
