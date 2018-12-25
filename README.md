@@ -2,17 +2,25 @@
 
 ## 概要
 デスクトップの空き領域に画像をばら撒くソフトです
-![](https://github.com/degarashi/sprinkler/blob/images/sprinkler_sc0.jpg)
+![](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v010_sc0.jpg)
 
 ## 既知の問題点
-* 画像ディレクトリを指定する際、再帰的にファイルを検索するがこれを止めるオプションは無い
-* 画像サイズをキャッシュしていないのでアプリケーション起動時に毎回ファイル走査が入る。(画像数が1000を越えてくると重い)
 * 画像を表示する時に一旦フルサイズで読み込み、それをリサイズしている関係で容量の大きいファイルが多数あると画像配置の計算後、表示されるまで10秒以上秒かかる
 * 対応している画像形式はpng, jpg, bmp, gifのみ
 * 画像が操作ウィンドウで隠れてしまっても自動で位置を補正してくれない
 * (Windows環境にて)仮想スクリーンの追加・削除を最初の一度しか検知できない
 
 ## 更新履歴
+### v0.1.0 (2018/12/25)
+* SQLiteモジュールを組み込み、画像管理を一括化
+* 画像のサムネイルをキャッシュするようにした
+* ディレクトリ構成から画像を簡易的にタグ付けし、それを指定して散布
+![v010_source](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v010_source.png)
+* タグの検索結果のプレビュー
+![v010_preview](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v010_preview.png)
+* その他、UIの変更
+![v010_rectview](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v010_rectview.png)
+
 ### v0.0.5 (2018/10/04)
 * 画像セットが空になった、画像配置計算した結果一枚も画像が置けなかった等のエラー時、または画像配置の結果、何枚置けたかをメッセージで表示  
 ![v005_ntf](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v005_ntf.png)
