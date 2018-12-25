@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.1.0)
 project(sprinkler)
 
+set(WITHOUT_UNITTEST_BKUP ${without-unittest})
 set(without-unittest YES)
 add_subdirectory(histgram)
+set(without-unittest ${WITHOUT_UNITTEST_BKUP})
 
 set(CXX_VERSION 17)
 include(lubee/cxx_options.cmake)
