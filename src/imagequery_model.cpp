@@ -93,12 +93,8 @@ namespace dg {
 		select();
 	}
 	bool ImageQueryModel::select() {
-		if(_tag.empty())
-			_sub->setQuery("SELECT 1 WHERE False");
-		else {
-			const QStringList getcol{Img_id, Img_file_name, Img_dir_id, Img_width, Img_height, Img_area, Img_aspect, Img_hash, Img_modify_date, Img_cand_flag};
-			_sub->setQuery(_dbTag->tagMatchQuery(getcol, _tag));
-		}
+		const QStringList getcol{Img_id, Img_file_name, Img_dir_id, Img_width, Img_height, Img_area, Img_aspect, Img_hash, Img_modify_date, Img_cand_flag};
+		_sub->setQuery(_dbTag->tagMatchQuery(getcol, _tag, false));
 		return true;
 	}
 	QVariant ImageQueryModel::data(const QModelIndex &idx, const int role) const {

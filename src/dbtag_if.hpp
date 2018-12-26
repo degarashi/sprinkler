@@ -15,6 +15,6 @@ namespace dg {
 		virtual TagIdV enumTagForwardMatch(const QString& str) const = 0;
 		virtual QSqlTableModel* makeTagModel(QObject* parent=nullptr) const = 0;
 		//! タグ検索クエリ文
-		virtual QString tagMatchQuery(QStringList getcol, const TagIdV& tag) const = 0;
+		virtual QString tagMatchQuery(QStringList getcol, const TagIdV& tag, bool emptyIsAll) const = 0;
 	};
 }

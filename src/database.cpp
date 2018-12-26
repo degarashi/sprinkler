@@ -1049,7 +1049,7 @@ namespace dg {
 		return QString();
 	}
 	std::pair<size_t,size_t> Database::countImageByTag(const TagIdV& tag) const {
-		const auto sq = tagMatchQuery({Img_id, Img_cand_flag}, tag);
+		const auto sq = tagMatchQuery({Img_id, Img_cand_flag}, tag, true);
 		return {
 			sql::GetRequiredValue<size_t>(
 				sql::Query(
@@ -1068,7 +1068,7 @@ namespace dg {
 	ImageIdV Database::findImageByTag(const TagIdV& tag) const {
 		return sql::GetValues<ImageId>(
 			sql::Query(
-				tagMatchQuery({"id"}, tag)
+				tagMatchQuery({"id"}, tag, true)
 			)
 		);
 	}
@@ -1086,7 +1086,7 @@ namespace dg {
 		const auto cand_img = QString(
 				"cand_img(image_id, width, height, aspect, cand_flag) AS (SELECT * FROM (%1) %2)\n"
 			)
-			.arg(tagMatchQuery({Img_id, Img_width, Img_height, Img_aspect, Img_cand_flag}, tag))
+			.arg(tagMatchQuery({Img_id, Img_width, Img_height, Img_aspect, Img_cand_flag}, tag, true))
 			.arg("WHERE " Img_cand_flag "=0");
 
 		// aspectの最大最小値を取得
@@ -1184,11 +1184,15 @@ namespace dg {
 		sql::Query("UPDATE " Image_Table " SET " Img_cand_flag "=0 WHERE " Img_cand_flag "=1");
 		emit endResetImage();
 	}
-	QString Database::tagMatchQuery(QStringList getcol, const TagIdV& tag) const {
-		if(tag.empty())
-			return QString(
-				"SELECT %1 FROM " Image_Table " img"
-			).arg(getcol.join(','));
+	QString Database::tagMatchQuery(QStringList getcol, const TagIdV& tag, const bool emptyIsAll) const {
+		if(tag.empty()) {
+			if(emptyIsAll) {
+				return QString(
+					"SELECT %1 FROM " Image_Table " img"
+				).arg(getcol.join(','));
+			}
+			return QString("SELECT 1 WHERE False");
+		}
 
 		QStringList tags;
 		for(auto id : tag)
