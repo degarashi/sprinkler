@@ -1321,4 +1321,9 @@ namespace dg {
 			)
 		);
 	}
+	void Database::resetMRU() {
+		sql::Query(
+			"UPDATE " Tag_Table " SET " Tag_mru "=0 WHERE " Tag_mru ">0"
+		);
+	}
 }
