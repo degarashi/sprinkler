@@ -16,5 +16,6 @@ namespace dg {
 		virtual QSqlTableModel* makeTagModel(QObject* parent=nullptr) const = 0;
 		//! タグ検索クエリ文
 		virtual QString tagMatchQuery(QStringList getcol, const TagIdV& tag, bool emptyIsAll) const = 0;
+		virtual void markAsUsedRecentry(const TagIdV& tag) = 0;
 	};
 }

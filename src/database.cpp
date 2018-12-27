@@ -1288,4 +1288,28 @@ namespace dg {
 		}
 		return ret;
 	}
+	void Database::markAsUsedRecentry(const TagIdV& tag) {
+		if(tag.empty())
+			return;
+
+		// Tagテーブルに一件も行が無い時はここで弾かれる
+		if(const auto maxMru = sql::GetValue<int>(
+				sql::Query(
+					QString("SELECT MAX(" Tag_mru ") FROM " Tag_Table)
+				)
+			))
+		{
+			QStringList sl;
+			for(auto id : tag)
+				sl.append(QString::number(id));
+			sql::Query(
+				QString(
+					"UPDATE " Tag_Table " SET " Tag_mru "=?\n"
+					"	WHERE " Tag_id " IN (%1)"
+				)
+				.arg(sl.join(',')),
+				*maxMru + 1
+			);
+		}
+	}
 }

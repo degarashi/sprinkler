@@ -140,6 +140,7 @@ namespace dg {
 			TagIdV enumTagForwardMatch(const QString& str) const override;
 			QSqlTableModel* makeTagModel(QObject* parent=nullptr) const override;
 			QString tagMatchQuery(QStringList getcol, const TagIdV& tag, bool emptyIsAll) const override;
+			void markAsUsedRecentry(const TagIdV& tag) override;
 
 			// ------------- from DBImage -------------
 			ImageModel_p makeImageModel(QObject* parent=nullptr) const override;
