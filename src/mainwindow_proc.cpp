@@ -56,7 +56,6 @@ namespace dg { namespace widget {
 					r.crop,
 					r.offset,
 					r.resize,
-					false,
 					self._ctrlMenu
 				);
 				// どれか1つをクリックしたら他の全てのGLabelと自分を前面に持ってくる

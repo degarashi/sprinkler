@@ -11,12 +11,11 @@
 namespace dg { namespace widget {
 	ImageLabel::ImageLabel(const QString& path, const QSize crop,
 					const lubee::PointI ofs, const QSize resize,
-					const bool keep, QMenu* ctrlMenu):
+					QMenu* ctrlMenu):
 		Obstacle(nullptr, Qt::SplashScreen|Qt::FramelessWindowHint),
 		_label(new QLabel(this)),
 		_frame(new ColorFrame(this)),
 		_path(path),
-		_keep(keep),
 		_ctrlMenu(ctrlMenu),
 		_offset{ofs.x, ofs.y}
 	{
@@ -32,12 +31,9 @@ namespace dg { namespace widget {
 		this->resize(_label->sizeHint());
 		const QSize lbs = _label->sizeHint();
 		_frame->setGeometry(0,0, lbs.width(), lbs.height());
-		_frame->setVisible(_getChecked());
+		_frame->setVisible(false);
 		show();
 		update();
-	}
-	bool ImageLabel::_getChecked() const {
-		return _keep;
 	}
 	void ImageLabel::mousePressEvent(QMouseEvent*) {
 		emit clicked();
@@ -57,19 +53,10 @@ namespace dg { namespace widget {
 			_ctrlMenu->popup(e->globalPos());
 		}
 	}
-	void ImageLabel::showLabelFrame(const bool b) {
-		_frame->setVisible(b && _getChecked());
-	}
 	const QString& ImageLabel::path() const noexcept {
 		return _path;
 	}
 	const QPixmap* ImageLabel::pixmap() const {
 		return _label->pixmap();
-	}
-	void ImageLabel::setKeep(const QString& path, bool b) {
-		if(_path == path) {
-			_keep = b;
-			emit keepChanged(_path, _keep);
-		}
 	}
 }}

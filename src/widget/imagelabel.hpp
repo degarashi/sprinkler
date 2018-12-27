@@ -20,23 +20,17 @@ namespace dg { namespace widget {
 			QString					_path;
 			QMenu*					_ctrlMenu;
 			QPoint					_offset;
-			bool					_keep;
 
-			bool _getChecked() const;
 		signals:
 			void clicked();
-			void keepChanged(const QString& path, bool b);
 		protected:
 			void contextMenuEvent(QContextMenuEvent* e) override;
 			void mousePressEvent(QMouseEvent* e) override;
 			void moveEvent(QMoveEvent* e) override;
-		public slots:
-			void showLabelFrame(bool b);
-			void setKeep(const QString& path, bool b);
 		public:
 			explicit ImageLabel(const QString& path, QSize crop,
 							const lubee::PointI ofs, QSize resize,
-							bool keep, QMenu* ctrlMenu);
+							QMenu* ctrlMenu);
 			const QString& path() const noexcept;
 			const QPixmap* pixmap() const;
 	};
