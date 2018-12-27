@@ -158,6 +158,7 @@ namespace dg {
 			"CREATE TABLE " Tag_Table " (\n"
 			Tag_id			" INTEGER PRIMARY KEY,\n"
 			Tag_name		" TEXT NOT NULL,\n"
+			Tag_mru			" INTEGER NOT NULL DEFAULT 0,\n"
 			"UNIQUE (" Tag_name ")\n"
 			")"
 		);

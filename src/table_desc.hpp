@@ -97,9 +97,11 @@ const char *const Image_CBFlag[] = {};
 	CREATE TABLE Tag (
 		id INTEGER PRIMARY KEY,
 		name TEXT NOT NULL,							-- タグ名
+		mru INTEGER NOT NULL DEFAULT 0,				-- 最近使ったタグ検索に使用するカウンタ
 		UNIQUE (name)
 	);
 */
 #define Tag_Table		"Tag"
 #define Tag_id			"id"
 #define Tag_name		"name"
+#define Tag_mru			"mru"
