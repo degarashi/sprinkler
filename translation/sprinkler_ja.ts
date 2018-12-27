@@ -290,17 +290,17 @@
 <context>
     <name>dg::widget::MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="106"/>
+        <location filename="../src/mainwindow.cpp" line="113"/>
         <source>detail menu</source>
         <translation>詳細メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="126"/>
+        <location filename="../src/mainwindow.cpp" line="133"/>
         <source>simplified menu</source>
         <translation>簡易メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="145"/>
+        <location filename="../src/mainwindow.cpp" line="152"/>
         <source>showing: %1
 [%2 / %3] were displayed</source>
         <translation>%1枚の画像を表示中\n[%2 / %3]枚が表示済み</translation>

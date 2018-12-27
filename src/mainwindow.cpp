@@ -6,6 +6,7 @@
 #include "toast_mgr.hpp"
 #include "version.hpp"
 #include "widget/imagelabel.hpp"
+#include "database_sig.hpp"
 #include <QSystemTrayIcon>
 #include <QStyle>
 #include <QShowEvent>
@@ -43,6 +44,13 @@ namespace dg { namespace widget {
 			setWindowTitle(ver);
 		}
 		_ui->tagSelector->init(tag, sig);
+
+		// 画像コレクションが変わる時には既に配置してあるラベルをクリア
+		connect(sig, &DatabaseSignal::beginResetDir,
+			this, [this](){
+				_clearLabels();
+			});
+
 		auto* spr = &sprinkler;
 		// --------- sprinkle コネクション ---------
 		// sprinkle経過
