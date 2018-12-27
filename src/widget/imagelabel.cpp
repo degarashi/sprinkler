@@ -15,7 +15,6 @@ namespace dg { namespace widget {
 		Obstacle(nullptr, Qt::SplashScreen|Qt::FramelessWindowHint),
 		_label(new QLabel(this)),
 		_frame(new ColorFrame(this)),
-		_path(path),
 		_ctrlMenu(ctrlMenu),
 		_offset{ofs.x, ofs.y}
 	{
@@ -52,11 +51,5 @@ namespace dg { namespace widget {
 			// (本来ならCtrlとは別のメニューを出す予定だが今は同じにする)
 			_ctrlMenu->popup(e->globalPos());
 		}
-	}
-	const QString& ImageLabel::path() const noexcept {
-		return _path;
-	}
-	const QPixmap* ImageLabel::pixmap() const {
-		return _label->pixmap();
 	}
 }}

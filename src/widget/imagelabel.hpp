@@ -17,7 +17,6 @@ namespace dg { namespace widget {
 		private:
 			QLabel*					_label;
 			ColorFrame*				_frame;
-			QString					_path;
 			QMenu*					_ctrlMenu;
 			QPoint					_offset;
 
@@ -31,7 +30,5 @@ namespace dg { namespace widget {
 			explicit ImageLabel(const QString& path, QSize crop,
 							const lubee::PointI ofs, QSize resize,
 							QMenu* ctrlMenu);
-			const QString& path() const noexcept;
-			const QPixmap* pixmap() const;
 	};
 }}
