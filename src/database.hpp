@@ -162,6 +162,7 @@ namespace dg {
 			// アプリの強制終了などで中途半端になったフラグをリセット
 			void resetSelectionFlag() override;
 			QString getFullPath(ImageId id) const override;
+			TagIdV getTagFromImage(ImageId id, bool excludeDTag) const override;
 
 			// ------------- from DBDir -------------
 			void addDir(const QString& path) override;

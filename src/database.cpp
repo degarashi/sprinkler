@@ -934,6 +934,21 @@ namespace dg {
 		const ImageInfo info = getImageInfo(id);
 		return _getFullPath(info.loadedDirId) % '/' % info.fileName;
 	}
+	TagIdV Database::getTagFromImage(const ImageId id, const bool excludeDTag) const {
+		return sql::GetValues<TagId>(
+			sql::Query(
+				(
+					excludeDTag ?
+					(
+						"WITH tags(id) AS (SELECT " TIL_tag_id " FROM " TagILink_Table " WHERE " TIL_image_id "=?)\n"
+						"SELECT id FROM tags WHERE NOT EXISTS(SELECT 1 FROM " TagDLink_Table " dl WHERE dl." TDL_tag_id "=tags.id)"
+					) :
+					("SELECT " TIL_tag_id " FROM " TagILink_Table " WHERE " TIL_image_id "=?")
+				),
+				id
+			)
+		);
+	}
 	QPixmap Database::getThumbnail(const ImageId id) const {
 		// メモリ上のキャッシュ
 		auto itr = _thumbnail.find(id);

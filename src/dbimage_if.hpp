@@ -70,5 +70,7 @@ namespace dg {
 		// 候補になったが使用されなかった画像のフラグをリセット
 		virtual void resetSelectionFlag() = 0;
 		virtual QString getFullPath(ImageId id) const = 0;
+		// 画像に関連付けられたタグのリストを取得
+		virtual TagIdV getTagFromImage(ImageId id, bool excludeDTag) const = 0;
 	};
 }
