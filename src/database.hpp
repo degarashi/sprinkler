@@ -141,6 +141,7 @@ namespace dg {
 			QSqlTableModel* makeTagModel(QObject* parent=nullptr) const override;
 			QString tagMatchQuery(QStringList getcol, const TagIdV& tag, bool emptyIsAll) const override;
 			void markAsUsedRecentry(const TagIdV& tag) override;
+			TagIdV getRecentryUsed(size_t limit) const override;
 
 			// ------------- from DBImage -------------
 			ImageModel_p makeImageModel(QObject* parent=nullptr) const override;

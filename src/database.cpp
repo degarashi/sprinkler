@@ -1312,4 +1312,13 @@ namespace dg {
 			);
 		}
 	}
+	TagIdV Database::getRecentryUsed(const size_t limit) const {
+		return sql::GetValues<TagId>(
+			sql::Query(
+				"SELECT " Tag_id " FROM " Tag_Table "\n"
+				"	ORDER BY " Tag_mru " DESC LIMIT ?",
+				limit
+			)
+		);
+	}
 }
