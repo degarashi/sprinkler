@@ -514,10 +514,15 @@ namespace dg {
 		if(!_checkAppVersion())
 			clear = true;
 
-		if(_initDatabase(clear))
-			clear = true;
-		else if(!_checkDatabaseValidness())
-			clear = true;
+		do {
+			if(_initDatabase(clear))
+				clear = true;
+			else if(!_checkDatabaseValidness()) {
+				clear = true;
+				continue;
+			}
+			break;
+		} while(true);
 
 		// サムネディレクトリの用意(mkdir)
 		_ThumbnailLocation(true);
