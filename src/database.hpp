@@ -147,6 +147,7 @@ namespace dg {
 			QPixmap getThumbnail(ImageId id) const override;
 			const ColumnTarget* getImageColumnTarget() const override;
 			void resetViewFlag() override;
+			void resetViewFlagSelected(const TagIdV& tag) override;
 			ImageIdV findImageByTag(const TagIdV& tag) const override;
 			ImageCandV enumImageByAspect(
 							const TagIdV& tag,

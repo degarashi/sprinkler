@@ -192,7 +192,15 @@ namespace dg { namespace widget {
 	void MainWindow::sprinkle() {
 		_state->onSprinkle(*this);
 	}
-	void MainWindow::resetViewFlag() {
+	void MainWindow::resetViewFlagSelecting() {
+		// 選択中のタグを取得
+		const auto tag = _ui->tagSelector->getArray();
+		// 何も選択されてなければリセット処理もしない
+		if(tag.empty())
+			return;
+		_dbImg->resetViewFlagSelected(tag);
+	}
+	void MainWindow::resetViewFlagAll() {
 		_dbImg->resetViewFlag();
 	}
 	void MainWindow::changeEvent(QEvent* e) {

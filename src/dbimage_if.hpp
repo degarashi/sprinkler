@@ -54,6 +54,8 @@ namespace dg {
 		virtual const ColumnTarget* getImageColumnTarget() const = 0;
 		// 使用された画像(cand_flag > 0)のフラグを全てリセット
 		virtual void resetViewFlag() = 0;
+		// タグ候補に該当する画像のフラグをリセット
+		virtual void resetViewFlagSelected(const TagIdV& tag) = 0;
 		//! タグのAND条件で画像検索し、そのIdリストを返す
 		virtual ImageIdV findImageByTag(const TagIdV& tag) const = 0;
 		// タグを持ち、cand_flag=0の画像からアスペクト比でソートした画像リストを作成

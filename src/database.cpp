@@ -1257,6 +1257,21 @@ namespace dg {
 			emit endResetImage();
 		}
 	}
+	void Database::resetViewFlagSelected(const TagIdV& tag) {
+		emit beginResetImage();
+		sql::Query(
+			QString(
+				"WITH selection(id, cand_flag) AS (%1)\n"
+				"UPDATE " Image_Table " AS img SET " Img_cand_flag "=0\n"
+				"	WHERE EXISTS(SELECT " Img_id " FROM selection s\n"
+				"		WHERE s.cand_flag>0\n"
+				"		AND img." Img_id "=s.id\n"
+				"	)"
+			)
+			.arg(tagMatchQuery({Img_id, Img_cand_flag}, tag, true))
+		);
+		emit endResetImage();
+	}
 	TagIdV Database::excludeRemovedTag(const TagIdV& tag) const {
 		TagIdV ret;
 		for(const auto id : tag) {

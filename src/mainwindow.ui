@@ -36,13 +36,14 @@
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="1" column="0" colspan="2">
-        <widget class="dg::widget::TagSelector" name="tagSelector" native="true"/>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>tag selection</string>
+         </property>
+        </widget>
        </item>
-       <item row="5" column="0" colspan="2">
-        <widget class="dg::widget::Request" name="request" native="true"/>
-       </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <spacer name="horizontalSpacer">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -58,31 +59,37 @@
          </property>
         </spacer>
        </item>
-       <item row="3" column="0" colspan="2">
+       <item row="1" column="0" colspan="3">
+        <widget class="dg::widget::TagSelector" name="tagSelector" native="true"/>
+       </item>
+       <item row="6" column="0" colspan="3">
+        <widget class="dg::widget::Request" name="request" native="true"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>collection parameter</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="3">
         <widget class="Line" name="line_3">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
+       <item row="3" column="2">
+        <widget class="QPushButton" name="pbResetAll">
          <property name="text">
-          <string>tag selection</string>
+          <string>ResetViewFlag(All)</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QPushButton" name="pbReset">
+       <item row="2" column="2">
+        <widget class="QPushButton" name="pbResetSelecting">
          <property name="text">
-          <string>Reset-ViewFlag</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>collection parameter</string>
+          <string>ResetViewFlag(Selecting)</string>
          </property>
         </widget>
        </item>
@@ -236,10 +243,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>pbReset</sender>
+   <sender>pbResetAll</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>resetViewFlag()</slot>
+   <slot>resetViewFlagAll()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>543</x>
@@ -283,10 +290,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pbResetSelecting</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>resetViewFlagSelecting()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>516</x>
+     <y>199</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>305</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>stayOnTop(bool)</slot>
-  <slot>resetViewFlag()</slot>
+  <slot>resetViewFlagSelecting()</slot>
   <slot>sprinkle()</slot>
+  <slot>resetViewFlagAll()</slot>
  </slots>
 </ui>

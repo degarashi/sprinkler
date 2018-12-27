@@ -55,53 +55,62 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="71"/>
+        <location filename="../src/mainwindow.ui" line="42"/>
         <source>tag selection</source>
         <translation>タグ選択</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="78"/>
         <source>Reset-ViewFlag</source>
-        <translation>表示済みフラグをクリア</translation>
+        <translation type="vanished">表示済みフラグをクリア</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="85"/>
+        <location filename="../src/mainwindow.ui" line="71"/>
         <source>collection parameter</source>
         <translation>収集パラメータ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="102"/>
-        <location filename="../src/mainwindow.ui" line="202"/>
+        <location filename="../src/mainwindow.ui" line="85"/>
+        <source>ResetViewFlag(All)</source>
+        <translation>全表示済みフラグをクリア</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="92"/>
+        <source>ResetViewFlag(Selecting)</source>
+        <translation>表示済みフラグをクリア(現在の候補のみ)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="109"/>
+        <location filename="../src/mainwindow.ui" line="209"/>
         <source>Sprinkle</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="112"/>
+        <location filename="../src/mainwindow.ui" line="119"/>
         <source>HideOnSprinkle</source>
         <translation>Sprinkle時にウィンドウを隠す</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="145"/>
+        <location filename="../src/mainwindow.ui" line="152"/>
         <source>&amp;Application</source>
         <translation>アプリケーション(&amp;a)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="151"/>
+        <location filename="../src/mainwindow.ui" line="158"/>
         <source>&amp;Window</source>
         <translation>ウィンドウ(&amp;w)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="158"/>
+        <location filename="../src/mainwindow.ui" line="165"/>
         <source>A&amp;ction</source>
         <translation>アクション(&amp;c)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="168"/>
+        <location filename="../src/mainwindow.ui" line="175"/>
         <source>toolBar</source>
         <translation>ツールバー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="193"/>
+        <location filename="../src/mainwindow.ui" line="200"/>
         <source>&amp;StayOnTop</source>
         <translation>常に最前面に表示(&amp;t)</translation>
     </message>

@@ -75,7 +75,8 @@ namespace dg { namespace widget {
 			void stayOnTop(bool b);
 			void sprinkleProgress(int percent);
 			void sprinkle();
-			void resetViewFlag();
+			void resetViewFlagSelecting();
+			void resetViewFlagAll();
 		signals:
 			// 対象タグの変更、または表示された数の変更
 			void remainingImageChanged(const TagIdV& tag, size_t total, size_t shown);
