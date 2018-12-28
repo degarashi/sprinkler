@@ -129,6 +129,24 @@
     </message>
 </context>
 <context>
+    <name>TagInput</name>
+    <message>
+        <location filename="../src/taginput.ui" line="17"/>
+        <source>Input Tag</source>
+        <translation>タグ入力</translation>
+    </message>
+    <message>
+        <location filename="../src/taginput.ui" line="42"/>
+        <source>Existing</source>
+        <translation>既存のタグ</translation>
+    </message>
+    <message>
+        <location filename="../src/taginput.ui" line="62"/>
+        <source>New</source>
+        <translation>新規タグ</translation>
+    </message>
+</context>
+<context>
     <name>TagSelector</name>
     <message>
         <location filename="../src/widget/tagselector.ui" line="20"/>
