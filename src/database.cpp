@@ -1360,6 +1360,7 @@ namespace dg {
 		markAsUsedRecentry({TagId(tagId)});
 	}
 	void Database::makeTagUnlink(const ImageId imgId, const TagId tagId) {
+		emit beginResetLink();
 		sql::Query(
 			"DELETE FROM " TagILink_Table " WHERE " TIL_image_id "=? AND " TIL_tag_id "=?",
 			imgId, tagId
@@ -1374,6 +1375,7 @@ namespace dg {
 			Q_ASSERT(q.numRowsAffected()==1);
 			emit endResetTag();
 		}
+		emit endResetLink();
 	}
 	bool Database::isIsolatedTag(const TagId tagId) const {
 		const auto found = sql::GetRequiredValue<int>(
