@@ -143,6 +143,7 @@ namespace dg {
 			void markAsUsedRecentry(const TagIdV& tag) override;
 			TagIdV getRecentryUsed(size_t limit) const override;
 			void resetMRU() override;
+			TagId makeTag(const QString& name) override;
 
 			// ------------- from DBImage -------------
 			ImageModel_p makeImageModel(QObject* parent=nullptr) const override;

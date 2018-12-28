@@ -1341,4 +1341,14 @@ namespace dg {
 			"UPDATE " Tag_Table " SET " Tag_mru "=0 WHERE " Tag_mru ">0"
 		);
 	}
+	TagId Database::makeTag(const QString& name) {
+		Q_ASSERT(!name.isEmpty());
+		emit beginResetTag();
+		const auto [tagId, tagAdded] = sql::InsertIntoIfNotExist_GetId(
+			Tag_Table,
+			Tag_name,		name
+		);
+		emit endResetTag();
+		return tagId;
+	}
 }
