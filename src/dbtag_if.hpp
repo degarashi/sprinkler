@@ -17,7 +17,7 @@ namespace dg {
 		//! タグ検索クエリ文
 		virtual QString tagMatchQuery(QStringList getcol, const TagIdV& tag, bool emptyIsAll) const = 0;
 		virtual void markAsUsedRecentry(const TagIdV& tag) = 0;
-		virtual TagIdV getRecentryUsed(size_t limit) const = 0;
+		virtual TagIdV getRecentryUsed(size_t limit, bool notZero) const = 0;
 		virtual void resetMRU() = 0;
 		// 既にタグが存在すればそれを返す
 		virtual TagId makeTag(const QString& name) = 0;

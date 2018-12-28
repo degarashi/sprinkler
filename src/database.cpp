@@ -1311,11 +1311,15 @@ namespace dg {
 			);
 		}
 	}
-	TagIdV Database::getRecentryUsed(const size_t limit) const {
+	TagIdV Database::getRecentryUsed(const size_t limit, const bool notZero) const {
 		return sql::GetValues<TagId>(
 			sql::Query(
-				"SELECT " Tag_id " FROM " Tag_Table "\n"
-				"	ORDER BY " Tag_mru " DESC LIMIT ?",
+				QString(
+					"SELECT " Tag_id " FROM " Tag_Table "\n"
+					"	%1\n"
+					"	ORDER BY " Tag_mru " DESC LIMIT ?"
+				)
+				.arg(notZero ? ("WHERE " Tag_mru ">0") : ""),
 				limit
 			)
 		);

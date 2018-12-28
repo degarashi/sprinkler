@@ -141,7 +141,7 @@ namespace dg {
 			QSqlTableModel* makeTagModel(QObject* parent=nullptr) const override;
 			QString tagMatchQuery(QStringList getcol, const TagIdV& tag, bool emptyIsAll) const override;
 			void markAsUsedRecentry(const TagIdV& tag) override;
-			TagIdV getRecentryUsed(size_t limit) const override;
+			TagIdV getRecentryUsed(size_t limit, bool notZero) const override;
 			void resetMRU() override;
 			TagId makeTag(const QString& name) override;
 			bool isIsolatedTag(TagId tag) const override;
