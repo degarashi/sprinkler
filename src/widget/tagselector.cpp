@@ -14,7 +14,7 @@ namespace dg::widget {
 	{
 		_ui->setupUi(this);
 	}
-	void TagSelector::init(DBTag* tag, DatabaseSignal* sig) {
+	void TagSelector::init(const DBTag *const tag, const DatabaseSignal *const sig) {
 		Q_ASSERT(!_dbTag);
 		_dbTag = tag;
 

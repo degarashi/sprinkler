@@ -19,7 +19,7 @@ namespace dg {
 			private:
 				using UI = std::shared_ptr<::Ui::TagSelector>;
 				UI					_ui;
-				DBTag				*_dbTag;
+				const DBTag			*_dbTag;
 				TagSelectModel		*_tagSelected;		//!< 選択されたタグ
 				QSqlTableModel		*_tagCand;
 
@@ -27,7 +27,7 @@ namespace dg {
 
 			public:
 				TagSelector(QWidget* parent=nullptr);
-				void init(DBTag* tag, DatabaseSignal* sig);
+				void init(const DBTag* tag, const DatabaseSignal* sig);
 				TagIdV getArray() const;
 			public slots:
 				void onAdd();
