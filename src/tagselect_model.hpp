@@ -13,11 +13,11 @@ namespace dg {
 		private:
 			using IdSet = std::set<TagId>;
 
-			DBTag*		_dbTag;
-			IdSet		_idSet;
+			const DBTag*	_dbTag;
+			IdSet			_idSet;
 		public:
-			TagSelectModel(DBTag* tag,
-							DatabaseSignal* sig,
+			TagSelectModel(const DBTag* tag,
+							const DatabaseSignal* sig,
 							QObject* parent = nullptr);
 			void add(TagId id);
 			void rem(TagId id);

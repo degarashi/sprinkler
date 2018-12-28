@@ -3,7 +3,7 @@
 #include "database_sig.hpp"
 
 namespace dg {
-	TagSelectModel::TagSelectModel(DBTag* tag, DatabaseSignal* sig, QObject* parent):
+	TagSelectModel::TagSelectModel(const DBTag *const tag, const DatabaseSignal *const sig, QObject* parent):
 		QAbstractListModel(parent),
 		_dbTag(tag)
 	{
