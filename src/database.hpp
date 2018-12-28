@@ -164,6 +164,7 @@ namespace dg {
 			void resetSelectionFlag() override;
 			QString getFullPath(ImageId id) const override;
 			TagIdV getTagFromImage(ImageId id, bool excludeDTag) const override;
+			void makeTagLink(ImageId imgId, TagId tagId) override;
 
 			// ------------- from DBDir -------------
 			void addDir(const QString& path) override;

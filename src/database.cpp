@@ -1351,4 +1351,20 @@ namespace dg {
 		emit endResetTag();
 		return tagId;
 	}
+	void Database::makeTagLink(const ImageId imgId, const TagId tagId) {
+		// 既にリンクがある場合には何もしない
+		if(sql::GetRequiredValue<bool>(
+			sql::Query(
+				"SELECT EXISTS(SELECT 1 FROM " TagILink_Table " WHERE " TIL_image_id "=? AND " TIL_tag_id "=?)",
+				imgId, tagId
+			)
+		))
+			return;
+
+		sql::InsertInto(
+			TagILink_Table,
+			TIL_image_id,		imgId,
+			TIL_tag_id,			tagId
+		);
+	}
 }

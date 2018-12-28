@@ -72,5 +72,7 @@ namespace dg {
 		virtual QString getFullPath(ImageId id) const = 0;
 		// 画像に関連付けられたタグのリストを取得
 		virtual TagIdV getTagFromImage(ImageId id, bool excludeDTag) const = 0;
+		// 画像にタグをリンク付け(既にされていたら何もしない)
+		virtual void makeTagLink(ImageId imgId, TagId tagId) = 0;
 	};
 }
