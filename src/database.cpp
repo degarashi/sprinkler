@@ -1351,6 +1351,7 @@ namespace dg {
 			TIL_image_id,		imgId,
 			TIL_tag_id,			tagId
 		);
+		markAsUsedRecentry({TagId(tagId)});
 	}
 	void Database::makeTagUnlink(const ImageId imgId, const TagId tagId) {
 		sql::Query(
