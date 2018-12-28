@@ -7,9 +7,9 @@ namespace dg {
 		public QValidator
 	{
 		private:
-			DBTag*		_dbTag;
+			const DBTag*		_dbTag;
 		public:
-			TagValidator(DBTag* tag, QObject* parent=nullptr);
+			TagValidator(const DBTag* tag, QObject* parent=nullptr);
 			void fixup(QString& input) const override;
 			State validate(QString& input, int& pos) const override;
 	};

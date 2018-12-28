@@ -2,7 +2,7 @@
 #include "dbtag_if.hpp"
 
 namespace dg {
-	TagValidator::TagValidator(DBTag* tag, QObject *const parent):
+	TagValidator::TagValidator(const DBTag* tag, QObject *const parent):
 		QValidator(parent),
 		_dbTag(tag)
 	{}
