@@ -21,5 +21,7 @@ namespace dg {
 		virtual void resetMRU() = 0;
 		// 既にタグが存在すればそれを返す
 		virtual TagId makeTag(const QString& name) = 0;
+		//! (内部用)タグの孤立チェック
+		virtual bool isIsolatedTag(TagId tag) const = 0;
 	};
 }

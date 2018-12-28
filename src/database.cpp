@@ -1367,4 +1367,23 @@ namespace dg {
 			TIL_tag_id,			tagId
 		);
 	}
+	bool Database::isIsolatedTag(const TagId tagId) const {
+		const auto found = sql::GetRequiredValue<int>(
+			sql::Query(
+				"SELECT\n"
+				"	EXISTS(\n"
+				"		SELECT id FROM " Image_Table " img\n"
+				"			INNER JOIN " TagILink_Table " link\n"
+				"			ON img." Img_id "=link." TIL_image_id " AND link." TIL_tag_id "=?\n"
+				"		UNION ALL\n"
+				"		SELECT id FROM " ImageDir_Table " dir\n"
+				"			INNER JOIN " TagDLink_Table " link\n"
+				"			ON dir." IDir_id "=link." TDL_dir_id " AND link." TDL_tag_id "=?\n"
+				"	)",
+				tagId,
+				tagId
+			)
+		);
+		return found == 0;
+	}
 }

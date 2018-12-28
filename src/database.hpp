@@ -144,6 +144,7 @@ namespace dg {
 			TagIdV getRecentryUsed(size_t limit) const override;
 			void resetMRU() override;
 			TagId makeTag(const QString& name) override;
+			bool isIsolatedTag(TagId tag) const override;
 
 			// ------------- from DBImage -------------
 			ImageModel_p makeImageModel(QObject* parent=nullptr) const override;
