@@ -1350,11 +1350,13 @@ namespace dg {
 		))
 			return;
 
+		emit beginResetLink();
 		sql::InsertInto(
 			TagILink_Table,
 			TIL_image_id,		imgId,
 			TIL_tag_id,			tagId
 		);
+		emit endResetLink();
 		markAsUsedRecentry({TagId(tagId)});
 	}
 	void Database::makeTagUnlink(const ImageId imgId, const TagId tagId) {
