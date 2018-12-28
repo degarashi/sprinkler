@@ -1333,6 +1333,7 @@ namespace dg {
 			Tag_name,		name
 		);
 		emit endResetTag();
+		markAsUsedRecentry({TagId(tagId)});
 		return tagId;
 	}
 	void Database::makeTagLink(const ImageId imgId, const TagId tagId) {
