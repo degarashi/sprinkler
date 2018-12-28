@@ -254,23 +254,7 @@ namespace dg {
 			);
 			while(q.next()) {
 				const auto tagId = sql::GetRequiredValue<TagId>(q, 0, false);
-				const auto found = sql::GetRequiredValue<int>(
-					sql::Query(
-						"SELECT\n"
-						"	EXISTS(\n"
-						"		SELECT id FROM " Image_Table " img\n"
-						"			INNER JOIN " TagILink_Table " link\n"
-						"			ON img." Img_id "=link." TIL_image_id " AND link." TIL_tag_id "=?\n"
-						"		UNION ALL\n"
-						"		SELECT id FROM " ImageDir_Table " dir\n"
-						"			INNER JOIN " TagDLink_Table " link\n"
-						"			ON dir." IDir_id "=link." TDL_dir_id " AND link." TDL_tag_id "=?\n"
-						"	)",
-						tagId,
-						tagId
-					)
-				);
-				Q_ASSERT(found == 1);
+				Q_ASSERT(!isIsolatedTag(tagId));
 			}
 		}
 		// ImageDirがルート以下すべて登録されているかチェック
