@@ -1351,6 +1351,22 @@ namespace dg {
 			TIL_tag_id,			tagId
 		);
 	}
+	void Database::makeTagUnlink(const ImageId imgId, const TagId tagId) {
+		sql::Query(
+			"DELETE FROM " TagILink_Table " WHERE " TIL_image_id "=? AND " TIL_tag_id "=?",
+			imgId, tagId
+		);
+		// 孤立チェック
+		if(isIsolatedTag(tagId)) {
+			emit beginResetTag();
+			const auto q = sql::Query(
+				"DELETE FROM " Tag_Table " WHERE " Tag_id "=?",
+				tagId
+			);
+			Q_ASSERT(q.numRowsAffected()==1);
+			emit endResetTag();
+		}
+	}
 	bool Database::isIsolatedTag(const TagId tagId) const {
 		const auto found = sql::GetRequiredValue<int>(
 			sql::Query(

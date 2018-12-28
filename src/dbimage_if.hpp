@@ -74,5 +74,7 @@ namespace dg {
 		virtual TagIdV getTagFromImage(ImageId id, bool excludeDTag) const = 0;
 		// 画像にタグをリンク付け(既にされていたら何もしない)
 		virtual void makeTagLink(ImageId imgId, TagId tagId) = 0;
+		// 画像からタグを外す(関連付けが無かったら何もしない)
+		virtual void makeTagUnlink(ImageId imgId, TagId tagId) = 0;
 	};
 }
