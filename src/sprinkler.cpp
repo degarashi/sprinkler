@@ -16,6 +16,7 @@
 #include "place/selected.hpp"
 #include "lubee/src/low_discrepancy.hpp"
 #include "gene_worker.hpp"
+#include "taginput.hpp"
 
 #include <QApplication>
 #include <QAction>
@@ -23,6 +24,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QThread>
+#include <QMenu>
 
 namespace dg {
 	Sprinkler::Sprinkler():
@@ -363,5 +365,75 @@ namespace dg {
 		QTimer::singleShot(DelayMS*2, this, [param, tag, this](){
 			_sprinkle(param, tag);
 		});
+	}
+	namespace {
+		template <class T0, class T1>
+		void Exclude(T0& lst0, const T1& lst1) {
+			if(lst0.empty() || lst1.empty())
+				return;
+
+			auto itr0 = lst0.begin(),
+				 itr0E = lst0.end();
+			while(itr0 != itr0E) {
+				if(std::find(lst1.begin(), lst1.end(), *itr0) != lst1.end()) {
+					std::advance(itr0E, -1);
+					if(itr0 == itr0E)
+						break;
+					*itr0 = std::move(*itr0E);
+				} else
+					++itr0;
+			}
+			lst0.erase(itr0, lst0.end());
+		}
+	}
+	void Sprinkler::showTagMenu(const ImageId id, const QPoint& p) {
+		QMenu menu;
+		const auto tag = _db->getTagFromImage(id, true);
+		if(!tag.empty()) {
+			for(auto tagId : tag) {
+				auto* a = menu.addAction(_db->getTagName(tagId));
+				a->setEnabled(false);
+			}
+			menu.addSeparator();
+		}
+		{
+			QMenu* sub = menu.addMenu(tr("&Link tag"));
+			auto ru_tag = _db->getRecentryUsed(8, true);
+			// 既に登録してあるタグは除く
+			Exclude(ru_tag, tag);
+			if(!ru_tag.empty()) {
+				sub->addSection(tr("Recentry used tag"));
+				for(auto tagId : ru_tag) {
+					auto* a = sub->addAction(_db->getTagName(tagId));
+					connect(a, &QAction::triggered,
+							_db, [db=_db, id, tagId](){
+								db->makeTagLink(id, tagId);
+							});
+				}
+				sub->addSeparator();
+			}
+			auto* a = sub->addAction(tr("input..."));
+			connect(a, &QAction::triggered,
+				_db, [db=_db, id](){
+					auto* ti = new TagInput(db, db);
+					connect(ti, &TagInput::accepted,
+							db, [db, id](const TagIdV& tag){
+								for(const auto tagId : tag)
+									db->makeTagLink(id, tagId);
+							});
+					ti->show();
+				});
+		}
+		if(!tag.empty()) {
+			QMenu* sub = menu.addMenu(tr("&Unlink tag"));
+			for(auto tagId : tag) {
+				auto* a = sub->addAction(_db->getTagName(tagId));
+				connect(a, &QAction::triggered,
+					_db, [db=_db, id, tagId](){
+						db->makeTagUnlink(id, tagId);
+					});
+			}
+		}
+		menu.exec(p);
 	}
 }
