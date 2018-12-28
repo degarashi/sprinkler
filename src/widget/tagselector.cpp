@@ -32,6 +32,7 @@ namespace dg::widget {
 		connect(_tagSelected, &QAbstractItemModel::rowsInserted, this, refl);
 		connect(_tagSelected, &QAbstractItemModel::modelReset, this, refl);
 		connect(sig, &DatabaseSignal::endResetImage, this, refl);
+		connect(sig, &DatabaseSignal::endResetLink, this, refl);
 		_refreshCount();
 
 		_ui->leTag->setValidator(new TagValidator(tag, this));

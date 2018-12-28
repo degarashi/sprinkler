@@ -378,7 +378,7 @@
 <context>
     <name>dg::widget::TagSelector</name>
     <message>
-        <location filename="../src/widget/tagselector.cpp" line="56"/>
+        <location filename="../src/widget/tagselector.cpp" line="57"/>
         <source>%1 tags selected	(%2 images found, %3 images already shown)</source>
         <translation>%1個のタグを選択中 (%2枚の画像が該当。%3枚の画像が表示済み)</translation>
     </message>
