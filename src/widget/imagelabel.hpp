@@ -2,10 +2,15 @@
 #include "obstacle.hpp"
 #include "lubee/src/size.hpp"
 #include "lubee/src/point.hpp"
+#include "../idtype.hpp"
 #include <QWidget>
 
 class QLabel;
 class QMenu;
+namespace dg {
+	struct DBImage;
+	struct DBTag;
+}
 // namespace dg::widgetとするとメタコンパイラがtr()の解釈でコケるので…
 namespace dg { namespace widget {
 	class ColorFrame;
@@ -15,10 +20,13 @@ namespace dg { namespace widget {
 	{
 		Q_OBJECT
 		private:
+			ImageId					_id;
 			QLabel*					_label;
 			ColorFrame*				_frame;
 			QMenu*					_ctrlMenu;
 			QPoint					_offset;
+			const DBImage*			_dbImage;
+			const DBTag*			_dbTag;
 
 		signals:
 			void clicked();
@@ -27,8 +35,9 @@ namespace dg { namespace widget {
 			void mousePressEvent(QMouseEvent* e) override;
 			void moveEvent(QMoveEvent* e) override;
 		public:
-			explicit ImageLabel(const QString& path, QSize crop,
+			explicit ImageLabel(ImageId id, QSize crop,
 							const lubee::PointI ofs, QSize resize,
-							QMenu* ctrlMenu);
+							QMenu* ctrlMenu,
+							const DBImage* dbImage, const DBTag* dbTag);
 	};
 }}

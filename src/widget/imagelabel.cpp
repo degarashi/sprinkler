@@ -1,23 +1,31 @@
 #include "imagelabel.hpp"
 #include "colorframe.hpp"
 #include "../aux.hpp"
+#include "../dbimage_if.hpp"
+#include "../dbtag_if.hpp"
+#include "../taginput.hpp"
+#include "../sprinkler.hpp"
 #include <QImageReader>
-#include <QPixmap>
-#include <QPainter>
 #include <QLabel>
 #include <QMoveEvent>
 #include <QMenu>
 
 namespace dg { namespace widget {
-	ImageLabel::ImageLabel(const QString& path, const QSize crop,
+	ImageLabel::ImageLabel(const ImageId id, const QSize crop,
 					const lubee::PointI ofs, const QSize resize,
-					QMenu* ctrlMenu):
+					QMenu* ctrlMenu,
+					const DBImage *const dbImage,
+					const DBTag *const dbTag):
 		Obstacle(nullptr, Qt::SplashScreen|Qt::FramelessWindowHint),
+		_id(id),
 		_label(new QLabel(this)),
 		_frame(new ColorFrame(this)),
 		_ctrlMenu(ctrlMenu),
-		_offset{ofs.x, ofs.y}
+		_offset{ofs.x, ofs.y},
+		_dbImage(dbImage),
+		_dbTag(dbTag)
 	{
+		const auto path = dbImage->getFullPath(id);
 		const auto readImg = [&path](const QSize s){
 			QImageReader reader(path);
 			reader.setScaledSize(AspectKeepScale(s, reader.size()));
@@ -48,8 +56,8 @@ namespace dg { namespace widget {
 			// 予め設定されたCtrlメニューを出す
 			_ctrlMenu->popup(e->globalPos());
 		} else {
-			// (本来ならCtrlとは別のメニューを出す予定だが今は同じにする)
-			_ctrlMenu->popup(e->globalPos());
+			// ILinkタグを表示
+			sprinkler.showTagMenu(_id, e->globalPos());
 		}
 	}
 }}

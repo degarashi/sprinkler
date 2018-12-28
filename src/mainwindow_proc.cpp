@@ -52,11 +52,13 @@ namespace dg { namespace widget {
 			msg = tr("%n image(s) placed", "", res.size());
 			for(auto& r : res) {
 				auto* lb = new widget::ImageLabel(
-					self._dbImg->getFullPath(r.id),
+					r.id,
 					r.crop,
 					r.offset,
 					r.resize,
-					self._ctrlMenu
+					self._ctrlMenu,
+					self._dbImg,
+					self._dbTag
 				);
 				// どれか1つをクリックしたら他の全てのGLabelと自分を前面に持ってくる
 				connect(lb, &widget::ImageLabel::clicked,
