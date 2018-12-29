@@ -388,7 +388,7 @@ namespace dg {
 	}
 	void Sprinkler::showTagMenu(const ImageId id, const QPoint& p) {
 		QMenu menu;
-		const auto tag = _db->getTagFromImage(id, true);
+		const auto tag = _db->getTagFromImage(id, false);
 		if(!tag.empty()) {
 			for(auto tagId : tag) {
 				auto* a = menu.addAction(_db->getTagName(tagId));
