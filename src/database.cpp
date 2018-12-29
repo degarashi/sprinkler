@@ -930,16 +930,26 @@ namespace dg {
 		return _getFullPath(info.loadedDirId) % '/' % info.fileName;
 	}
 	TagIdV Database::getTagFromImage(const ImageId id, const bool excludeDTag) const {
+		if(excludeDTag) {
+			return sql::GetValues<TagId>(
+				sql::Query(
+					MakeWithClause({
+						MakeEnumAncestorQS(
+							QString("(SELECT dir_id FROM Image WHERE id=%1)")
+							.arg(id)
+						)
+					}) % "\n" %
+					QString(
+						"SELECT il.tag_id FROM TagILink il WHERE il.image_id=%1\n"
+						"EXCEPT\n"
+						"SELECT id FROM ancestor"
+					).arg(id)
+				)
+			);
+		}
 		return sql::GetValues<TagId>(
 			sql::Query(
-				(
-					excludeDTag ?
-					(
-						"WITH tags(id) AS (SELECT " TIL_tag_id " FROM " TagILink_Table " WHERE " TIL_image_id "=?)\n"
-						"SELECT id FROM tags WHERE NOT EXISTS(SELECT 1 FROM " TagDLink_Table " dl WHERE dl." TDL_tag_id "=tags.id)"
-					) :
-					("SELECT " TIL_tag_id " FROM " TagILink_Table " WHERE " TIL_image_id "=?")
-				),
+				"SELECT " TIL_tag_id " FROM " TagILink_Table " WHERE " TIL_image_id "=?",
 				id
 			)
 		);
