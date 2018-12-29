@@ -368,14 +368,14 @@ namespace dg {
 	}
 	namespace {
 		template <class T0, class T1>
-		void Exclude(T0& lst0, const T1& lst1) {
-			if(lst0.empty() || lst1.empty())
+		void Exclude(T0& lst0, const T1& l1) {
+			if(lst0.empty() || l1.empty())
 				return;
 
 			auto itr0 = lst0.begin(),
 				 itr0E = lst0.end();
 			while(itr0 != itr0E) {
-				if(std::find(lst1.begin(), lst1.end(), *itr0) != lst1.end()) {
+				if(std::find(l1.begin(), l1.end(), *itr0) != l1.end()) {
 					std::advance(itr0E, -1);
 					if(itr0 == itr0E)
 						break;
