@@ -12,11 +12,11 @@
 
 ## 更新履歴
 ### v0.1.1 (2018/12/29)
-* 選択中タグに関連する画像の表示済みフラグのクリア
-![v011_flagclear](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v011_flagclear.png)
-* 任意のタグ付け & 削除
-![v011_menu](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v011_menu0.jpg)
-![v011_taginput](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v011_taginput.png)
+* 選択中タグに関連する画像の表示済みフラグのクリア  
+![v011_flagclear](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v011_flagclear.png)  
+* 任意のタグ付け & 削除  
+![v011_menu](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v011_menu0.jpg)  
+![v011_taginput](https://github.com/degarashi/sprinkler/blob/images/sprinkler_v011_taginput.png)  
 
 ### v0.1.0 (2018/12/25)
 * SQLiteモジュールを組み込み、画像管理を一括化
