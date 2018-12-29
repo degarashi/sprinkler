@@ -38,7 +38,7 @@ namespace dg {
 		Version ret;
 		ret.major = 0;
 		ret.minor = 1;
-		ret.release = 0;
+		ret.release = 1;
 		return ret;
 	}
 	bool Version::operator < (const Version& v) const noexcept {
