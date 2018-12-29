@@ -388,51 +388,57 @@ namespace dg {
 	}
 	void Sprinkler::showTagMenu(const ImageId id, const QPoint& p) {
 		QMenu menu;
-		// 現在リンクしているタグ
-		const auto linkedTag = _db->getTagFromImage(id, false);
-		if(!linkedTag.empty()) {
-			for(auto tagId : linkedTag) {
-				auto* a = menu.addAction(_db->getTagName(tagId));
-				a->setEnabled(false);
+		{
+			// 現在リンクしているタグ
+			const auto linkedTag = _db->getTagFromImage(id, false);
+			if(!linkedTag.empty()) {
+				for(auto tagId : linkedTag) {
+					auto* a = menu.addAction(_db->getTagName(tagId));
+					a->setEnabled(false);
+				}
+				menu.addSeparator();
 			}
-			menu.addSeparator();
+			{
+				QMenu* sub = menu.addMenu(tr("&Link tag"));
+				auto ru_tag = _db->getRecentryUsed(8, true);
+				// 既に登録してあるタグは除く
+				Exclude(ru_tag, linkedTag);
+				if(!ru_tag.empty()) {
+					sub->addSection(tr("Recentry used tag"));
+					for(auto tagId : ru_tag) {
+						auto* a = sub->addAction(_db->getTagName(tagId));
+						connect(a, &QAction::triggered,
+								_db, [db=_db, id, tagId](){
+									db->makeTagLink(id, tagId);
+								});
+					}
+					sub->addSeparator();
+				}
+				auto* a = sub->addAction(tr("input..."));
+				connect(a, &QAction::triggered,
+					_db, [db=_db, id](){
+						auto* ti = new TagInput(db, db);
+						connect(ti, &TagInput::accepted,
+								db, [db, id](const TagIdV& tag){
+									for(const auto tagId : tag)
+										db->makeTagLink(id, tagId);
+								});
+						ti->show();
+					});
+			}
 		}
 		{
-			QMenu* sub = menu.addMenu(tr("&Link tag"));
-			auto ru_tag = _db->getRecentryUsed(8, true);
-			// 既に登録してあるタグは除く
-			Exclude(ru_tag, linkedTag);
-			if(!ru_tag.empty()) {
-				sub->addSection(tr("Recentry used tag"));
-				for(auto tagId : ru_tag) {
+			// unlink可能なタグ
+			const auto uTag = _db->getTagFromImage(id, true);
+			if(!uTag.empty()) {
+				QMenu* sub = menu.addMenu(tr("&Unlink tag"));
+				for(auto tagId : uTag) {
 					auto* a = sub->addAction(_db->getTagName(tagId));
 					connect(a, &QAction::triggered,
-							_db, [db=_db, id, tagId](){
-								db->makeTagLink(id, tagId);
-							});
+						_db, [db=_db, id, tagId](){
+							db->makeTagUnlink(id, tagId);
+						});
 				}
-				sub->addSeparator();
-			}
-			auto* a = sub->addAction(tr("input..."));
-			connect(a, &QAction::triggered,
-				_db, [db=_db, id](){
-					auto* ti = new TagInput(db, db);
-					connect(ti, &TagInput::accepted,
-							db, [db, id](const TagIdV& tag){
-								for(const auto tagId : tag)
-									db->makeTagLink(id, tagId);
-							});
-					ti->show();
-				});
-		}
-		if(!linkedTag.empty()) {
-			QMenu* sub = menu.addMenu(tr("&Unlink tag"));
-			for(auto tagId : linkedTag) {
-				auto* a = sub->addAction(_db->getTagName(tagId));
-				connect(a, &QAction::triggered,
-					_db, [db=_db, id, tagId](){
-						db->makeTagUnlink(id, tagId);
-					});
 			}
 		}
 		menu.exec(p);
