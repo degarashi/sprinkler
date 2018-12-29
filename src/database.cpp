@@ -839,17 +839,28 @@ namespace dg {
 			cb(d);
 		}
 	}
+	namespace {
+		template <class T>
+		QString MakeEnumAncestorQS(const T& id) {
+			return
+				QString(
+					"ancestor(id, parent_id) AS (\n"
+					"	SELECT " IDir_id ", " IDir_parent_id " FROM " ImageDir_Table " WHERE " IDir_id "=%1\n"
+					"	UNION ALL\n"
+					"	SELECT img." IDir_id ", img." IDir_parent_id " FROM " ImageDir_Table " img, ancestor\n"
+					"		WHERE img." IDir_id " = ancestor.parent_id\n"
+					")"
+				).arg(id);
+		}
+		QString MakeWithClause(const QStringList& lst) {
+			return "WITH RECURSIVE " + lst.join(",\n");
+		}
+	}
 	DirIdV Database::_enumAncestor(const DirId id) const {
 		return sql::GetValues<DirId>(
 			sql::Query(
-				"WITH RECURSIVE r(id, parent_id) AS (\n"
-				"	SELECT " IDir_id ", " IDir_parent_id " FROM " ImageDir_Table " WHERE " IDir_id "=?\n"
-				"	UNION ALL\n"
-				"	SELECT img." IDir_id ", img." IDir_parent_id " FROM " ImageDir_Table " img, r\n"
-				"		WHERE img." IDir_id " = r.parent_id\n"
-				")\n"
-				"SELECT id FROM r",
-				id
+				MakeWithClause({MakeEnumAncestorQS(id)}) % "\n" %
+				"SELECT id FROM ancestor"
 			)
 		);
 	}
@@ -1076,11 +1087,6 @@ namespace dg {
 				tagMatchQuery({"id"}, tag, true)
 			)
 		);
-	}
-	namespace {
-		QString MakeWithClause(const QStringList& lst) {
-			return "WITH RECURSIVE " + lst.join(",\n");
-		}
 	}
 	ImageCandV Database::enumImageByAspect(
 		const TagIdV& tag,
