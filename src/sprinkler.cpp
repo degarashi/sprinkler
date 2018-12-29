@@ -388,9 +388,10 @@ namespace dg {
 	}
 	void Sprinkler::showTagMenu(const ImageId id, const QPoint& p) {
 		QMenu menu;
-		const auto tag = _db->getTagFromImage(id, false);
-		if(!tag.empty()) {
-			for(auto tagId : tag) {
+		// 現在リンクしているタグ
+		const auto linkedTag = _db->getTagFromImage(id, false);
+		if(!linkedTag.empty()) {
+			for(auto tagId : linkedTag) {
 				auto* a = menu.addAction(_db->getTagName(tagId));
 				a->setEnabled(false);
 			}
@@ -400,7 +401,7 @@ namespace dg {
 			QMenu* sub = menu.addMenu(tr("&Link tag"));
 			auto ru_tag = _db->getRecentryUsed(8, true);
 			// 既に登録してあるタグは除く
-			Exclude(ru_tag, tag);
+			Exclude(ru_tag, linkedTag);
 			if(!ru_tag.empty()) {
 				sub->addSection(tr("Recentry used tag"));
 				for(auto tagId : ru_tag) {
@@ -424,9 +425,9 @@ namespace dg {
 					ti->show();
 				});
 		}
-		if(!tag.empty()) {
+		if(!linkedTag.empty()) {
 			QMenu* sub = menu.addMenu(tr("&Unlink tag"));
-			for(auto tagId : tag) {
+			for(auto tagId : linkedTag) {
 				auto* a = sub->addAction(_db->getTagName(tagId));
 				connect(a, &QAction::triggered,
 					_db, [db=_db, id, tagId](){
