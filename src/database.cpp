@@ -1214,26 +1214,18 @@ namespace dg {
 			}
 			return QString("SELECT 1 WHERE False");
 		}
-
-		QStringList tags;
-		for(auto id : tag)
-			tags.append(QString("%1").arg(id));
-
 		for(auto& c : getcol) {
 			c = QStringLiteral("img.") % c;
 		}
 
-		return QString(
-			"SELECT %3 FROM " Image_Table " img\n"
-			"	INNER JOIN " TagILink_Table " link\n"
-			"	ON img." Img_id "=link." TIL_image_id "\n"
-			"	WHERE (link." TIL_tag_id " IN (%1))\n"
-			"	GROUP BY img." Img_id "\n"
-			"	HAVING COUNT(img." Img_id ")=%2"
-		)
-		.arg(tags.join(','))
-		.arg(tags.size())
-		.arg(getcol.join(','));
+		auto ret = QString("SELECT %1 FROM " Image_Table " img\n").arg(getcol.join(','));
+		int count = 0;
+		for(const auto tagId : tag) {
+			ret += QString("	INNER JOIN " TagILink_Table " %1 ON img." Img_id "=%1." TIL_image_id " AND %1." TIL_tag_id "=%2\n")
+					.arg(QString("t_%1").arg(count++))
+					.arg(tagId);
+		}
+		return ret;
 	}
 	ImageInfo Database::getImageInfo(const ImageId id) const {
 		auto q = sql::Query(
