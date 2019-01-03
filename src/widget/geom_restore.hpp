@@ -45,7 +45,9 @@ namespace dg::widget {
 				base_t::showEvent(e);
 			}
 			void closeEvent(QCloseEvent *const e) override {
-				_save();
+				// 一度でも表示されてたら座標を保存
+				if(_shown)
+					_save();
 				base_t::closeEvent(e);
 			}
 			void hideEvent(QHideEvent *const e) override {
