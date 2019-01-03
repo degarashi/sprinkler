@@ -14,7 +14,7 @@ namespace dg::widget {
 			inline static const QString c_key = "geometry";
 
 			QString		_key;
-			bool		_first;
+			bool		_shown;
 
 			//! 前回の表示位置を復元
 			void _load() {
@@ -31,8 +31,8 @@ namespace dg::widget {
 			void showEvent(QShowEvent *const e) override {
 				// ウィンドウシステム都合ではなくアプリケーション側での初回表示時
 				if(!e->spontaneous()) {
-					if(_first) {
-						_first = false;
+					if(!_shown) {
+						_shown = true;
 						_load();
 					}
 					_onVisibilityChanged(true);
@@ -54,7 +54,7 @@ namespace dg::widget {
 			explicit GeomRestore(const QString& key, QWidget *const parent=nullptr):
 				base_t(parent, Qt::Window),
 				_key(key),
-				_first(true)
+				_shown(false)
 			{}
 	};
 }
