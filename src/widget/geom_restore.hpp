@@ -20,7 +20,12 @@ namespace dg::widget {
 			void _load() {
 				QSettings s;
 				s.beginGroup(_key);
-				base_t::restoreGeometry(s.value(c_key).toByteArray());
+				// 座標が保存されていなければリストアしない
+				if(s.contains(c_key)) {
+					const auto data = s.value(c_key);
+					Q_ASSERT(!data.isNull());
+					base_t::restoreGeometry(data.toByteArray());
+				}
 			}
 			void _save() const {
 				QSettings s;
