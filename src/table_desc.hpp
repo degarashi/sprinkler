@@ -106,6 +106,9 @@ const char *const Image_CBFlag[] = {};
 		mru INTEGER NOT NULL DEFAULT 0,				-- 最近使ったタグ検索に使用するカウンタ
 		UNIQUE (name)
 	);
+	CREATE INDEX Index_Tag_LName ON Tag (LOWER(name));
+	CREATE INDEX Index_Tag_Name ON Tag (name);
+	CREATE INDEX Index_Tag_Mru ON Tag (mru);
 */
 #define Tag_Table		"Tag"
 #define Tag_id			"id"
