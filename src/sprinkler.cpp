@@ -177,7 +177,7 @@ namespace dg {
 					_action[Action::OpenMain], &QAction::setChecked);
 		}
 		{
-			auto* w = new ImageDirWindow(db->makeDirModel(), _window.mainwin);
+			auto* w = new ImageDirWindow(db->makeDirModel());
 			_window.source = w;
 			connect(w, &ImageDirWindow::onVisibilityChanged,
 					_action[Action::OpenDir], &QAction::setChecked);
