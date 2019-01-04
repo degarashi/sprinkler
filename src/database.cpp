@@ -545,6 +545,8 @@ namespace dg {
 			// データの更新
 			_updateDatabase();
 		}
+		// データベースのバージョンを書き込む
+		Version::WriteToDB();
 		_validation();
 		_ct = new ColumnTarget(this);
 	}
