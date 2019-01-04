@@ -506,7 +506,7 @@ namespace dg {
 	bool Database::_checkAppVersion() const {
 		QSettings s;
 		s.beginGroup(setting::version);
-		if(const auto confVer = Version::FromSettings(s)) {
+		if(const auto confVer = Version::Read(s)) {
 			const auto thisVer = Version::ThisVersion();
 			if(!(thisVer == *confVer))
 				return false;

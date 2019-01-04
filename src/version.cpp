@@ -18,7 +18,7 @@ namespace dg {
 			ver_minor("minor"),
 			ver_release("release");
 	}
-	VersionOpt Version::FromSettings(const QSettings& s) {
+	VersionOpt Version::Read(const QSettings& s) {
 		bool ok[3];
 		const Version ret{
 			s.value(ver_major).toUInt(ok),

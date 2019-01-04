@@ -19,7 +19,7 @@ namespace dg {
 			std::array<Num, 3>	array;
 		};
 		std::string asString() const;
-		static VersionOpt FromSettings(const QSettings& s);
+		static VersionOpt Read(const QSettings& s);
 		static Version ThisVersion() noexcept;
 		void write(QSettings& s) const;
 
