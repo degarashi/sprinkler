@@ -36,7 +36,7 @@ namespace dg {
 	{}
 	// -------------- Database --------------
 	namespace {
-		const QString c_databaseFile(QStringLiteral("database.sqlite")),
+		const QString c_databaseFile(QStringLiteral("sprinkler_db.sqlite")),
 						c_dbType(QStringLiteral("QSQLITE")),
 						c_thumbnailDir(QStringLiteral("thumbnail"));
 	}
