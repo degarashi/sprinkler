@@ -34,6 +34,9 @@
 		UNIQUE(dir_id, file_name)
 		FOREIGN KEY(dir_id) REFERENCES ImageDir(id)
 	);
+	CREATE INDEX Index_Img_DirId ON Image (dir_id);
+	CREATE INDEX Index_Img_DirId_FileName ON Image (dir_id, file_name);
+	CREATE INDEX Index_Img_CandFlag ON Image (cand_flag);
 */
 #define Image_Table		"Image"
 #define Img_id			"id"
