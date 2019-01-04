@@ -159,6 +159,7 @@ namespace dg {
 			"FOREIGN KEY(" TDL_dir_id ") REFERENCES " ImageDir_Table "(" IDir_id ")\n"
 			")"
 		);
+		sql::Query("CREATE INDEX Index_TDL_DirId ON " TagDLink_Table " (" TDL_dir_id ")");
 
 		sql::Query(
 			"CREATE TABLE " Tag_Table " (\n"

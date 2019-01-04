@@ -92,6 +92,7 @@ const char *const Image_CBFlag[] = {};
 		FOREIGN KEY(tag_id) REFERENCES Tag(id),
 		FOREIGN KEY(dir_id) REFERENCES ImageDir(id)
 	);
+	CREATE INDEX Index_TDL_DirId ON TagDLink (dir_id);
 */
 #define TagDLink_Table	"TagDLink"
 #define TDL_tag_id		"tag_id"
