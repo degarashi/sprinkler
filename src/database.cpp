@@ -566,7 +566,7 @@ namespace dg {
 	void Database::_writeAppVersion() const {
 		QSettings s;
 		s.beginGroup(setting::version);
-		Version::ThisVersion().writeSettings(s);
+		Version::ThisVersion().write(s);
 	}
 	const ColumnTarget* Database::getImageColumnTarget() const {
 		return _ct;

@@ -21,7 +21,7 @@ namespace dg {
 		std::string asString() const;
 		static VersionOpt FromSettings(const QSettings& s);
 		static Version ThisVersion() noexcept;
-		void writeSettings(QSettings& s) const;
+		void write(QSettings& s) const;
 
 		bool operator < (const Version& v) const noexcept;
 		bool operator == (const Version& v) const noexcept;

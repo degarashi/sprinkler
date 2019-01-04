@@ -29,7 +29,7 @@ namespace dg {
 			return std::nullopt;
 		return ret;
 	}
-	void Version::writeSettings(QSettings& s) const {
+	void Version::write(QSettings& s) const {
 		s.setValue(ver_major, major);
 		s.setValue(ver_minor, minor);
 		s.setValue(ver_release, release);
