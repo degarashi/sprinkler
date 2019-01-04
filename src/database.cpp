@@ -172,6 +172,15 @@ namespace dg {
 		sql::Query("CREATE INDEX Index_Tag_LName ON " Tag_Table " (LOWER(" Tag_name "))");
 		sql::Query("CREATE INDEX Index_Tag_Name ON " Tag_Table " (" Tag_name ")");
 		sql::Query("CREATE INDEX Index_Tag_Mru ON " Tag_Table " (" Tag_mru ")");
+
+		sql::Query(
+			"CREATE TABLE " Setting_Table "(\n"
+			Stg_key			" TEXT NOT NULL,\n"
+			Stg_value		" NONE,\n"
+			"UNIQUE(" Stg_key ")\n"
+			")"
+		);
+		sql::Query("CREATE INDEX Index_Setting_Key ON " Setting_Table " (" Stg_key ")");
 	}
 	std::optional<ImageId> Database::_addImage(const DirId dirId, const QString& path) {
 		// 有効な画像だけリストに加える

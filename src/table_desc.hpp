@@ -114,3 +114,16 @@ const char *const Image_CBFlag[] = {};
 #define Tag_id			"id"
 #define Tag_name		"name"
 #define Tag_mru			"mru"
+
+/*
+	-- その他設定値(key & value)
+	CREATE TABLE Setting (
+		key TEXT NOT NULL,
+		value NONE,
+		UNIQUE(name)
+	);
+	CREATE INDEX Index_Setting_Key ON Setting (key);
+*/
+#define Setting_Table	"Setting"
+#define Stg_key			"key"
+#define Stg_value		"value"
