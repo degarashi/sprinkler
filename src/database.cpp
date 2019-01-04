@@ -337,6 +337,9 @@ namespace dg {
 			return false;
 		if(!tables.contains(Image_Table))
 			return false;
+		// データベースのバージョンが古い場合は無効とする
+		if(Version::ReadFromDB() < Version::DBVersion())
+			return false;
 		return true;
 	}
 	void Database::_EnumThumbnailFile(const CBThumbnail& cb) {
@@ -517,9 +520,6 @@ namespace dg {
 	void Database::_init(bool clear) {
 		Q_ASSERT(!_db.isValid());
 		_db = _makeConnection();
-		// 設定ファイルのバージョンを比較し、互換性が無かったら破棄
-		if(!_checkAppVersion())
-			clear = true;
 
 		do {
 			if(_initDatabase(clear))
