@@ -420,7 +420,7 @@ namespace dg {
 		bool ret = false;
 		// データベースファイルの読み込み（作成）
 		{
-			QDir dir(_CacheLocation(true));
+			QDir dir(_ConfigLocation(true));
 			if(createFile) {
 				dir.remove(c_databaseFile);
 				ret = true;
