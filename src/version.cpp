@@ -1,6 +1,7 @@
 #include "version.hpp"
 #include "table_desc.hpp"
 #include "sql/query.hpp"
+#include "sql/getvalue.hpp"
 #include <QSettings>
 
 namespace dg {
@@ -35,6 +36,17 @@ namespace dg {
 		s.setValue(ver_major, major);
 		s.setValue(ver_minor, minor);
 		s.setValue(ver_release, release);
+	}
+	Version::Num Version::ReadFromDB() {
+		if(const auto num = sql::GetValue<Num>(
+			sql::Query(
+				"SELECT " Stg_value " FROM " Setting_Table " WHERE " Stg_key "=?",
+				ver_db
+			)
+		))
+			return *num;
+		// 何も記録されてない時は0を返す
+		return 0;
 	}
 	void Version::WriteToDB() {
 		sql::Query(
