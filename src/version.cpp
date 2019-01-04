@@ -1,5 +1,6 @@
 #include "version.hpp"
-#include <QString>
+#include "table_desc.hpp"
+#include "sql/query.hpp"
 #include <QSettings>
 
 namespace dg {
@@ -16,7 +17,8 @@ namespace dg {
 		const QString
 			ver_major("major"),
 			ver_minor("minor"),
-			ver_release("release");
+			ver_release("release"),
+			ver_db("version");
 	}
 	VersionOpt Version::Read(const QSettings& s) {
 		bool ok[3];
@@ -33,6 +35,13 @@ namespace dg {
 		s.setValue(ver_major, major);
 		s.setValue(ver_minor, minor);
 		s.setValue(ver_release, release);
+	}
+	void Version::WriteToDB() {
+		sql::Query(
+			"REPLACE INTO " Setting_Table " VALUES(?,?)",
+			ver_db,
+			DBVersion()
+		);
 	}
 	Version Version::ThisVersion() noexcept {
 		Version ret;

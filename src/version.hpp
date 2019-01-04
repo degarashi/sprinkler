@@ -23,6 +23,7 @@ namespace dg {
 		static Version ThisVersion() noexcept;
 		static Num DBVersion() noexcept;
 		void write(QSettings& s) const;
+		static void WriteToDB();
 
 		bool operator < (const Version& v) const noexcept;
 		bool operator == (const Version& v) const noexcept;
