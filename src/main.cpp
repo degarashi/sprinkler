@@ -3,6 +3,7 @@
 #include <QTranslator>
 #include <QTextCodec>
 #include <QLibraryInfo>
+#include <QSettings>
 
 int main(int argc, char *argv[]) {
 	// for XmbTextPropertyToTextList(for Linux)
@@ -14,6 +15,9 @@ int main(int argc, char *argv[]) {
 	QCoreApplication::setOrganizationName("DegarashiLab");
 	QCoreApplication::setOrganizationDomain("Degarashi.deg");
 	QCoreApplication::setApplicationName("sprinkler");
+
+	// set default settings file format (INI)
+	QSettings::setDefaultFormat(QSettings::IniFormat);
 
 	// install translation
 	QTranslator tr;
