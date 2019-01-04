@@ -11,6 +11,8 @@
 		UNIQUE(parent_id, name),
 		FOREIGN KEY(parent_id) REFERENCES ImageDir(id)
 	);
+	CREATE INDEX Index_IDir_ParentId ON ImageDir (parent_id);
+	CREATE INDEX Index_IDir_Name ON ImageDir (name);
 */
 #define ImageDir_Table	"ImageDir"
 #define IDir_id			"id"

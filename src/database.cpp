@@ -117,6 +117,9 @@ namespace dg {
 			"FOREIGN KEY(" IDir_parent_id ") REFERENCES " ImageDir_Table "(" IDir_id ") \n"
 			")"
 		);
+		sql::Query("CREATE INDEX Index_IDir_ParentId ON " ImageDir_Table " (" IDir_parent_id ")");
+		sql::Query("CREATE INDEX Index_IDir_Name ON " ImageDir_Table " (" IDir_name ")");
+
 		sql::Query(
 			"CREATE TABLE " Image_Table " (\n"
 			Img_id			" INTEGER PRIMARY KEY,\n"
