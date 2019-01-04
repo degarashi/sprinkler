@@ -29,14 +29,14 @@ namespace dg {
 			Img_aspect		"=?,\n"
 			Img_hash		"=?,\n"
 			Img_modify_date	"=?\n"
-			"WHERE " Img_file_name "=? AND " Img_dir_id "=?",
+			"WHERE " Img_dir_id "=? AND " Img_file_name "=?",
 			width(),
 			height(),
 			area(),
 			aspect(),
 			hash,
 			fileTime,
-			fileName, dId
+			dId, fileName
 		);
 		Q_ASSERT(q.numRowsAffected() == 1);
 	}
