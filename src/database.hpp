@@ -90,6 +90,7 @@ namespace dg {
 			using CBThumbnail = std::function<void (const QFileInfo&)>;
 			static void _EnumThumbnailFile(const CBThumbnail& cb);
 			static QString _CacheLocation(bool create);
+			static QString _ConfigLocation(bool create);
 			static QString _ThumbnailLocation(bool create);
 			static QString _ThumbnailFileName(ImageId id);
 

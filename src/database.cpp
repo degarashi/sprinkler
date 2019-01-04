@@ -399,6 +399,9 @@ namespace dg {
 	QString Database::_ThumbnailLocation(const bool create) {
 		return CreateIfNeeded(_CacheLocation(create) % "/" % c_thumbnailDir, create);
 	}
+	QString Database::_ConfigLocation(const bool create) {
+		return CreateIfNeeded(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation), create);
+	}
 	QString Database::_CacheLocation(const bool create) {
 		return CreateIfNeeded(QStandardPaths::writableLocation(QStandardPaths::CacheLocation), create);
 	}
