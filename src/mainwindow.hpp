@@ -34,12 +34,14 @@ namespace dg { namespace widget {
 				virtual void onExit(MainWindow& self) {}
 				virtual void onSprinkle(MainWindow& self) = 0;
 				virtual void onSprinkleResult(MainWindow& self, const dg::place::ResultV& r) = 0;
+				virtual void onSprinkleAbort(MainWindow&) = 0;
 			};
 			using State_U = std::unique_ptr<State>;
 
 			struct IdleState : State {
 				void onSprinkle(MainWindow& self) override;
 				void onSprinkleResult(MainWindow&, const dg::place::ResultV&) override;
+				void onSprinkleAbort(MainWindow&) override;
 			};
 			struct ProcState : State {
 				TagIdV		_tag;
@@ -50,6 +52,12 @@ namespace dg { namespace widget {
 				void onExit(MainWindow&) override;
 				void onSprinkle(MainWindow& self) override;
 				void onSprinkleResult(MainWindow&, const dg::place::ResultV&) override;
+				void onSprinkleAbort(MainWindow&) override;
+			};
+			struct AbortState : State {
+				void onSprinkle(MainWindow& self) override;
+				void onSprinkleResult(MainWindow&, const dg::place::ResultV&) override;
+				void onSprinkleAbort(MainWindow&) override;
 			};
 
 		private:

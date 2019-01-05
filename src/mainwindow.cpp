@@ -70,6 +70,10 @@ namespace dg { namespace widget {
 						_state->onSprinkleResult(*this, r);
 						changed_f0();
 				});
+		connect(spr, &Sprinkler::sprinkleAbort,
+					this, [this](){
+					_state->onSprinkleAbort(*this);
+				});
 		connect(_ui->tagSelector, &TagSelector::changed,
 					this, changed_f);
 		connect(spr, &Sprinkler::imageChanged,

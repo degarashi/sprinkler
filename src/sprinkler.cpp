@@ -32,6 +32,7 @@ namespace dg {
 		_watcher(nullptr),
 		_quantizer(nullptr),
 		_qtntf(nullptr),
+		_state(State::Idle),
 		_window{}
 	{
 		qApp->setQuitOnLastWindowClosed(false);
@@ -49,6 +50,8 @@ namespace dg {
 		qRegisterMetaType<dg::place::ResultV>("dg::place::ResultV");
 		connect(_geneWorker, &GeneWorker::sprinkleResult,
 				this, [this](const dg::place::ResultV& r){
+					Q_ASSERT(_state == State::Processing);
+					_state = State::Idle;
 					// 実際に使用した画像にフラグを立てる
 					ImageIdV used;
 					for(auto& img : r) {
@@ -58,6 +61,14 @@ namespace dg {
 					// 候補には挙がったが使用されなかった画像のフラグをリセット
 					_db->resetSelectionFlag();
 					emit sprinkleResult(r);
+				});
+		connect(_geneWorker, &GeneWorker::sprinkleAbort,
+				this, [this](){
+					Q_ASSERT(_state == State::Aborted);
+					_state = State::Idle;
+					// 候補フラグをリセット
+					_db->resetSelectionFlag();
+					emit sprinkleAbort();
 				});
 		connect(_geneWorker, &GeneWorker::sprinkleProgress,
 				this, &Sprinkler::sprinkleProgress);
@@ -197,6 +208,15 @@ namespace dg {
 		}
 	}
 	void Sprinkler::_sprinkle(const place::Param& param, const TagIdV& tag) {
+		if(_state == State::Aborted) {
+			// まだGeneWorkerスレッドに伝えてないのでシグナルだけ出してIdleステートへ
+			_state = State::Idle;
+			emit sprinkleAbort();
+			return;
+		}
+		Q_ASSERT(_state == State::WaitDelay);
+		_state = State::Processing;
+
 		const auto qs = QuantifySize;
 		auto initial = _quantizer->qmap();
 		// アスペクト比とサイズの目安
@@ -361,10 +381,21 @@ namespace dg {
 		});
 	}
 	void Sprinkler::sprinkle(const place::Param& param, const TagIdV& tag) {
+		Q_ASSERT(_state == State::Idle);
+		_state = State::WaitDelay;
 		// (QLabelの削除が実際に画面へ適用されるまでタイムラグがある為)
 		QTimer::singleShot(DelayMS*2, this, [param, tag, this](){
 			_sprinkle(param, tag);
 		});
+	}
+	void Sprinkler::abort() {
+		if(_state == State::Processing) {
+			QMetaObject::invokeMethod(_geneWorker, "abort");
+			_state = State::Aborted;
+		} else if(_state == State::WaitDelay) {
+			// QTimer::singleShotの後始末
+			_state = State::Aborted;
+		}
 	}
 	namespace {
 		template <class T0, class T1>

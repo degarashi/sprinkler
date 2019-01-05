@@ -38,8 +38,14 @@ namespace dg { namespace widget {
 		// システムトレイを通常アイコンにする
 		self._tray->setIcon(QApplication::style()->standardIcon(QStyle::SP_TitleBarMenuButton));
 	}
-	void MainWindow::ProcState::onSprinkle(MainWindow&) {
+	void MainWindow::ProcState::onSprinkle(MainWindow& self) {
 		// 中止要請
+		sprinkler.abort();
+		// 中止待機ステートへ移行
+		self._setState(State_U(new AbortState()));
+	}
+	void MainWindow::ProcState::onSprinkleAbort(MainWindow&) {
+		Q_ASSERT(false);
 	}
 	void MainWindow::ProcState::onSprinkleResult(MainWindow& self, const dg::place::ResultV& res) {
 		QString title,

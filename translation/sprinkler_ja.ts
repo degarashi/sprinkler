@@ -262,57 +262,57 @@
         <translation type="vanished">画像ソースウィンドウを開く(&amp;d)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="110"/>
+        <location filename="../src/sprinkler.cpp" line="121"/>
         <source>OpenImageSource&amp;Dir</source>
         <translation>画像ソースウィンドウを開く(&amp;d)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="111"/>
+        <location filename="../src/sprinkler.cpp" line="122"/>
         <source>Open&amp;Tag</source>
         <translation>タグ検索ウィンドウを開く(&amp;t)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="112"/>
+        <location filename="../src/sprinkler.cpp" line="123"/>
         <source>Open&amp;RectView</source>
         <translation>矩形ビューを開く(&amp;r)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="113"/>
+        <location filename="../src/sprinkler.cpp" line="124"/>
         <source>Open&amp;Watch</source>
         <translation>監視ウィンドウを開く(&amp;w)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="114"/>
+        <location filename="../src/sprinkler.cpp" line="125"/>
         <source>Open&amp;MainWindow</source>
         <translation>メインウィンドウを開く(&amp;m)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="115"/>
+        <location filename="../src/sprinkler.cpp" line="126"/>
         <source>&amp;Quit</source>
         <translation>終了(&amp;q)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="116"/>
+        <location filename="../src/sprinkler.cpp" line="127"/>
         <source>&amp;ResetViewFlag</source>
         <translation>表示フラグをリセット(&amp;r)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="402"/>
+        <location filename="../src/sprinkler.cpp" line="433"/>
         <source>&amp;Link tag</source>
         <translation>タグをリンク(&amp;l)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="407"/>
+        <location filename="../src/sprinkler.cpp" line="438"/>
         <source>Recentry used tag</source>
         <translation>最近使用したタグ</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="417"/>
+        <location filename="../src/sprinkler.cpp" line="448"/>
         <source>input...</source>
         <translation>タグ入力…</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="434"/>
+        <location filename="../src/sprinkler.cpp" line="465"/>
         <source>&amp;Unlink tag</source>
         <translation>タグのリンク解除(&amp;u)</translation>
     </message>
@@ -328,38 +328,38 @@
 <context>
     <name>dg::widget::MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="114"/>
+        <location filename="../src/mainwindow.cpp" line="118"/>
         <source>detail menu</source>
         <translation>詳細メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="134"/>
+        <location filename="../src/mainwindow.cpp" line="138"/>
         <source>simplified menu</source>
         <translation>簡易メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="153"/>
+        <location filename="../src/mainwindow.cpp" line="157"/>
         <source>showing: %1
 [%2 / %3] were displayed</source>
         <translation>%1枚の画像を表示中\n[%2 / %3]枚が表示済み</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="48"/>
+        <location filename="../src/mainwindow_proc.cpp" line="54"/>
         <source>No image</source>
         <translation>候補画像なし</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="49"/>
+        <location filename="../src/mainwindow_proc.cpp" line="55"/>
         <source>There&apos;s no image can place</source>
         <translation>配置する画像が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="51"/>
+        <location filename="../src/mainwindow_proc.cpp" line="57"/>
         <source>Image placed</source>
         <translation>配置完了</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow_proc.cpp" line="52"/>
+        <location filename="../src/mainwindow_proc.cpp" line="58"/>
         <source>%n image(s) placed</source>
         <translation>
             <numerusform>%n枚の画像を配置済み</numerusform>

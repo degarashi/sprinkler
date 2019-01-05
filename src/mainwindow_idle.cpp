@@ -25,4 +25,7 @@ namespace dg { namespace widget {
 	void MainWindow::IdleState::onSprinkleResult(MainWindow&, const dg::place::ResultV&) {
 		Q_ASSERT(false);
 	}
+	void MainWindow::IdleState::onSprinkleAbort(MainWindow&) {
+		Q_ASSERT(false);
+	}
 }}

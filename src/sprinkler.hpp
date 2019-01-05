@@ -1,5 +1,6 @@
 #pragma once
 #include "spine/src/singleton.hpp"
+#include "spine/src/enum.hpp"
 #include "idtype.hpp"
 #include <QObject>
 
@@ -51,6 +52,12 @@ namespace dg {
 					_Num
 				};
 			};
+			DefineEnum(State,
+				(Idle)			// 処理受付中
+				(WaitDelay)		// Label消去後のProcessing待ち
+				(Processing)	// 配置計算中
+				(Aborted)		// 処理中断、スレッド終了待ち
+			);
 		private:
 			ToastMgr			*_toast;
 			Watcher				*_watcher;		// ウィンドウ位置監視
@@ -59,6 +66,8 @@ namespace dg {
 			Database			*_db;
 			QThread				*_workerThread;
 			GeneWorker			*_geneWorker;
+			State				_state;
+
 			struct {
 				WatchList			*watchList;	// 監視ウィンドウの追加/削除
 				RectWindow			*rect;		// 障害物の図示
@@ -79,12 +88,14 @@ namespace dg {
 			explicit Sprinkler();
 			// from MainWindow
 			void sprinkle(const place::Param& param, const TagIdV& tag);
+			void abort();
 			~Sprinkler();
 			QAction* getAction(Action::e a) const;
 			void showTagMenu(ImageId id, const QPoint& p);
 		signals:
 			void sprinkleProgress(int p);
 			void sprinkleResult(const dg::place::ResultV& result);
+			void sprinkleAbort();
 			void imageChanged();
 	};
 }
