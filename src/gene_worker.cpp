@@ -13,6 +13,7 @@
 
 #include <random>
 #include <QRect>
+#include <QCoreApplication>
 
 namespace dg {
 	namespace {
@@ -60,11 +61,15 @@ namespace dg {
 				}
 		};
 	}
+	void GeneWorker::abort() {
+		_abort = true;
+	}
 	void GeneWorker::sprinkle(
 		const dg::CellBoard& initial,
 		const dg::place::SelectedV&	selected,
 		const size_t qs
 	){
+		_abort = false;
 		// --------- GAで配置を最適化 ---------
 		using Gene = gene::order::path::VariableGene<int>;
 		using PMX = gene::order::cross::PartiallyMapped;
@@ -91,6 +96,12 @@ namespace dg {
 			env.advance();
 			emit sprinkleProgress(int(std::floor(float(i+1)*100 / NIter)));
 			std::cout << env.getBest().score << std::endl;
+			QCoreApplication::processEvents();
+			if(_abort) {
+				emit sprinkleProgress(100);
+				emit sprinkleAbort();
+				return;
+			}
 		}
 		assert(tmp.nboard()  == fit._initial.nboard());
 

@@ -13,6 +13,8 @@ namespace dg {
 		public QObject
 	{
 		Q_OBJECT
+		private:
+			bool	_abort;
 
 		public slots:
 			void sprinkle(
@@ -20,8 +22,10 @@ namespace dg {
 				const dg::place::SelectedV&	selected,
 				size_t qs
 			);
+			void abort();
 		signals:
 			void sprinkleResult(const dg::place::ResultV& result);
 			void sprinkleProgress(int p);
+			void sprinkleAbort();
 	};
 }
