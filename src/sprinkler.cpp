@@ -202,12 +202,53 @@ namespace dg {
 					_action[Action::OpenTag], &QAction::setChecked);
 		}
 	}
+	using lubee::RangeF;
+	class Sprinkler::ParamAdj {
+		private:
+			RangeF	_range;
+			bool	_declMin;	// 次のadvanceでMinを減らす時のフラグ
+		public:
+			ParamAdj(const RangeF r):
+				_range(r),
+				_declMin(true)
+			{}
+			RangeF range() const noexcept {
+				return _range;
+			}
+			bool advance(bool skipped=false) noexcept {
+				Q_ASSERT(_range.from <= _range.to);
+				bool valid;
+				constexpr const float Lim_Min = .1f,
+									Lim_Max = .2f;
+				if(_declMin) {
+					valid = _range.from > Lim_Min;
+				} else {
+					valid = _range.to > Lim_Max;
+				}
+				if(!valid) {
+					if(skipped)
+						return false;
+					_declMin ^= 1;
+					return advance(true);
+				} else {
+					if(_declMin) {
+						constexpr const float DiffMin = .075f;
+						_range.from = std::max(Lim_Min, _range.from - DiffMin);
+					} else {
+						constexpr const float DiffMax = .05f;
+						_range.to = std::max(Lim_Max, _range.to - DiffMax);
+					}
+					_declMin ^= 1;
+				}
+				return true;
+			}
+	};
 	namespace {
 		QSize ToQSize(const lubee::SizeI& s) noexcept {
 			return {s.width, s.height};
 		}
 	}
-	void Sprinkler::_sprinkle(const place::Param& param, const TagIdV& tag) {
+	void Sprinkler::_sprinkleInit(const place::Param& param, const TagIdV& tag) {
 		if(_state == State::Aborted) {
 			// まだGeneWorkerスレッドに伝えてないのでシグナルだけ出してIdleステートへ
 			_state = State::Idle;
@@ -217,15 +258,36 @@ namespace dg {
 		Q_ASSERT(_state == State::WaitDelay);
 		_state = State::Processing;
 
+		_sprinkleIter(
+			ParamAdj({1.0f, 1.0f}),
+			_quantizer->qmap(),
+			param,
+			tag
+		);
+	}
+	void Sprinkler::_sprinkleIter(
+		ParamAdj adj,
+		const CellBoard& board,
+		const place::Param& param,
+		const TagIdV& tag
+	) {
+		// 最初に候補フラグをクリア(前の反復で使用されているかも知れない為)
+		_db->resetSelectionFlag();
+
 		const auto qs = QuantifySize;
-		auto initial = _quantizer->qmap();
 		// アスペクト比とサイズの目安
-		const auto asp = CalcAspSize(initial, .25f, 16.f, .1f);
+		const auto asp = CalcAspSize(board, .25f, 16.f, .1f);
 		const auto nAsp = asp.size();
 		assert(nAsp > 0);
 
-		// 残り面積
-		auto remain = static_cast<int_fast32_t>(initial.getNEmptyCell() * param.nSample);
+		using Area_t = int_fast32_t;
+		// 候補に選んだ画像の面積合計
+		Area_t sum = 0;
+		const Area_t targetSum = board.getNEmptyCell();
+		// ループを回す残り面積
+		Area_t remain(targetSum * param.nSample);
+		// 空きセルを埋めた画像枚数(NSampleの影響を除く)
+		size_t nImage = 0;
 		// [低食い違い量列]
 		// Window環境でrandom_deviceを使うと毎回同じ乱数列が生成されてしまうので
 		// とりあえずの回避策として現在時刻をシードに使う
@@ -238,9 +300,9 @@ namespace dg {
 		ImageIdV			used;
 
 		// 場のサイズ(チェック用)
-		const auto csz = initial.nboard().getSize();
-		const auto minR = param.sizeRange.from;
-		const auto maxR = param.sizeRange.to;
+		const auto csz = board.nboard().getSize();
+		const auto minR = adj.range().from;
+		const auto maxR = adj.range().to;
 		for(;;) {
 			// アスペクト比均等で画像候補を列挙
 			auto cand = _db->enumImageByAspect(tag, 5, 10);
@@ -318,10 +380,19 @@ namespace dg {
 				);
 				// 後でcand_flagにマークする為、配列に加えておく
 				used.emplace_back(c.id);
-				// 容量を超えた時点で終了
-				remain -= int32_t(sz.area());
-				if(remain <= 0)
-					break;
+				{
+					const Area_t a(sz.area());
+					if(sum < targetSum) {
+						// しきい値を超えた時の枚数を記録
+						++nImage;
+					}
+					sum += a;
+
+					// 容量を超えた時点で終了
+					remain -= a;
+					if(remain <= 0)
+						break;
+				}
 				++i;
 			}
 			if(i < nCand || remain <= 0) {
@@ -352,43 +423,53 @@ namespace dg {
 			_db->setViewFlag(used, 1);
 			used.clear();
 		}
-		qDebug() << selected.size() << "Selected";
+		qDebug() << selected.size() << "Selected(Iter)";
 		Q_ASSERT(selected.size() > 0);
 
-		// 画像が一枚しかない場合は推奨サイズを適用
-		if(selected.size() == 1) {
-			Q_ASSERT(_state == State::Processing);
-			_state = State::Idle;
+		constexpr const float predR = 1.0f;
+		const auto predNImage = static_cast<size_t>(nImage * predR);
+		if(
+			selected.size() == _db->countImageByTag(tag).notshown() ||
+			predNImage >= param.avgImage ||		// 目標画像数以上なら反復処理は終了
+			!adj.advance()						// パラメータの下限に行ってしまった場合も終了
+		  )
+		{
+			// 画像が一枚しかない場合は推奨サイズを適用
+			if(selected.size() == 1) {
+				Q_ASSERT(_state == State::Processing);
+				_state = State::Idle;
 
-			// 使用した画像にフラグを立てる
-			_db->setViewFlag({selected.front().id}, 2);
-			const place::ResultV res = {
-				place::Result {
-					.id = selected[0].id,
-					.resize = ToQSize(lastRect.size()*qs),
-					.crop = ToQSize(lastRect.size()*qs),
-					.offset = {int(lastRect.offset().x*qs), int(lastRect.offset().y*qs)},
-				}
-			};
-			emit sprinkleProgress(100);
-			emit sprinkleResult(res);
-			return;
-		}
-		// Geneスレッドへパラメータを送る
-		QTimer::singleShot(0, _geneWorker, [
-			worker = _geneWorker,
-			sel = std::move(selected),
-			ini = std::move(initial)
-		](){
-			worker->sprinkle(ini, sel, qs);
-		});
+				// 使用した画像にフラグを立てる
+				_db->setViewFlag({selected.front().id}, 2);
+				const place::ResultV res = {
+					place::Result {
+						.id = selected[0].id,
+						.resize = ToQSize(lastRect.size()*qs),
+						.crop = ToQSize(lastRect.size()*qs),
+						.offset = {int(lastRect.offset().x*qs), int(lastRect.offset().y*qs)},
+					}
+				};
+				emit sprinkleProgress(100);
+				emit sprinkleResult(res);
+				return;
+			}
+			// Geneスレッドへパラメータを送る
+			QTimer::singleShot(0, _geneWorker, [
+				worker = _geneWorker,
+				sel = std::move(selected),
+				ini = board
+			](){
+				worker->sprinkle(ini, sel, qs);
+			});
+		} else
+			_sprinkleIter(adj, board, param, tag);
 	}
 	void Sprinkler::sprinkle(const place::Param& param, const TagIdV& tag) {
 		Q_ASSERT(_state == State::Idle);
 		_state = State::WaitDelay;
 		// (QLabelの削除が実際に画面へ適用されるまでタイムラグがある為)
 		QTimer::singleShot(DelayMS*2, this, [param, tag, this](){
-			_sprinkle(param, tag);
+			_sprinkleInit(param, tag);
 		});
 	}
 	void Sprinkler::abort() {

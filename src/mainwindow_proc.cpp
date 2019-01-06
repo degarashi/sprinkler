@@ -29,7 +29,6 @@ namespace dg { namespace widget {
 		}
 		// 後はSprinklerクラスに任せる(結果はplaceResultシグナル)
 		const auto param = self._ui->request->param();
-		Q_ASSERT(param.sizeRange.from <= param.sizeRange.to);
 		sprinkler.sprinkle(param, _tag);
 	}
 	void MainWindow::ProcState::onExit(MainWindow& self) {

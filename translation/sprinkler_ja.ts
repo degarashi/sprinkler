@@ -297,22 +297,22 @@
         <translation>表示フラグをリセット(&amp;r)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="436"/>
+        <location filename="../src/sprinkler.cpp" line="517"/>
         <source>&amp;Link tag</source>
         <translation>タグをリンク(&amp;l)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="441"/>
+        <location filename="../src/sprinkler.cpp" line="522"/>
         <source>Recentry used tag</source>
         <translation>最近使用したタグ</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="451"/>
+        <location filename="../src/sprinkler.cpp" line="532"/>
         <source>input...</source>
         <translation>タグ入力…</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="468"/>
+        <location filename="../src/sprinkler.cpp" line="549"/>
         <source>&amp;Unlink tag</source>
         <translation>タグのリンク解除(&amp;u)</translation>
     </message>
@@ -344,22 +344,22 @@
         <translation>%1枚の画像を表示中\n[%2 / %3]枚が表示済み</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="54"/>
+        <location filename="../src/mainwindow_proc.cpp" line="53"/>
         <source>No image</source>
         <translation>候補画像なし</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="55"/>
+        <location filename="../src/mainwindow_proc.cpp" line="54"/>
         <source>There&apos;s no image can place</source>
         <translation>配置する画像が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="57"/>
+        <location filename="../src/mainwindow_proc.cpp" line="56"/>
         <source>Image placed</source>
         <translation>配置完了</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow_proc.cpp" line="58"/>
+        <location filename="../src/mainwindow_proc.cpp" line="57"/>
         <source>%n image(s) placed</source>
         <translation>
             <numerusform>%n枚の画像を配置済み</numerusform>
@@ -380,17 +380,20 @@
 <context>
     <name>dg::widget::Request</name>
     <message>
-        <location filename="../src/widget/request.cpp" line="26"/>
         <source>Max</source>
-        <translation>最大</translation>
+        <translation type="vanished">最大</translation>
     </message>
     <message>
-        <location filename="../src/widget/request.cpp" line="35"/>
         <source>Min</source>
-        <translation>最小</translation>
+        <translation type="vanished">最小</translation>
     </message>
     <message>
-        <location filename="../src/widget/request.cpp" line="44"/>
+        <location filename="../src/widget/request.cpp" line="25"/>
+        <source>Avg_Image</source>
+        <translation>平均画像数</translation>
+    </message>
+    <message>
+        <location filename="../src/widget/request.cpp" line="34"/>
         <source>Samp</source>
         <translation>サンプル面積</translation>
     </message>

@@ -12,16 +12,13 @@ namespace dg { namespace widget {
 	{
 		Q_OBJECT
 		private:
-			EntrySliderD	*_max,
-							*_min;
-			EntrySliderI	*_samp;
+			EntrySliderI	*_avgImage,
+							*_samp;
 		public slots:
-			void setMin(float m);
-			void setMax(float m);
+			void setAvgImage(size_t n);
 			void setNSample(size_t n);
 		signals:
-			void minChanged(float m);
-			void maxChanged(float m);
+			void avgChanged(size_t m);
 			void nSampleChanged(size_t n);
 		public:
 			explicit Request(QWidget* parent=nullptr);

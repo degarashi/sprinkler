@@ -16,51 +16,33 @@ namespace dg { namespace widget {
 		QWidget* parent
 	):
 		QWidget(parent),
-		_max(new EntrySliderD),
-		_min(new EntrySliderD),
+		_avgImage(new EntrySliderI),
 		_samp(new EntrySliderI)
 	{
 		auto* l = new QVBoxLayout(this);
 
-		_max->setRange({0.1f, 1.f});
-		_max->setName(tr("Max"));
-		_max->setPageStep(0.1f);
-		connect(_max, &EntrySliderD::valueChanged, this, [this](const float v){
-			setMax(v);
+		_avgImage->setRange({4, 64});
+		_avgImage->setName(tr("Avg_Image"));
+		_avgImage->setPageStep(1);
+		connect(_avgImage, &EntrySliderI::valueChanged, this, [this](const int v){
+			setAvgImage(v);
 		});
-		setMax(0.6f);
-		l->addWidget(_max);
+		setAvgImage(16);
+		l->addWidget(_avgImage);
 
-		_min->setRange({0.1f, 1.f});
-		_min->setName(tr("Min"));
-		_min->setPageStep(0.1f);
-		connect(_min, &EntrySliderD::valueChanged, this, [this](const float v){
-			setMin(v);
-		});
-		setMin(0.3f);
-		l->addWidget(_min);
-
-		_samp->setRange({1, 8});
+		_samp->setRange({1, 4});
 		_samp->setName(tr("Samp"));
-		_samp->setPageStep(2);
+		_samp->setPageStep(1);
 		connect(_samp, &EntrySliderI::valueChanged, this, [this](const int v){
 			setNSample(v);
 		});
-		setNSample(4);
+		setNSample(1);
 		l->addWidget(_samp);
 	}
-	void Request::setMax(const float m) {
-		if(CompareAndSet(sizeRange.to, m)) {
-			setMin(std::min(sizeRange.from, sizeRange.to));
-			_max->setValue(m);
-			emit maxChanged(m);
-		}
-	}
-	void Request::setMin(const float m) {
-		if(CompareAndSet(sizeRange.from, m)) {
-			setMax(std::max(sizeRange.to, sizeRange.from));
-			_min->setValue(m);
-			emit minChanged(m);
+	void Request::setAvgImage(const size_t n) {
+		if(CompareAndSet(avgImage, n)) {
+			_avgImage->setValue(n);
+			emit avgChanged(n);
 		}
 	}
 	void Request::setNSample(const size_t n) {
