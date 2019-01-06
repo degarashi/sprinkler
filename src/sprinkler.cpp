@@ -357,6 +357,9 @@ namespace dg {
 
 		// 画像が一枚しかない場合は推奨サイズを適用
 		if(selected.size() == 1) {
+			Q_ASSERT(_state == State::Processing);
+			_state = State::Idle;
+
 			// 使用した画像にフラグを立てる
 			_db->setViewFlag({selected.front().id}, 2);
 			const place::ResultV res = {
