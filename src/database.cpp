@@ -434,7 +434,13 @@ namespace dg {
 		{
 			QDir dir(_ConfigLocation(true));
 			if(createFile) {
+				// 既に開いてる場合は一旦閉じる
+				const bool io = _db.isOpen();
+				if(io)
+					_db.close();
 				dir.remove(c_databaseFile);
+				if(io)
+					_db.open();
 				ret = true;
 			} else if(!QFileInfo::exists(dir.filePath(c_databaseFile))) {
 				ret = true;
