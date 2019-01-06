@@ -58,8 +58,8 @@ namespace dg { namespace widget {
 				this, &MainWindow::sprinkleProgress);
 
 		const auto changed_f = [this](const TagIdV& tag){
-			const auto [total, shown] = _dbTag->countImageByTag(tag);
-			emit remainingImageChanged(tag, total, shown);
+			const auto c = _dbTag->countImageByTag(tag);
+			emit remainingImageChanged(tag, c.total, c.shown);
 		};
 		const auto changed_f0 = [this, changed_f](){
 			changed_f(_ui->tagSelector->getArray());

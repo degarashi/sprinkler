@@ -51,13 +51,13 @@ namespace dg::widget {
 	void TagSelector::_refreshCount() const {
 		// タグ番号配列を取得
 		const auto tags = _tagSelected->getArray();
-		const auto [total, shown] = _dbTag->countImageByTag(tags);
+		const auto c = _dbTag->countImageByTag(tags);
 		// ANDで検索
 		_ui->lbCount->setText(
 			QString(tr("%1 tags selected\t(%2 images found, %3 images already shown)"))
 			.arg(tags.size())
-			.arg(total)
-			.arg(shown)
+			.arg(c.total)
+			.arg(c.shown)
 		);
 	}
 	void TagSelector::onAdd() {

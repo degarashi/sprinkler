@@ -135,7 +135,7 @@ namespace dg {
 
 			// ------------- from DBTag -------------
 			TagIdV excludeRemovedTag(const TagIdV& tag) const override;
-			std::pair<size_t,size_t> countImageByTag(const TagIdV& tag) const override;
+			CountImage countImageByTag(const TagIdV& tag) const override;
 			TagIdOpt getTagId(const QString& name) const override;
 			QString getTagName(TagId id) const override;
 			TagIdV enumTagForwardMatch(const QString& str) const override;

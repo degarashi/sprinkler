@@ -1098,16 +1098,16 @@ namespace dg {
 			return *ret;
 		return QString();
 	}
-	std::pair<size_t,size_t> Database::countImageByTag(const TagIdV& tag) const {
+	Database::CountImage Database::countImageByTag(const TagIdV& tag) const {
 		const auto sq = tagMatchQuery({Img_id, Img_cand_flag}, tag, true);
 		return {
-			sql::GetRequiredValue<size_t>(
+			.total = sql::GetRequiredValue<size_t>(
 				sql::Query(
 					QString("SELECT COUNT(*) FROM (%1)")
 					.arg(sq)
 				)
 			),
-			sql::GetRequiredValue<size_t>(
+			.shown = sql::GetRequiredValue<size_t>(
 				sql::Query(
 					QString("SELECT COUNT(*) FROM (%1) WHERE " Img_cand_flag "=2")
 					.arg(sq)

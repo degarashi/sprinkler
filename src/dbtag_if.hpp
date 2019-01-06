@@ -6,8 +6,17 @@ class QObject;
 class QSqlTableModel;
 namespace dg {
 	struct DBTag {
+		struct CountImage {
+			size_t	total,
+					shown;
+
+			size_t notshown() const noexcept {
+				Q_ASSERT(total >= shown);
+				return total - shown;
+			}
+		};
 		//! イメージ総数, 表示済みフラグ数
-		virtual std::pair<size_t,size_t> countImageByTag(const TagIdV& tag) const = 0;
+		virtual CountImage countImageByTag(const TagIdV& tag) const = 0;
 		//! もう存在しないタグを除外
 		virtual TagIdV excludeRemovedTag(const TagIdV& tag) const = 0;
 		virtual TagIdOpt getTagId(const QString& name) const = 0;

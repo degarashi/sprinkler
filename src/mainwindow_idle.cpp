@@ -10,9 +10,9 @@ namespace dg { namespace widget {
 		self._clearLabels();
 
 		TagIdV tag = self._ui->tagSelector->getArray();
-		const auto [nImage, nShown] = self._dbTag->countImageByTag(tag);
+		const auto c = self._dbTag->countImageByTag(tag);
 		// 対象画像数が0だったら何もしない
-		if(nImage - nShown == 0) {
+		if(c.notshown() == 0) {
 			mgr_toast.bake(
 				Toast::Icon::Information,
 				tr("No images"),
