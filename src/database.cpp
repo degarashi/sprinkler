@@ -815,7 +815,13 @@ namespace dg {
 			var_Path = QVariant(QVariant::String);
 			var_ParentId = *parentId;
 		} else {
-			var_Path = info.path();
+			const QDir d = info.dir();
+			// 親ディレクトリがルートの時は空文字列にする(Unix-only)
+			#ifdef UNIX
+				var_Path = d.isRoot() ? "" : info.path();
+			#else
+				var_Path = info.path();
+			#endif
 			var_ParentId = QVariant(QVariant::Int);
 		}
 
