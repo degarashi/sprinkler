@@ -1,5 +1,6 @@
 #pragma once
 #include "query.hpp"
+#include "error.hpp"
 #include <QSqlDatabase>
 #include <exception>
 
