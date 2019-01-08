@@ -674,7 +674,12 @@ namespace dg {
 		_validation();
 	}
 	void Database::addDir(const QString& path) {
-		_addDirPrivate(path, std::nullopt);
+		sql::Transaction(
+			QSqlDatabase::database(),
+			[this, &path](){
+				_addDirPrivate(path, std::nullopt);
+			}
+		);
 	}
 	void Database::_removeDirSingle(ResetSignal& sig, const DirId id) {
 		// ASSERT: 末端ディレクトリしか対応しないので、そのチェック
