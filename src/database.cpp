@@ -194,96 +194,100 @@ namespace dg {
 	void Database::_validation() const {
 		#ifdef QT_DEBUG
 		qDebug() << "Validation begin...";
-		// 登録されているImageが正当なものかチェック
-		{
-			auto q = sql::Query(
-				"WITH RECURSIVE r(id, path) AS (\n"
-				"	SELECT " IDir_id ", " IDir_path " || '/' || " IDir_name " FROM " ImageDir_Table " WHERE " IDir_parent_id " IS NULL\n"
-				"	UNION ALL\n"
-				"	SELECT img." IDir_id ", r.path || '/' || img." IDir_name " FROM r, " ImageDir_Table " img\n"
-				"		WHERE img." IDir_parent_id " = r.id\n"
-				")\n"
-				"SELECT r.path || '/' || img." Img_file_name ", img." Img_file_name ", " Img_width ", " Img_height ", " Img_area ", " Img_aspect ", " Img_hash ", " Img_modify_date "\n"
-				"	FROM " Image_Table " img INNER JOIN r\n"
-				"		ON img." Img_dir_id " = r.id\n"
-			);
-			while(q.next()) {
-				struct Column {
-					enum {
-						FullPath,
-						FileName,
-						Width,
-						Height,
-						Area,
-						Aspect,
-						Hash,
-						ModifyDate
-					};
-				};
-				// ファイルの中身を確認(サイズやハッシュ、ファイル時刻)
-				const ImageInfo img(q.value(Column::FullPath).toString());
-				const auto chk = [&q](const auto& expect, const auto column){
-					using typ = std::decay_t<decltype(expect)>;
-					if(expect != sql::ConvertQV<typ>(q.value(column)))
-						throw 0;
-				};
-				chk(img.fileName, Column::FileName);
-				chk(img.width(), Column::Width);
-				chk(img.height(), Column::Height);
-				chk(img.area(), Column::Area);
-				chk(img.aspect(), Column::Aspect);
-				chk(img.hash, Column::Hash);
-				chk(img.fileTime, Column::ModifyDate);
+		sql::Transaction(QSqlDatabase::database(),
+			[this](){
+				// 登録されているImageが正当なものかチェック
+				{
+					auto q = sql::Query(
+						"WITH RECURSIVE r(id, path) AS (\n"
+						"	SELECT " IDir_id ", " IDir_path " || '/' || " IDir_name " FROM " ImageDir_Table " WHERE " IDir_parent_id " IS NULL\n"
+						"	UNION ALL\n"
+						"	SELECT img." IDir_id ", r.path || '/' || img." IDir_name " FROM r, " ImageDir_Table " img\n"
+						"		WHERE img." IDir_parent_id " = r.id\n"
+						")\n"
+						"SELECT r.path || '/' || img." Img_file_name ", img." Img_file_name ", " Img_width ", " Img_height ", " Img_area ", " Img_aspect ", " Img_hash ", " Img_modify_date "\n"
+						"	FROM " Image_Table " img INNER JOIN r\n"
+						"		ON img." Img_dir_id " = r.id\n"
+					);
+					while(q.next()) {
+						struct Column {
+							enum {
+								FullPath,
+								FileName,
+								Width,
+								Height,
+								Area,
+								Aspect,
+								Hash,
+								ModifyDate
+							};
+						};
+						// ファイルの中身を確認(サイズやハッシュ、ファイル時刻)
+						const ImageInfo img(q.value(Column::FullPath).toString());
+						const auto chk = [&q](const auto& expect, const auto column){
+							using typ = std::decay_t<decltype(expect)>;
+							if(expect != sql::ConvertQV<typ>(q.value(column)))
+								throw 0;
+						};
+						chk(img.fileName, Column::FileName);
+						chk(img.width(), Column::Width);
+						chk(img.height(), Column::Height);
+						chk(img.area(), Column::Area);
+						chk(img.aspect(), Column::Aspect);
+						chk(img.hash, Column::Hash);
+						chk(img.fileTime, Column::ModifyDate);
+					}
+				}
+				// cand_flagが1は無い
+				Q_ASSERT(
+					sql::GetRequiredValue<int>(
+						sql::Query(
+							"SELECT COUNT(*) FROM " Image_Table " WHERE " Img_cand_flag "=1"
+						)
+					) == 0
+				);
+				// Dirタグの接合性チェック
+				const auto expect = sql::GetRequiredValue<int32_t>(
+									sql::Query("SELECT COUNT(*) FROM " TagDLink_Table)),
+							actual = sql::GetRequiredValue<int32_t>(
+									sql::Query(
+										"SELECT COUNT(*) FROM " TagDLink_Table " tdl\n"
+										"	INNER JOIN " Tag_Table " tag ON tdl." TDL_tag_id "=tag." Tag_id "\n"
+										"	INNER JOIN " ImageDir_Table " idir ON tdl." TDL_dir_id "=idir." Tag_id"\n"
+										"WHERE idir." IDir_name "=tag." Tag_name
+									));
+				Q_ASSERT(expect == actual);
+				// 登録されているImageに対してcheckImageを呼ぶと全部NoUpdateが返る
+				{
+					const auto ids = sql::GetValues<ImageId>(
+						sql::Query(
+							"SELECT " Img_id " FROM " Image_Table
+						)
+					);
+					for(auto id : ids) {
+						Q_ASSERT(const_cast<Database*>(this)->_checkImage(id, false) == CheckResult::NoUpdate);
+					}
+				}
+				// タグが何処にも(TagILink, TagDLink)使われていないのに残っていないかチェック
+				{
+					auto q = sql::Query(
+						"SELECT " Tag_id " FROM " Tag_Table
+					);
+					while(q.next()) {
+						const auto tagId = sql::GetRequiredValue<TagId>(q, 0, false);
+						Q_ASSERT(!isIsolatedTag(tagId));
+					}
+				}
+				// ImageDirがルート以下すべて登録されているかチェック
+				{
+					const auto root = getRootDir();
+					for(auto rootId : root) {
+						// ファイルシステムのディレクトリを走査
+						_imageDirValidation(_getFullPath(rootId));
+					}
+				}
 			}
-		}
-		// cand_flagが1は無い
-		Q_ASSERT(
-			sql::GetRequiredValue<int>(
-				sql::Query(
-					"SELECT COUNT(*) FROM " Image_Table " WHERE " Img_cand_flag "=1"
-				)
-			) == 0
 		);
-		// Dirタグの接合性チェック
-		const auto expect = sql::GetRequiredValue<int32_t>(
-							sql::Query("SELECT COUNT(*) FROM " TagDLink_Table)),
-					actual = sql::GetRequiredValue<int32_t>(
-							sql::Query(
-								"SELECT COUNT(*) FROM " TagDLink_Table " tdl\n"
-								"	INNER JOIN " Tag_Table " tag ON tdl." TDL_tag_id "=tag." Tag_id "\n"
-								"	INNER JOIN " ImageDir_Table " idir ON tdl." TDL_dir_id "=idir." Tag_id"\n"
-								"WHERE idir." IDir_name "=tag." Tag_name
-							));
-		Q_ASSERT(expect == actual);
-		// 登録されているImageに対してcheckImageを呼ぶと全部NoUpdateが返る
-		{
-			const auto ids = sql::GetValues<ImageId>(
-				sql::Query(
-					"SELECT " Img_id " FROM " Image_Table
-				)
-			);
-			for(auto id : ids) {
-				Q_ASSERT(const_cast<Database*>(this)->_checkImage(id, false) == CheckResult::NoUpdate);
-			}
-		}
-		// タグが何処にも(TagILink, TagDLink)使われていないのに残っていないかチェック
-		{
-			auto q = sql::Query(
-				"SELECT " Tag_id " FROM " Tag_Table
-			);
-			while(q.next()) {
-				const auto tagId = sql::GetRequiredValue<TagId>(q, 0, false);
-				Q_ASSERT(!isIsolatedTag(tagId));
-			}
-		}
-		// ImageDirがルート以下すべて登録されているかチェック
-		{
-			const auto root = getRootDir();
-			for(auto rootId : root) {
-				// ファイルシステムのディレクトリを走査
-				_imageDirValidation(_getFullPath(rootId));
-			}
-		}
 		qDebug() << "Validation end...";
 		#endif
 	}
