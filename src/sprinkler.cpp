@@ -17,6 +17,7 @@
 #include "lubee/src/low_discrepancy.hpp"
 #include "gene_worker.hpp"
 #include "taginput.hpp"
+#include "sql/transaction.hpp"
 
 #include <QApplication>
 #include <QAction>
@@ -258,11 +259,16 @@ namespace dg {
 		Q_ASSERT(_state == State::WaitDelay);
 		_state = State::Processing;
 
-		_sprinkleIter(
-			ParamAdj({1.0f, 1.0f}),
-			_quantizer->qmap(),
-			param,
-			tag
+		sql::Transaction(
+			QSqlDatabase::database(),
+			[this, &param, &tag](){
+				_sprinkleIter(
+					ParamAdj({1.0f, 1.0f}),
+					_quantizer->qmap(),
+					param,
+					tag
+				);
+			}
 		);
 	}
 	void Sprinkler::_sprinkleIter(
