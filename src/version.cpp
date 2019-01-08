@@ -59,7 +59,7 @@ namespace dg {
 		Version ret;
 		ret.major = 0;
 		ret.minor = 1;
-		ret.release = 2;
+		ret.release = 3;
 		return ret;
 	}
 	Version::Num Version::DBVersion() noexcept {
