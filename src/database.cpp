@@ -980,12 +980,12 @@ namespace dg {
 				sql::Query(
 					MakeWithClause({
 						MakeEnumAncestorQS(
-							QString("(SELECT dir_id FROM Image WHERE id=%1)")
+							QString("(SELECT " Img_dir_id " FROM " Image_Table " WHERE " Img_id "=%1)")
 							.arg(id)
 						)
 					}) % "\n" %
 					QString(
-						"SELECT il.tag_id FROM TagILink il WHERE il.image_id=%1\n"
+						"SELECT il." TIL_tag_id " FROM " TagILink_Table " il WHERE il." TIL_image_id "=%1\n"
 						"EXCEPT\n"
 						"SELECT id FROM ancestor"
 					).arg(id)
