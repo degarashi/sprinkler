@@ -987,7 +987,7 @@ namespace dg {
 					QString(
 						"SELECT il." TIL_tag_id " FROM " TagILink_Table " il WHERE il." TIL_image_id "=%1\n"
 						"EXCEPT\n"
-						"SELECT id FROM ancestor"
+						"SELECT dl." TDL_tag_id " FROM ancestor a INNER JOIN " TagDLink_Table " dl ON a.id=dl." TDL_dir_id
 					).arg(id)
 				)
 			);
