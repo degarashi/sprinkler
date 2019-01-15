@@ -17,6 +17,8 @@ namespace dg {
 			void endResetImage();
 			void endResetTag();
 			void endResetLink();
+
+			void processingDir(const QString& path);
 		public:
 			explicit DatabaseSignal(QObject* parent=nullptr);
 	};

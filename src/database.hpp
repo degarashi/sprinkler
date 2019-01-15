@@ -56,6 +56,8 @@ namespace dg {
 			RemoveConnection	_remc;
 			ColumnTarget*		_ct;
 			QSqlDatabase		_db;
+			//! 何らかの処理中に別の処理関数が呼ばれたらアサート掛ける為のフラグ
+			mutable bool		_bProcessing;
 			using ThumbnailCache = QHash<ImageId, QPixmap>;
 			mutable ThumbnailCache	_thumbnail;
 

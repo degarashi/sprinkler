@@ -23,6 +23,33 @@
 #include <cmath>
 
 namespace dg {
+	namespace {
+		struct FlagReset {
+			bool& _b;
+			bool _valid;
+
+			FlagReset(bool& b):
+				_b(b),
+				_valid(false)
+			{
+				init();
+			}
+			~FlagReset() {
+				if(_valid)
+					clear();
+			}
+			void init() {
+				Q_ASSERT(!_b);
+				_b = true;
+				_valid = true;
+			}
+			void clear() {
+				Q_ASSERT(_b);
+				_valid = false;
+				_b = false;
+			}
+		};
+	}
 	// -------------- RemoveConnection --------------
 	Database::RemoveConnection::~RemoveConnection() {
 		if(del) {
@@ -193,9 +220,11 @@ namespace dg {
 	}
 	void Database::_validation() const {
 		#ifdef QT_DEBUG
+		FlagReset fs(_bProcessing);
 		qDebug() << "Validation begin...";
 		sql::Transaction(QSqlDatabase::database(),
 			[this](){
+				QCoreApplication::processEvents();
 				// 登録されているImageが正当なものかチェック
 				{
 					auto q = sql::Query(
@@ -257,6 +286,7 @@ namespace dg {
 										"WHERE idir." IDir_name "=tag." Tag_name
 									));
 				Q_ASSERT(expect == actual);
+				QCoreApplication::processEvents();
 				// 登録されているImageに対してcheckImageを呼ぶと全部NoUpdateが返る
 				{
 					const auto ids = sql::GetValues<ImageId>(
@@ -268,6 +298,7 @@ namespace dg {
 						Q_ASSERT(const_cast<Database*>(this)->_checkImage(id, false) == CheckResult::NoUpdate);
 					}
 				}
+				QCoreApplication::processEvents();
 				// タグが何処にも(TagILink, TagDLink)使われていないのに残っていないかチェック
 				{
 					auto q = sql::Query(
@@ -278,6 +309,7 @@ namespace dg {
 						Q_ASSERT(!isIsolatedTag(tagId));
 					}
 				}
+				QCoreApplication::processEvents();
 				// ImageDirがルート以下すべて登録されているかチェック
 				{
 					const auto root = getRootDir();
@@ -561,12 +593,14 @@ namespace dg {
 		_ct = new ColumnTarget(this);
 	}
 	Database::Database(QObject* parent):
-		DatabaseSignal(parent)
+		DatabaseSignal(parent),
+		_bProcessing(false)
 	{
 		_init(false);
 	}
 	Database::Database(_tagInit, QObject* parent):
-		DatabaseSignal(parent)
+		DatabaseSignal(parent),
+		_bProcessing(false)
 	{
 		_init(true);
 	}
@@ -634,6 +668,8 @@ namespace dg {
 		QDir dir(path);
 		if(!dir.exists())
 			throw std::runtime_error("invalid path");
+
+		FlagReset fs(_bProcessing);
 		const QString absPath(dir.absolutePath());
 		// 既にディレクトリが登録されていたら何もしない
 		{
@@ -650,10 +686,12 @@ namespace dg {
 			"	WHERE " IDir_parent_id " IS NULL AND " IDir_path "||'/'||" IDir_name " LIKE ?",
 			absPath + "/%"
 		);
+		fs.clear();
 		while(q.next()) {
 			// 一旦削除
 			removeDir(sql::GetRequiredValue<DirId>(q, 0, false));
 		}
+		fs.init();
 
 		ResetSignal sig(this);
 		// 親(のほうの)Dirが既に登録されていたら何もせず終了
@@ -674,7 +712,11 @@ namespace dg {
 			}
 		}
 		_addDir(sig, path, parent);
+		// 処理が終了した合図としてNull文字列でシグナルを出す
+		emit processingDir(QString());
+		QCoreApplication::processEvents();
 
+		fs.clear();
 		_validation();
 	}
 	void Database::addDir(const QString& path) {
@@ -822,6 +864,11 @@ namespace dg {
 		const QFileInfo info(path);
 		if(!info.exists())
 			throw std::invalid_argument("invalid path");
+
+		// 処理に入る前にそれを知らせるシグナルを出す
+		emit processingDir(path);
+		// イベントループが滞るのを阻止する為にここで処理
+		QCoreApplication::processEvents();
 
 		QVariant var_FileName(info.fileName()),
 				var_Path,
