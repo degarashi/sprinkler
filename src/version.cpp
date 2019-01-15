@@ -63,7 +63,7 @@ namespace dg {
 		return ret;
 	}
 	Version::Num Version::DBVersion() noexcept {
-		return 1;
+		return 2;
 	}
 	bool Version::operator < (const Version& v) const noexcept {
 		return std::lexicographical_compare(
