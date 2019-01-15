@@ -4,9 +4,12 @@
 namespace dg {
 	ImageDirModel::ImageDirModel(DBDir* dir, QObject* parent):
 		QAbstractItemModel(parent),
-		_dbDir(dir)
+		_dbDir(dir),
+		_bReset(false)
 	{}
 	QModelIndex ImageDirModel::index(const int row, const int column, const QModelIndex &parent) const {
+		if(_bReset)
+			return QModelIndex();
 		if(column >= Section::_Num)
 			return QModelIndex();
 
@@ -77,6 +80,8 @@ namespace dg {
 		return itr.value();
 	}
 	QModelIndex ImageDirModel::parent(const QModelIndex &child) const {
+		if(_bReset)
+			return QModelIndex();
 		if(!child.isValid())
 			return QModelIndex();
 
@@ -101,6 +106,8 @@ namespace dg {
 		return QModelIndex();
 	}
 	QVariant ImageDirModel::data(const QModelIndex &index, const int role) const {
+		if(_bReset)
+			return QVariant();
 		if(!index.isValid())
 			return QVariant();
 
@@ -123,6 +130,8 @@ namespace dg {
 		return f;
 	}
 	int ImageDirModel::rowCount(const QModelIndex &parent) const {
+		if(_bReset)
+			return 0;
 		const auto& e = _getDirCache(ToDirId(parent));
 		return e.child.size();
 	}
@@ -153,11 +162,13 @@ namespace dg {
 		_dbDir->removeDir(*id);
 	}
 	void ImageDirModel::beginReset() {
+		_bReset = true;
 		beginResetModel();
 		_dataCache.clear();
 		_dirCache.clear();
 	}
 	void ImageDirModel::endReset() {
+		_bReset = false;
 		endResetModel();
 	}
 }

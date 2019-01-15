@@ -68,6 +68,7 @@ namespace dg {
 				(TotalCount)
 				(ImageCount)
 			);
+			bool _bReset;
 
 		public slots:
 			void beginReset();
