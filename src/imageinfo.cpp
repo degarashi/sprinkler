@@ -71,11 +71,25 @@ namespace dg {
 		return QFileInfo(f).fileTime(QFile::FileModificationTime).toMSecsSinceEpoch();
 	}
 	QByteArray ImageInfo::ToHash(const QString& f) {
-		QCryptographicHash h(QCryptographicHash::Md5);
 		QFile file(f);
 		if(!file.open(QIODevice::ReadOnly))
 			throw ImageInfo::CantLoad(f.toStdString());
-		h.addData(&file);
+
+		// [ファイルサイズ] + [先頭 NBytes] + [中間 NBytes] + [末尾 NBytes] = Hash
+		QCryptographicHash h(QCryptographicHash::Md5);
+		const qint64 size = file.size();
+		h.addData(reinterpret_cast<const char*>(&size), sizeof(size));
+		constexpr const qint64 WindowSize = 85;
+		char buff[WindowSize];
+		// 先頭
+		file.seek(0);
+		h.addData(buff, file.read(buff, std::min(WindowSize, size)));
+		// 中間
+		file.seek(size/2);
+		h.addData(buff, file.read(buff, std::min(WindowSize, size/2)));
+		// 末尾
+		file.seek(std::max<qint64>(0, size-WindowSize));
+		h.addData(buff, file.read(buff, size-file.pos()));
 		return h.result();
 	}
 	bool ImageInfo::CheckModified(const qint64 now, const qint64 cached) {
