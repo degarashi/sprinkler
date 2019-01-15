@@ -9,22 +9,22 @@
         <translation>イメージソース</translation>
     </message>
     <message>
-        <location filename="../src/imagedir_window.ui" line="32"/>
+        <location filename="../src/imagedir_window.ui" line="34"/>
         <source>Add</source>
         <translation>追加</translation>
     </message>
     <message>
-        <location filename="../src/imagedir_window.ui" line="43"/>
+        <location filename="../src/imagedir_window.ui" line="45"/>
         <source>Remove</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="../src/imagedir_window.ui" line="69"/>
+        <location filename="../src/imagedir_window.ui" line="86"/>
         <source>AddDir</source>
         <translation>追加</translation>
     </message>
     <message>
-        <location filename="../src/imagedir_window.ui" line="74"/>
+        <location filename="../src/imagedir_window.ui" line="91"/>
         <source>RemDir</source>
         <translation>追加</translation>
     </message>
@@ -248,9 +248,16 @@
     </message>
 </context>
 <context>
+    <name>dg</name>
+    <message>
+        <source>Select Image Directory</source>
+        <translation type="obsolete">ディレクトリを選択</translation>
+    </message>
+</context>
+<context>
     <name>dg::ImageDirWindow</name>
     <message>
-        <location filename="../src/imagedir_window.cpp" line="16"/>
+        <location filename="../src/imagedir_window.cpp" line="22"/>
         <source>Select Image Directory</source>
         <translation>ディレクトリを選択</translation>
     </message>

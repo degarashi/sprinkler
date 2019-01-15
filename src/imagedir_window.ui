@@ -13,55 +13,72 @@
   <property name="windowTitle">
    <string>ImageSource</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QTreeView" name="dirview">
-     <property name="alternatingRowColors">
-      <bool>true</bool>
-     </property>
-     <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectRows</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pbAdd">
-       <property name="text">
-        <string>Add</string>
+      <widget class="QTreeView" name="dirview">
+       <property name="alternatingRowColors">
+        <bool>true</bool>
        </property>
-       <property name="icon">
-        <iconset theme="list-add">
-         <normaloff>.</normaloff>.</iconset>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pbRemove">
-       <property name="text">
-        <string>Remove</string>
-       </property>
-       <property name="icon">
-        <iconset theme="list-remove">
-         <normaloff>.</normaloff>.</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="pbAdd">
+         <property name="text">
+          <string>Add</string>
+         </property>
+         <property name="icon">
+          <iconset theme="list-add">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pbRemove">
+         <property name="text">
+          <string>Remove</string>
+         </property>
+         <property name="icon">
+          <iconset theme="list-remove">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="lbProcessing">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </item>
   </layout>
   <action name="actionAddDir">

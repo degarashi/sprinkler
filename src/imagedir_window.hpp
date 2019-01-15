@@ -6,6 +6,7 @@ namespace Ui {
 	class ImageDirWindow;
 }
 namespace dg {
+	class DatabaseSignal;
 	class ImageDirModel;
 	class ImageDirWindow :
 		public widget::GeomRestore_Widget
@@ -19,6 +20,6 @@ namespace dg {
 			std::shared_ptr<Ui::ImageDirWindow>	_ui;
 			ImageDirModel*	_model;
 		public:
-			ImageDirWindow(ImageDirModel* model, QWidget* parent=nullptr);
+			ImageDirWindow(DatabaseSignal* sig, ImageDirModel* model, QWidget* parent=nullptr);
 	};
 }
