@@ -4,7 +4,6 @@
 #include <memory>
 
 namespace dg { namespace widget {
-	class EntrySliderD;
 	class EntrySliderI;
 	class Request :
 		public QWidget,
