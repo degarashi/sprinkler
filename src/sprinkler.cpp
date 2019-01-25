@@ -304,6 +304,16 @@ namespace dg {
 		lubee::RectI		lastRect;
 		place::SelectedV	selected;
 		ImageIdV			used;
+		// 画像重複チェック
+		const auto checkUsed = [this, &used](){
+			const size_t s0 = used.size();
+			std::sort(used.begin(), used.end());
+			used.erase(std::unique(used.begin(), used.end()), used.end());
+			Q_ASSERT(s0 == used.size());
+			// 候補フラグを立てる
+			_db->setViewFlag(used, 1);
+			used.clear();
+		};
 
 		// 場のサイズ(チェック用)
 		const auto csz = board.nboard().getSize();
@@ -403,31 +413,11 @@ namespace dg {
 			if(i < nCand || remain <= 0) {
 				break;
 			}
+			checkUsed();
 			// まだ隙間がある
-
-			// 画像重複チェック
-			{
-				const size_t s0 = used.size();
-				std::sort(used.begin(), used.end());
-				used.erase(std::unique(used.begin(), used.end()), used.end());
-				Q_ASSERT(s0 == used.size());
-			}
-			// 候補フラグを立てる
-			_db->setViewFlag(used, 1);
-			used.clear();
 		}
-		if(!used.empty()) {
-			// 画像重複チェック
-			{
-				const size_t s0 = used.size();
-				std::sort(used.begin(), used.end());
-				used.erase(std::unique(used.begin(), used.end()), used.end());
-				Q_ASSERT(s0 == used.size());
-			}
-			// 候補フラグを立てる
-			_db->setViewFlag(used, 1);
-			used.clear();
-		}
+		if(!used.empty())
+			checkUsed();
 		qDebug() << selected.size() << "Selected(Iter)";
 		Q_ASSERT(selected.size() > 0);
 
