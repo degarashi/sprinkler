@@ -17,14 +17,6 @@
 
 namespace dg {
 	namespace {
-		QRect ToQRect(const lubee::RectI& r) {
-			return {
-				r.x0,
-				r.y0,
-				r.width(),
-				r.height()
-			};
-		}
 		QSize ToQSize(const lubee::SizeI& s) noexcept {
 			return {s.width, s.height};
 		}
