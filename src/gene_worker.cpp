@@ -43,11 +43,7 @@ namespace dg {
 					auto cb = _initial;
 					for(size_t i=0 ; i<len ; i++) {
 						auto& p = _selected[g[i]];
-						// Keepした画像を入れてない場合は大幅減点
-						if(!cb.place(p.quantizedSize)) {
-							if(p.important)
-								score -= 10000;
-						}
+						cb.place(p.quantizedSize);
 					}
 					return score + cb.calcScore(_cfNet, _cfEmpty);
 				}

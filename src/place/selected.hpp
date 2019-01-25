@@ -7,7 +7,6 @@ namespace dg::place {
 		ImageId			id;
 		lubee::SizeI	modifiedSize,
 						quantizedSize;
-		bool			important;
 	};
 	using SelectedV = std::vector<Selected>;
 }

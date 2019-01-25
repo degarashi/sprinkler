@@ -380,8 +380,7 @@ namespace dg {
 					place::Selected {
 						.id = c.id,
 						.modifiedSize = {tagw2, tagh2},
-						.quantizedSize = sz,
-						.important = false
+						.quantizedSize = sz
 					}
 				);
 				// 後でcand_flagにマークする為、配列に加えておく
