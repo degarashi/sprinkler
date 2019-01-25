@@ -4,12 +4,12 @@
 #include "src/place/selected.hpp"
 #include "src/place/result.hpp"
 
-#include "genetic/src/gene_order.hpp"
+#include "genetic/src/path/gene.hpp"
 #include "genetic/src/environment.hpp"
-#include "genetic/src/pmx.hpp"
-#include "genetic/src/jgg.hpp"
+#include "genetic/src/path/cross/pmx.hpp"
+#include "genetic/src/generation/jgg.hpp"
 #include "genetic/src/bernoulli.hpp"
-#include "genetic/src/swap.hpp"
+#include "genetic/src/mutate/swap.hpp"
 
 #include <random>
 #include <QRect>
@@ -71,10 +71,18 @@ namespace dg {
 	){
 		_abort = false;
 		// --------- GAで配置を最適化 ---------
-		using Gene = gene::order::path::VariableGene<int>;
-		using PMX = gene::order::cross::PartiallyMapped;
-		using Mutate = gene::order::Bernoulli<gene::order::mutate::Swap>;
-		using Env_t = gene::Environment<std::mt19937, Gene, Fit, PMX, Mutate, gene::JustGenerationGap>;
+		using Gene = gene::path::VariableGene<int>;
+		using Pool_t = gene::Pool<Gene, Fit>;
+		using PMX = gene::path::cross::PartiallyMapped;
+		using Mutate = gene::Bernoulli<gene::mutate::Swap>;
+		using Env_t = gene::Environment<
+						std::mt19937,
+						Gene,
+						Pool_t,
+						PMX,
+						Mutate,
+						gene::JustGenerationGap
+						>;
 
 		const size_t GeneLen = selected.size(),
 					Population = 256,
@@ -90,7 +98,13 @@ namespace dg {
 		using Clock = std::chrono::system_clock;
 		std::mt19937 mt(Clock::now().time_since_epoch().count());
 
-		Env_t env(mt, fit, {}, {MutateP, {}}, {NParent, NChild}, Population, GeneLen);
+		Env_t env(
+			mt,
+			Pool_t{mt, fit, gene::NoClip{}, Population, GeneLen},
+			PMX{},
+			Mutate{MutateP, {}},
+			gene::JustGenerationGap{NParent, NChild}
+		);
 		const int NIter = 32;
 		for(int i=0 ; i<NIter; i++) {
 			env.advance();
