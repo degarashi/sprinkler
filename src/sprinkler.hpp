@@ -78,15 +78,8 @@ namespace dg {
 				widget::MainWindow	*mainwin;
 			} _window;
 			QAction*			_action[Action::_Num];
-			void _sprinkleInit(const place::Param& param, const TagIdV& tag);
 
-			struct ParamAdj;
-			void _sprinkleIter(
-				ParamAdj adj,
-				const CellBoard& board,
-				const place::Param& param,
-				const TagIdV& tag
-			);
+			void _sprinkle(const place::Param& param, const TagIdV& tag);
 
 		private:
 			void _initWatchList();

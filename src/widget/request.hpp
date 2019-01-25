@@ -11,14 +11,11 @@ namespace dg { namespace widget {
 	{
 		Q_OBJECT
 		private:
-			EntrySliderI	*_avgImage,
-							*_samp;
+			EntrySliderI	*_avgImage;
 		public slots:
 			void setAvgImage(size_t n);
-			void setNSample(size_t n);
 		signals:
 			void avgChanged(size_t m);
-			void nSampleChanged(size_t n);
 		public:
 			explicit Request(QWidget* parent=nullptr);
 			const place::Param& param() const noexcept;

@@ -20,7 +20,8 @@ namespace dg {
 			void sprinkle(
 				const dg::CellBoard& initial,
 				const dg::place::SelectedV&	selected,
-				size_t qs
+				size_t qs,
+				size_t targetN
 			);
 			void abort();
 		signals:

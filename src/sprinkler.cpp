@@ -203,53 +203,12 @@ namespace dg {
 					_action[Action::OpenTag], &QAction::setChecked);
 		}
 	}
-	using lubee::RangeF;
-	class Sprinkler::ParamAdj {
-		private:
-			RangeF	_range;
-			bool	_declMin;	// 次のadvanceでMinを減らす時のフラグ
-		public:
-			ParamAdj(const RangeF r):
-				_range(r),
-				_declMin(true)
-			{}
-			RangeF range() const noexcept {
-				return _range;
-			}
-			bool advance(bool skipped=false) noexcept {
-				Q_ASSERT(_range.from <= _range.to);
-				bool valid;
-				constexpr const float Lim_Min = .1f,
-									Lim_Max = .2f;
-				if(_declMin) {
-					valid = _range.from > Lim_Min;
-				} else {
-					valid = _range.to > Lim_Max;
-				}
-				if(!valid) {
-					if(skipped)
-						return false;
-					_declMin ^= 1;
-					return advance(true);
-				} else {
-					if(_declMin) {
-						constexpr const float DiffMin = .075f;
-						_range.from = std::max(Lim_Min, _range.from - DiffMin);
-					} else {
-						constexpr const float DiffMax = .05f;
-						_range.to = std::max(Lim_Max, _range.to - DiffMax);
-					}
-					_declMin ^= 1;
-				}
-				return true;
-			}
-	};
 	namespace {
 		QSize ToQSize(const lubee::SizeI& s) noexcept {
 			return {s.width, s.height};
 		}
 	}
-	void Sprinkler::_sprinkleInit(const place::Param& param, const TagIdV& tag) {
+	void Sprinkler::_sprinkle(const place::Param& param, const TagIdV& tag) {
 		if(_state == State::Aborted) {
 			// まだGeneWorkerスレッドに伝えてないのでシグナルだけ出してIdleステートへ
 			_state = State::Idle;
@@ -262,209 +221,146 @@ namespace dg {
 		sql::Transaction(
 			QSqlDatabase::database(),
 			[this, &param, &tag](){
-				_sprinkleIter(
-					ParamAdj({1.0f, 1.0f}),
-					_quantizer->qmap(),
-					param,
-					tag
-				);
+				// 最初に候補フラグをクリア
+				_db->resetSelectionFlag();
+
+				const CellBoard& board = _quantizer->qmap();
+				const auto qs = QuantifySize;
+				// アスペクト比とサイズの目安(Quantized)
+				const auto asp = CalcAspSize(board, .25f, 16.f, .1f);
+				const auto nAsp = asp.size();
+				assert(nAsp > 0);
+				using Area_t = int_fast32_t;
+				// ループを回す残り面積
+				Area_t remain(board.getNEmptyCell() * 4);
+				// 最後に選択した矩形(quantized) 一枚しか候補となる画像が無かった場合に使用
+				lubee::RectI		lastRect;
+				// 候補画像リスト
+				place::SelectedV	selected;
+				ImageIdV			used;
+				// 選択した画像をマーク & 重複チェック
+				const auto markUsed = [this, &used](){
+					const size_t s0 = used.size();
+					std::sort(used.begin(), used.end());
+					used.erase(std::unique(used.begin(), used.end()), used.end());
+					Q_ASSERT(s0 == used.size());
+					// 候補フラグを立てる
+					_db->setViewFlag(used, 1);
+					used.clear();
+				};
+				// 場の最大サイズ(assert用)
+				const auto maxCellSize = board.nboard().getSize();
+				for(;;) {
+					// アスペクト比均等で画像候補を列挙
+					const auto cand = _db->enumImageByAspect(tag, 5, 10);
+					const auto nCand = cand.size();
+					if(nCand == 0) {
+						// もう候補が存在しない
+						break;
+					}
+					// 各アスペクト領域から均等に一つずつ、倍率をかけながら候補に加えていって面積から引く
+					size_t i=0;
+					while(i < nCand) {
+						auto& c = cand[i];
+						// 画像の元サイズ
+						const QSize orig = c.size;
+						const float a = float(orig.width()) / orig.height();
+						// アスペクト比を維持したまま拡大縮小して少くとも単体で画面に配置できる目安サイズを検索
+						lastRect = asp.back().rect;
+						lubee::SizeI maxsize = lastRect.size() * qs;
+						for(size_t i=0 ; i<nAsp ; i++) {
+							auto& a0 = asp[i];
+							if(a <= a0.aspect) {
+								lastRect = a0.rect;
+								maxsize = a0.rect.size() * qs;
+								break;
+							}
+						}
+						float r = 1;
+						if(orig.width() > maxsize.width) {
+							// 横幅をmaxsizeに合わせるような倍率
+							r = maxsize.width / float(orig.width());
+						}
+						if(orig.height() > maxsize.height) {
+							// 縦幅をmaxsizeに合わせるような倍率
+							r = std::min(r, maxsize.height / float(orig.height()));
+						} else {
+							// 拡大する
+							r = std::min(
+								maxsize.width / float(orig.width()),
+								maxsize.height / float(orig.height())
+							);
+						}
+						// 画像を空き領域に配置できる限界まで拡大or縮小したサイズ
+						const auto fit_w = static_cast<size_t>(std::ceil(r * orig.width())),
+									fit_h = static_cast<size_t>(std::ceil(r * orig.height()));
+						// 遺伝子候補に加える
+						selected.emplace_back(
+							place::Selected {
+								.id = c.id,
+								.fitSize = {fit_w, fit_h},
+							}
+						);
+						const auto fitQs = selected.back().getQuantizedSize(qs);
+						assert(fitQs.width <= maxCellSize.width);
+						assert(fitQs.height <= maxCellSize.height);
+						// 後でcand_flagにマークする為、配列に加えておく
+						used.emplace_back(c.id);
+						// 容量を超えた時点でループは終了
+						remain -= fitQs.area();
+						if(selected.size() >= param.avgImage+8 && remain <= 0)
+							break;
+						++i;
+					}
+					// まだ候補を最後まで調査してなければループを抜ける
+					if(i < nCand) {
+						break;
+					}
+					markUsed();
+					// まだ隙間がある
+				}
+				if(!used.empty())
+					markUsed();
+				qDebug() << selected.size() << "Images selected";
+				Q_ASSERT(selected.size() > 0);
+
+				// 画像が一枚しかない場合は推奨サイズを適用
+				if(selected.size() == 1) {
+					Q_ASSERT(_state == State::Processing);
+					_state = State::Idle;
+
+					// 使用した画像にフラグを立てる
+					_db->setViewFlag({selected.front().id}, 2);
+					const place::ResultV res = {
+						place::Result {
+							.id = selected[0].id,
+							.resize = ToQSize(lastRect.size()*qs),
+							.crop = ToQSize(lastRect.size()*qs),
+							.offset = {int(lastRect.offset().x*qs), int(lastRect.offset().y*qs)},
+						}
+					};
+					emit sprinkleProgress(100);
+					emit sprinkleResult(res);
+					return;
+				}
+				// Geneスレッドへパラメータを送る(別スレッドで計算)
+				QTimer::singleShot(0, _geneWorker, [
+					worker = _geneWorker,
+					sel = std::move(selected),
+					ini = board,
+					n_img = param.avgImage
+				](){
+					worker->sprinkle(ini, sel, qs, n_img);
+				});
 			}
 		);
-	}
-	void Sprinkler::_sprinkleIter(
-		ParamAdj adj,
-		const CellBoard& board,
-		const place::Param& param,
-		const TagIdV& tag
-	) {
-		// 最初に候補フラグをクリア(前の反復で使用されているかも知れない為)
-		_db->resetSelectionFlag();
-
-		const auto qs = QuantifySize;
-		// アスペクト比とサイズの目安
-		const auto asp = CalcAspSize(board, .25f, 16.f, .1f);
-		const auto nAsp = asp.size();
-		assert(nAsp > 0);
-
-		using Area_t = int_fast32_t;
-		// 候補に選んだ画像の面積合計
-		Area_t sum = 0;
-		const Area_t targetSum = board.getNEmptyCell();
-		// ループを回す残り面積
-		Area_t remain(targetSum * param.nSample);
-		// 空きセルを埋めた画像枚数(NSampleの影響を除く)
-		size_t nImage = 0;
-		// [低食い違い量列]
-		// Window環境でrandom_deviceを使うと毎回同じ乱数列が生成されてしまうので
-		// とりあえずの回避策として現在時刻をシードに使う
-		using Clock = std::chrono::system_clock;
-		std::mt19937 mt(static_cast<unsigned long>(Clock::now().time_since_epoch().count()));
-		auto ld_cur = mt();
-		// 最後に選択した矩形(quantized)
-		lubee::RectI		lastRect;
-		place::SelectedV	selected;
-		ImageIdV			used;
-		// 画像重複チェック
-		const auto checkUsed = [this, &used](){
-			const size_t s0 = used.size();
-			std::sort(used.begin(), used.end());
-			used.erase(std::unique(used.begin(), used.end()), used.end());
-			Q_ASSERT(s0 == used.size());
-			// 候補フラグを立てる
-			_db->setViewFlag(used, 1);
-			used.clear();
-		};
-
-		// 場のサイズ(チェック用)
-		const auto csz = board.nboard().getSize();
-		const auto minR = adj.range().from;
-		const auto maxR = adj.range().to;
-		for(;;) {
-			// アスペクト比均等で画像候補を列挙
-			auto cand = _db->enumImageByAspect(tag, 5, 10);
-			const auto nCand = cand.size();
-			if(nCand == 0) {
-				// もう候補が存在しない
-				break;
-			}
-			// 各アスペクト領域から均等に一つずつ、倍率をかけながら候補に加えていって面積から引く
-			size_t i=0;
-			while(i < nCand) {
-				auto& c = cand[i];
-				// 画像の元サイズ
-				const QSize orig = c.size;
-				const float a = float(orig.width()) / orig.height();
-
-				// アスペクト比を維持したまま拡大縮小して少くとも画面に一枚、配置できる目安サイズを検索
-				lastRect = asp.back().rect;
-				lubee::SizeI maxsize = lastRect.size() * qs;
-				for(size_t i=0 ; i<nAsp ; i++) {
-					auto& ent = asp[i];
-					if(a <= ent.aspect) {
-						lastRect = ent.rect;
-						maxsize = ent.rect.size() * qs;
-						break;
-					}
-				}
-
-				float aspR = 1;
-				if(orig.width() > maxsize.width) {
-					// 横幅をmaxsizeに合わせる
-					aspR = maxsize.width / float(orig.width());
-				}
-				if(orig.height() > maxsize.height) {
-					// 縦幅をmaxsizeに合わせる
-					aspR = std::min(aspR, maxsize.height / float(orig.height()));
-				} else {
-					// 拡大する
-					// if(std::abs(orig.width() - maxsize.width) < std::abs(orig.height() - maxsize.height)) {
-						// // 横幅をmaxsizeに合わせる
-						// aspR = maxsize.width / float(orig.width());
-					// } else {
-						// // 縦幅をmaxsizeに合わせる
-						// aspR = maxsize.height / float(orig.height());
-					// }
-				}
-
-				// 低食い違い量列で適当にサイズ倍率を掛ける
-				double lowd;
-				lubee::Halton(&lowd, uint32_t(ld_cur++), 1);
-				// 一定サイズより小さい画像はそのまま
-				if(orig.width() < 384 && orig.height() < 384)
-					lowd = 1;
-				else
-					lowd = double((maxR - minR) * float(lowd) + minR);		// Lerp(minR, maxR, lowd)
-
-				const float r = aspR * float(lowd);
-				const auto tagw2 = static_cast<int>(std::ceil(r * orig.width())),
-							tagh2 = static_cast<int>(std::ceil(r * orig.height()));
-
-				const lubee::SizeI sz{
-					int((tagw2+int(qs)-1)/int(qs)),
-					int((tagh2+int(qs)-1)/int(qs))
-				};
-				assert(sz.width <= csz.width);
-				assert(sz.height <= csz.height);
-				// 遺伝子候補に加える
-				selected.emplace_back(
-					place::Selected {
-						.id = c.id,
-						.modifiedSize = {tagw2, tagh2},
-						.quantizedSize = sz
-					}
-				);
-				// 後でcand_flagにマークする為、配列に加えておく
-				used.emplace_back(c.id);
-				{
-					const Area_t a(sz.area());
-					if(sum < targetSum) {
-						// しきい値を超えた時の枚数を記録
-						++nImage;
-					}
-					sum += a;
-
-					// 容量を超えた時点で終了
-					remain -= a;
-					if(remain <= 0)
-						break;
-				}
-				++i;
-			}
-			if(i < nCand || remain <= 0) {
-				break;
-			}
-			checkUsed();
-			// まだ隙間がある
-		}
-		if(!used.empty())
-			checkUsed();
-		qDebug() << selected.size() << "Selected(Iter)";
-		Q_ASSERT(selected.size() > 0);
-
-		constexpr const float predR = 1.0f;
-		const auto predNImage = static_cast<size_t>(nImage * predR);
-		if(
-			selected.size() == _db->countImageByTag(tag).notshown() ||
-			predNImage >= param.avgImage ||		// 目標画像数以上なら反復処理は終了
-			!adj.advance()						// パラメータの下限に行ってしまった場合も終了
-		  )
-		{
-			// 画像が一枚しかない場合は推奨サイズを適用
-			if(selected.size() == 1) {
-				Q_ASSERT(_state == State::Processing);
-				_state = State::Idle;
-
-				// 使用した画像にフラグを立てる
-				_db->setViewFlag({selected.front().id}, 2);
-				const place::ResultV res = {
-					place::Result {
-						.id = selected[0].id,
-						.resize = ToQSize(lastRect.size()*qs),
-						.crop = ToQSize(lastRect.size()*qs),
-						.offset = {int(lastRect.offset().x*qs), int(lastRect.offset().y*qs)},
-					}
-				};
-				emit sprinkleProgress(100);
-				emit sprinkleResult(res);
-				return;
-			}
-			// Geneスレッドへパラメータを送る
-			QTimer::singleShot(0, _geneWorker, [
-				worker = _geneWorker,
-				sel = std::move(selected),
-				ini = board
-			](){
-				worker->sprinkle(ini, sel, qs);
-			});
-		} else
-			_sprinkleIter(adj, board, param, tag);
 	}
 	void Sprinkler::sprinkle(const place::Param& param, const TagIdV& tag) {
 		Q_ASSERT(_state == State::Idle);
 		_state = State::WaitDelay;
 		// (QLabelの削除が実際に画面へ適用されるまでタイムラグがある為)
 		QTimer::singleShot(DelayMS*2, this, [param, tag, this](){
-			_sprinkleInit(param, tag);
+			_sprinkle(param, tag);
 		});
 	}
 	void Sprinkler::abort() {
