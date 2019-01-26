@@ -37,7 +37,6 @@ namespace dg {
 				{}
 				template <class Gene>
 				double operator()(const Gene& g) const {
-					double score = 0;
 					const auto len = g.length();
 					assert(len == _selected.size());
 					auto cb = _initial;
@@ -45,7 +44,7 @@ namespace dg {
 						auto& p = _selected[g[i]];
 						cb.place(p.quantizedSize);
 					}
-					return score + cb.calcScore(_cfNet, _cfEmpty);
+					return cb.calcScore(_cfNet, _cfEmpty);
 				}
 		};
 	}
