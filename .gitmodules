@@ -4,3 +4,6 @@
 [submodule "src/spine"]
 	path = spine
 	url = ../spine
+[submodule "src/toml11"]
+	path = src/toml11
+	url = https://github.com/ToruNiina/toml11
