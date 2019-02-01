@@ -12,6 +12,7 @@
 #include "genetic/src/mutate/swap.hpp"
 #include "genetic/src/mutate/uniform.hpp"
 #include "genetic/src/real/cross/simplex.hpp"
+#include "toml_settings.hpp"
 
 #include <random>
 #include <QRect>
@@ -19,8 +20,24 @@
 
 namespace dg {
 	namespace {
-		const double MinSc = 0.25,
-					MaxSc = 1.0;
+		namespace param {
+			#define DefP(name, ent, type) \
+				Define_TomlSet("GeneWorker", name, ent, type)
+			DefP(MinSc, "scale_min", double)
+			DefP(MaxSc, "scale_max", double)
+			DefP(Iteration, "iteration", int)
+			DefP(NParent_Min, "NParent.min", int)
+			DefP(NParent_X, "NParent.x", int)
+			DefP(NParent_Y, "NParent.y", int)
+			DefP(NChild_Min, "NChild.min", int)
+			DefP(NChild_X, "NChild.x", int)
+			DefP(NChild_Y, "NChild.y", int)
+			DefP(Mutate_P, "Mutate.probability", double)
+			DefP(Mutate_PathP, "Mutate.probability_path", double)
+			DefP(Fit_Scale, "Fit.fit_scale", double)
+			DefP(Population_Ratio, "Population.ratio", int)
+			#undef DefP
+		}
 		QSize ToQSize(const lubee::SizeI& s) noexcept {
 			return {s.width, s.height};
 		}
@@ -49,7 +66,7 @@ namespace dg {
 			static Gene MakeRandom(RAND& rd, const size_t len) {
 				Gene ret(len);
 				ret.path = Path::MakeRandom(rd, len);
-				ret.scale = Scale::MakeRandom(rd, len, MinSc, MaxSc);
+				ret.scale = Scale::MakeRandom(rd, len, param::MinSc(), param::MaxSc());
 				return ret;
 			}
 		};
@@ -180,9 +197,11 @@ namespace dg {
 		};
 		struct Clip {
 			void operator()(Gene& g) const noexcept {
+				const auto minSc = param::MinSc(),
+						maxSc = param::MaxSc();
 				for(auto&& sc : g.scale) {
-					sc = lubee::Saturate<double>(sc, MinSc, MaxSc);
-					assert(lubee::IsInRange(sc, MinSc, MaxSc));
+					sc = lubee::Saturate<double>(sc, minSc, maxSc);
+					assert(lubee::IsInRange(sc, minSc, maxSc));
 				}
 			}
 		};
@@ -210,12 +229,18 @@ namespace dg {
 						>;
 
 		const size_t GeneLen = selected.size(),
-					NParent = std::max<size_t>(16, GeneLen+1),
-					NChild = std::max<size_t>(32, NParent*2),
-					Population = NChild*2;
-		constexpr double MutateP = 0.06,
-						MutateP_Path = 0.5;
-		Fit fit(selected, initial, 3.0, qs, targetN);
+					NParent = std::max<size_t>(
+								param::NParent_Min(),
+								param::NParent_X()*GeneLen + param::NParent_Y()
+							),
+					NChild = std::max<size_t>(
+								param::NChild_Min(),
+								NParent * param::NChild_X() + param::NChild_Y()
+							),
+					Population = NChild * param::Population_Ratio();
+		const double MutateP = param::Mutate_P(),
+					MutateP_Path = param::Mutate_PathP();
+		Fit fit(selected, initial, param::Fit_Scale(), qs, targetN);
 		auto tmp = fit._initial;
 		emit sprinkleProgress(0);
 
@@ -228,10 +253,14 @@ namespace dg {
 			mt,
 			Pool_t{mt, fit, Clip{}, Population, GeneLen},
 			Cross{GeneLen},
-			Mutate{MutateP, {MutateP_Path, MinSc, MaxSc}},
+			Mutate{MutateP, {
+				MutateP_Path,
+				param::MinSc(),
+				param::MaxSc()
+			}},
 			gene::JustGenerationGap{NParent, NChild}
 		);
-		const int NIter = 32;
+		const int NIter = param::Iteration();
 		double bestScore = std::numeric_limits<double>::lowest();
 		Gene wg;
 		for(int i=0 ; i<NIter; i++) {

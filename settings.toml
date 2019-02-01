@@ -1,1 +1,24 @@
-place_holder = "nothing here!"
+[GeneWorker]
+scale_min = 0.25
+scale_max = 1.0
+iteration = 32
+
+[GeneWorker.NParent]
+min = 16
+x = 1
+y = 1
+
+[GeneWorker.NChild]
+min = 32
+x = 2
+y = 0
+
+[GeneWorker.Population]
+ratio = 2
+
+[GeneWorker.Mutate]
+probability = 0.06
+probability_path = 0.5
+
+[GeneWorker.Fit]
+fit_scale = 3.0

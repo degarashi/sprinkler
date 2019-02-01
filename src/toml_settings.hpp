@@ -56,4 +56,10 @@ namespace dg {
 				return toml::get<T>(value(ent));
 			}
 	};
+	#define Define_TomlSet(table, name, ent, type) \
+		auto name() { \
+			return tomlset.toValue<type>( \
+				QStringLiteral(table "." ent) \
+			); \
+		}
 }
