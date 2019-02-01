@@ -1,4 +1,5 @@
 #include "sprinkler.hpp"
+#include "toml_settings.hpp"
 #include <QApplication>
 #include <QTranslator>
 #include <QTextCodec>
@@ -32,6 +33,8 @@ int main(int argc, char *argv[]) {
 		a.installTranslator(&tr);
 	}
 
+	constexpr const char* TomlFileName = "settings.toml";
+	dg::TomlSettings ts(QApplication::applicationDirPath() + "/" + TomlFileName);
 	const dg::Sprinkler spr;
 	return a.exec();
 }
