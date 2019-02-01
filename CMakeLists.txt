@@ -70,6 +70,18 @@ qt5_create_translation(QM_FILES
 	${TS_FILES}
 )
 
+# install時にシンボリックリンク作成(UNIX-only)
+# macro(install_symlink filepath sympath)
+    # install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${filepath} ${sympath})")
+    # install(CODE "message(\"-- Created symlink: ${sympath} -> ${filepath}\")")
+# endmacro(install_symlink)
+
+macro(make_symlink filepath sympath)
+	execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${filepath} ${sympath})
+endmacro(make_symlink)
+# Toml設定ファイルをランタイム出力先へコピー
+make_symlink(${CMAKE_SOURCE_DIR}/settings.toml ${${PROJECT_NAME}_BINARY_DIR}/settings.toml)
+
 add_executable(
 	${PROJECT_NAME}
 	${SRC}
