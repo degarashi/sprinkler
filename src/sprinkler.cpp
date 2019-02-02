@@ -18,6 +18,7 @@
 #include "gene_worker.hpp"
 #include "taginput.hpp"
 #include "sql/transaction.hpp"
+#include "toml_settings.hpp"
 
 #include <QApplication>
 #include <QAction>
@@ -37,6 +38,7 @@ namespace dg {
 		_window{}
 	{
 		qApp->setQuitOnLastWindowClosed(false);
+		_storeConstValues();
 		_initAction();
 		_initWatchList();
 		_initRectView();
@@ -142,8 +144,22 @@ namespace dg {
 		delete _window.mainwin;
 	}
 	namespace {
-		constexpr size_t QuantifySize = 32,
-						DelayMS = 200;
+		#define DefP(name, ent, type) \
+			Define_TomlSet("Sprinkler", name, ent, type)
+		namespace param {
+			DefP(AspMin, "Asp.min", float)
+			DefP(AspMax, "Asp.max", float)
+			DefP(AspDiff, "Asp.diff", float)
+			DefP(AreaRatio, "Collect.area_ratio", size_t)
+			DefP(EnumBuckets, "Collect.enum_buckets", size_t)
+			DefP(EnumNImage, "Collect.enum_nimage", size_t)
+			DefP(AuxImage, "Collect.aux_image", size_t)
+		}
+		#undef DefP
+	}
+	void Sprinkler::_storeConstValues() {
+		_const.quantify_size = tomlset.toValue<size_t>("Sprinkler.quantify_size");
+		_const.delay_ms = tomlset.toValue<size_t>("Sprinkler.delay_ms");
 	}
 	void Sprinkler::_initRectView() {
 		Q_ASSERT(_quantizer);
@@ -167,8 +183,8 @@ namespace dg {
 		_watcher->makeArea(_window.watchList->getAddArea());
 		_watcher->startLoop();
 
-		_quantizer = new Quantizer(QuantifySize, this);
-		_qtntf = new QtWNotifier(DelayMS, this);
+		_quantizer = new Quantizer(_const.quantify_size, this);
+		_qtntf = new QtWNotifier(_const.delay_ms, this);
 
 		// 監視対象ウィンドウの移動があったらQuantizerに通知
 		connect(_watcher, &Watcher::onWatchedRectChanged,
@@ -225,14 +241,19 @@ namespace dg {
 				_db->resetSelectionFlag();
 
 				const CellBoard& board = _quantizer->qmap();
-				const auto qs = QuantifySize;
+				const auto qs = _const.quantify_size;
 				// アスペクト比とサイズの目安(Quantized)
-				const auto asp = CalcAspSize(board, .25f, 16.f, .1f);
+				const auto asp = CalcAspSize(
+									board,
+									param::AspMin(),
+									param::AspMax(),
+									param::AspDiff()
+								);
 				const auto nAsp = asp.size();
 				assert(nAsp > 0);
 				using Area_t = int_fast32_t;
 				// ループを回す残り面積
-				Area_t remain(board.getNEmptyCell() * 4);
+				Area_t remain(board.getNEmptyCell() * param::AreaRatio());
 				// 最後に選択した矩形(quantized) 一枚しか候補となる画像が無かった場合に使用
 				lubee::RectI		lastRect;
 				// 候補画像リスト
@@ -252,7 +273,7 @@ namespace dg {
 				const auto maxCellSize = board.nboard().getSize();
 				for(;;) {
 					// アスペクト比均等で画像候補を列挙
-					const auto cand = _db->enumImageByAspect(tag, 5, 10);
+					const auto cand = _db->enumImageByAspect(tag, param::EnumBuckets(), param::EnumNImage());
 					const auto nCand = cand.size();
 					if(nCand == 0) {
 						// もう候補が存在しない
@@ -308,7 +329,7 @@ namespace dg {
 						used.emplace_back(c.id);
 						// 容量を超えた時点でループは終了
 						remain -= fitQs.area();
-						if(selected.size() >= param.avgImage+8 && remain <= 0)
+						if(selected.size() >= param.avgImage+param::AuxImage() && remain <= 0)
 							break;
 						++i;
 					}
@@ -348,6 +369,7 @@ namespace dg {
 					worker = _geneWorker,
 					sel = std::move(selected),
 					ini = board,
+					qs,
 					n_img = param.avgImage
 				](){
 					worker->sprinkle(ini, sel, qs, n_img);
@@ -359,7 +381,7 @@ namespace dg {
 		Q_ASSERT(_state == State::Idle);
 		_state = State::WaitDelay;
 		// (QLabelの削除が実際に画面へ適用されるまでタイムラグがある為)
-		QTimer::singleShot(DelayMS*2, this, [param, tag, this](){
+		QTimer::singleShot(_const.delay_ms*2, this, [param, tag, this](){
 			_sprinkle(param, tag);
 		});
 	}

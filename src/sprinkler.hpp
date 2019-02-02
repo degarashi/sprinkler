@@ -71,6 +71,11 @@ namespace dg {
 			State				_state;
 
 			struct {
+				size_t			quantify_size,
+								delay_ms;
+			} _const;
+
+			struct {
 				WatchList			*watchList;	// 監視ウィンドウの追加/削除
 				RectWindow			*rect;		// 障害物の図示
 				ImageDirWindow		*source;
@@ -87,6 +92,7 @@ namespace dg {
 			void _initImageSrc();
 			void _initAction();
 			void _linkAction();
+			void _storeConstValues();
 		public:
 			explicit Sprinkler();
 			// from MainWindow
