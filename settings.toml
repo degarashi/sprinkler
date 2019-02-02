@@ -6,7 +6,7 @@ avg_image_default = 16
 
 [Sprinkler]
 delay_ms = 200
-quantify_size = 32
+quantify_size = 64
 
 # --- 即時反映 ---
 [Sprinkler.Asp]
@@ -23,7 +23,7 @@ aux_image = 8
 [GeneWorker]
 scale_min = 0.25
 scale_max = 1.0
-iteration = 32
+iteration = 64
 
 [GeneWorker.NParent]
 min = 16
