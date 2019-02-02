@@ -150,7 +150,7 @@ namespace dg {
 			DefP(AspMin, "Asp.min", float)
 			DefP(AspMax, "Asp.max", float)
 			DefP(AspDiff, "Asp.diff", float)
-			DefP(AreaRatio, "Collect.area_ratio", size_t)
+			DefP(AreaRatio, "Collect.area_ratio", int)
 			DefP(EnumBuckets, "Collect.enum_buckets", size_t)
 			DefP(EnumNImage, "Collect.enum_nimage", size_t)
 			DefP(AuxImage, "Collect.aux_image", size_t)
@@ -253,7 +253,7 @@ namespace dg {
 				assert(nAsp > 0);
 				using Area_t = int_fast32_t;
 				// ループを回す残り面積
-				Area_t remain(board.getNEmptyCell() * param::AreaRatio());
+				Area_t remain(Area_t(board.getNEmptyCell()) * param::AreaRatio());
 				// 最後に選択した矩形(quantized) 一枚しか候補となる画像が無かった場合に使用
 				lubee::RectI		lastRect;
 				// 候補画像リスト
@@ -318,8 +318,8 @@ namespace dg {
 						// 遺伝子候補に加える
 						selected.emplace_back(
 							place::Selected {
-								.id = c.id,
-								.fitSize = {fit_w, fit_h},
+								.id = ImageId(c.id),
+								.fitSize = {int32_t(fit_w), int32_t(fit_h)},
 							}
 						);
 						const auto fitQs = selected.back().getQuantizedSize(qs);
@@ -357,7 +357,7 @@ namespace dg {
 							.id = selected[0].id,
 							.resize = ToQSize(lastRect.size()*qs),
 							.crop = ToQSize(lastRect.size()*qs),
-							.offset = {int(lastRect.offset().x*qs), int(lastRect.offset().y*qs)},
+							.offset = {int(lastRect.offset().x*int(qs)), int(lastRect.offset().y*int(qs))},
 						}
 					};
 					emit sprinkleProgress(100);
