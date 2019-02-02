@@ -270,7 +270,9 @@ namespace dg {
 					used.clear();
 				};
 				// 場の最大サイズ(assert用)
-				const auto maxCellSize = board.nboard().getSize();
+				#ifndef NDEBUG
+					const auto maxCellSize = board.nboard().getSize();
+				#endif
 				for(;;) {
 					// アスペクト比均等で画像候補を列挙
 					const auto cand = _db->enumImageByAspect(tag, param::EnumBuckets(), param::EnumNImage());
