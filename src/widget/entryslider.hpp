@@ -12,6 +12,7 @@ namespace dg::widget {
 		// Q_OBJECTは、テンプレートクラスに対応してないので敢えて記述しない
 		private:
 			using value_t = Value;
+			using range_t = lubee::Range<value_t>;
 			using Ui_S = std::shared_ptr<Ui::EntrySlider>;
 			Ui_S			_ui;
 			QString			_suffix;
@@ -55,7 +56,7 @@ namespace dg::widget {
 			void setValue(const value_t v) {
 				_slider()->setValue(_toUi(v));
 			}
-			void setRange(const lubee::RangeF r) {
+			void setRange(const range_t r) {
 				_slider()->setRange(_toUi(r.from), _toUi(r.to));
 			}
 	};
