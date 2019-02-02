@@ -15,8 +15,8 @@ namespace dg { namespace widget {
 		namespace param {
 			#define DefP(name, ent, type) \
 				Define_TomlSet("Request", name, ent, type)
-			DefP(AvgImage_Min, "avg_image_min", size_t)
-			DefP(AvgImage_Max, "avg_image_max", size_t)
+			DefP(AvgImage_Min, "avg_image_min", int)
+			DefP(AvgImage_Max, "avg_image_max", int)
 			DefP(AvgImage_Default, "avg_image_default", size_t)
 			#undef DefP
 		}
