@@ -1,3 +1,10 @@
+# --- 反映に再起動が必要な物 ---
+[Request]
+avg_image_min = 4
+avg_image_max = 64
+avg_image_default = 16
+
+# --- 即時反映 ---
 [GeneWorker]
 scale_min = 0.25
 scale_max = 1.0

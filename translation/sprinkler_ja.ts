@@ -395,7 +395,7 @@
         <translation type="vanished">最小</translation>
     </message>
     <message>
-        <location filename="../src/widget/request.cpp" line="24"/>
+        <location filename="../src/widget/request.cpp" line="33"/>
         <source>Avg_Image</source>
         <translation>平均画像数</translation>
     </message>

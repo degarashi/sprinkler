@@ -1,6 +1,7 @@
 #include "request.hpp"
 #include "entryslider_d.hpp"
 #include "entryslider_i.hpp"
+#include "../toml_settings.hpp"
 #include <QVBoxLayout>
 
 namespace dg { namespace widget {
@@ -11,6 +12,14 @@ namespace dg { namespace widget {
 			dst = val;
 			return diff;
 		}
+		namespace param {
+			#define DefP(name, ent, type) \
+				Define_TomlSet("Request", name, ent, type)
+			DefP(AvgImage_Min, "avg_image_min", size_t)
+			DefP(AvgImage_Max, "avg_image_max", size_t)
+			DefP(AvgImage_Default, "avg_image_default", size_t)
+			#undef DefP
+		}
 	}
 	Request::Request(
 		QWidget* parent
@@ -20,18 +29,18 @@ namespace dg { namespace widget {
 	{
 		auto* l = new QVBoxLayout(this);
 
-		_avgImage->setRange({4, 64});
+		_avgImage->setRange({param::AvgImage_Min(), param::AvgImage_Max()});
 		_avgImage->setName(tr("Avg_Image"));
 		_avgImage->setPageStep(1);
 		connect(_avgImage, &EntrySliderI::valueChanged, this, [this](const int v){
-			setAvgImage(v);
+			setAvgImage(size_t(v));
 		});
-		setAvgImage(16);
+		setAvgImage(param::AvgImage_Default());
 		l->addWidget(_avgImage);
 	}
 	void Request::setAvgImage(const size_t n) {
 		if(CompareAndSet(avgImage, n)) {
-			_avgImage->setValue(n);
+			_avgImage->setValue(int(n));
 			emit avgChanged(n);
 		}
 	}
