@@ -272,6 +272,7 @@ namespace dg {
 				wg = env.getBest().gene;
 				bestScore = s;
 			}
+			// 中断シグナルを受信していたらここで中断
 			QCoreApplication::processEvents();
 			if(_abort) {
 				emit sprinkleProgress(100);
