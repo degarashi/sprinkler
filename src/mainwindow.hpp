@@ -63,10 +63,10 @@ namespace dg { namespace widget {
 		private:
 			std::shared_ptr<Ui::MainWindow>	_ui;
 			State_U							_state;
-			DBTag*							_dbTag;
-			DBImage*						_dbImg;
-			QMenu*							_ctrlMenu;
-			QSystemTrayIcon*				_tray;
+			DBTag							*_dbTag;
+			DBImage							*_dbImg;
+			QMenu							*_ctrlMenu;
+			QSystemTrayIcon					*_tray;
 			// Label: 配置した画像
 			LabelV							_label;
 
@@ -75,7 +75,12 @@ namespace dg { namespace widget {
 			void _clearLabels();
 
 		public:
-			MainWindow(DBImage* img, DBTag* tag, DatabaseSignal* sig, QWidget *parent=nullptr);
+			MainWindow(
+				DBImage *img,
+				DBTag *tag,
+				DatabaseSignal *sig,
+				QWidget *parent=nullptr
+			);
 		protected:
 			void closeEvent(QCloseEvent* e) override;
 			void changeEvent(QEvent* e) override;
