@@ -59,7 +59,7 @@ namespace dg { namespace widget {
 
 		const auto changed_f = [this](const TagIdV& tag){
 			const auto c = _dbTag->countImageByTag(tag);
-			emit remainingImageChanged(tag, c.total, c.shown);
+			emit remainingImageCounterChanged(tag, c.total, c.shown);
 		};
 		const auto changed_f0 = [this, changed_f](){
 			changed_f(_ui->tagSelector->getArray());
@@ -148,7 +148,7 @@ namespace dg { namespace widget {
 			_tray->show();
 			// タスクトレイをホバーすると対象タグと
 			// 今どの程度のイメージが表示されたのかの割合を表示
-			connect(this, &MainWindow::remainingImageChanged,
+			connect(this, &MainWindow::remainingImageCounterChanged,
 					this, [this](const TagIdV& tag, const size_t total, const size_t shown) {
 					QStringList sl;
 					for(auto id : tag) {
