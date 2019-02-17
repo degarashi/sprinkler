@@ -21,6 +21,7 @@ namespace dg {
 	{
 		Q_OBJECT
 		private:
+			//! delフラグが有効ならデストラクタでQSqlDatabase(デフォルトコネクション)を削除
 			struct RemoveConnection {
 				bool	del = false;
 				~RemoveConnection();
