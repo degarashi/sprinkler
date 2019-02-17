@@ -92,19 +92,26 @@ namespace dg {
 			void _initImageSrc();
 			void _initAction();
 			void _linkAction();
+			// TOMLに記載した値のうち、起動時にしか読み込まれない物をメモリにキャッシュ
 			void _storeConstValues();
 		public:
 			explicit Sprinkler();
-			// from MainWindow
+			// ---- from MainWindow ----
 			void sprinkle(const place::Param& param, const TagIdV& tag);
 			void abort();
+			// -------------------------
 			~Sprinkler();
 			QAction* getAction(Action::e a) const;
+			//! 配置されている画像を右クリックした際に表示するメニュー
 			void showImageContextMenu(ImageId id, const QPoint& p);
 		signals:
+			// 配置計算の進捗通知
 			void sprinkleProgress(int p);
+			// 配置結果
 			void sprinkleResult(const dg::place::ResultV& result);
+			// 配置計算のキャンセル確認通知
 			void sprinkleAbort();
+			// Databaseの画像集合が変更された時に送出
 			void imageChanged();
 	};
 }

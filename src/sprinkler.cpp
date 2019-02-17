@@ -397,6 +397,7 @@ namespace dg {
 		}
 	}
 	namespace {
+		//! lst0からlst1の要素を除く
 		template <class T0, class T1>
 		void Exclude(T0& lst0, const T1& l1) {
 			if(lst0.empty() || l1.empty())
