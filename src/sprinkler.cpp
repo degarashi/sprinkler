@@ -416,7 +416,7 @@ namespace dg {
 			lst0.erase(itr0, lst0.end());
 		}
 	}
-	void Sprinkler::showTagMenu(const ImageId id, const QPoint& p) {
+	void Sprinkler::showImageContextMenu(const ImageId id, const QPoint& p) {
 		QMenu menu;
 		{
 			// 現在リンクしているタグ

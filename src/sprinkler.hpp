@@ -100,7 +100,7 @@ namespace dg {
 			void abort();
 			~Sprinkler();
 			QAction* getAction(Action::e a) const;
-			void showTagMenu(ImageId id, const QPoint& p);
+			void showImageContextMenu(ImageId id, const QPoint& p);
 		signals:
 			void sprinkleProgress(int p);
 			void sprinkleResult(const dg::place::ResultV& result);

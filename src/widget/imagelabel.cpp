@@ -57,7 +57,7 @@ namespace dg { namespace widget {
 			_ctrlMenu->popup(e->globalPos());
 		} else {
 			// ILinkタグを表示
-			sprinkler.showTagMenu(_id, e->globalPos());
+			sprinkler.showImageContextMenu(_id, e->globalPos());
 		}
 	}
 }}
