@@ -242,7 +242,6 @@ namespace dg {
 					MutateP_Path = param::Mutate_PathP();
 		Fit fit(selected, initial, param::Fit_Scale(), qs, targetN);
 		auto tmp = fit._initial;
-		emit sprinkleProgress(0);
 
 		// Window環境でrandom_deviceを使うと毎回同じ乱数列が生成されてしまうので
 		// とりあえずの回避策として現在時刻をシードに使う
@@ -275,7 +274,6 @@ namespace dg {
 			// 中断シグナルを受信していたらここで中断
 			QCoreApplication::processEvents();
 			if(_abort) {
-				emit sprinkleProgress(100);
 				emit sprinkleAbort();
 				return;
 			}

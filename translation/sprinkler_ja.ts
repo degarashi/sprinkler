@@ -269,57 +269,57 @@
         <translation type="vanished">画像ソースウィンドウを開く(&amp;d)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="124"/>
+        <location filename="../src/sprinkler.cpp" line="127"/>
         <source>OpenImageSource&amp;Dir</source>
         <translation>画像ソースウィンドウを開く(&amp;d)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="125"/>
+        <location filename="../src/sprinkler.cpp" line="128"/>
         <source>Open&amp;Tag</source>
         <translation>タグ検索ウィンドウを開く(&amp;t)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="126"/>
+        <location filename="../src/sprinkler.cpp" line="129"/>
         <source>Open&amp;RectView</source>
         <translation>矩形ビューを開く(&amp;r)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="127"/>
+        <location filename="../src/sprinkler.cpp" line="130"/>
         <source>Open&amp;Watch</source>
         <translation>監視ウィンドウを開く(&amp;w)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="128"/>
+        <location filename="../src/sprinkler.cpp" line="131"/>
         <source>Open&amp;MainWindow</source>
         <translation>メインウィンドウを開く(&amp;m)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="129"/>
+        <location filename="../src/sprinkler.cpp" line="132"/>
         <source>&amp;Quit</source>
         <translation>終了(&amp;q)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="130"/>
+        <location filename="../src/sprinkler.cpp" line="133"/>
         <source>&amp;ResetViewFlag</source>
         <translation>表示フラグをリセット(&amp;r)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="433"/>
+        <location filename="../src/sprinkler.cpp" line="438"/>
         <source>&amp;Link tag</source>
         <translation>タグをリンク(&amp;l)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="438"/>
+        <location filename="../src/sprinkler.cpp" line="443"/>
         <source>Recentry used tag</source>
         <translation>最近使用したタグ</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="448"/>
+        <location filename="../src/sprinkler.cpp" line="453"/>
         <source>input...</source>
         <translation>タグ入力…</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="465"/>
+        <location filename="../src/sprinkler.cpp" line="470"/>
         <source>&amp;Unlink tag</source>
         <translation>タグのリンク解除(&amp;u)</translation>
     </message>

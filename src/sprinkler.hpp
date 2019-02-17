@@ -85,6 +85,7 @@ namespace dg {
 			QAction*			_action[Action::_Num];
 
 			void _sprinkle(const place::Param& param, const TagIdV& tag);
+			void _resetToIdleState(State::e expected);
 
 		private:
 			void _initWatchList();

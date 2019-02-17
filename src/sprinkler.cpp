@@ -53,24 +53,19 @@ namespace dg {
 		qRegisterMetaType<dg::place::ResultV>("dg::place::ResultV");
 		connect(_geneWorker, &GeneWorker::sprinkleResult,
 				this, [this](const dg::place::ResultV& r){
-					Q_ASSERT(_state == State::Processing);
-					_state = State::Idle;
 					// 実際に使用した画像にフラグを立てる
-					ImageIdV used;
-					for(auto& img : r) {
-						used.emplace_back(img.id);
+					{
+						ImageIdV used;
+						for(auto& img : r)
+							used.emplace_back(img.id);
+						_db->setViewFlag(used, 2);
 					}
-					_db->setViewFlag(used, 2);
-					// 候補には挙がったが使用されなかった画像のフラグをリセット
-					_db->resetSelectionFlag();
+					_resetToIdleState(State::Processing);
 					emit sprinkleResult(r);
 				});
 		connect(_geneWorker, &GeneWorker::sprinkleAbort,
 				this, [this](){
-					Q_ASSERT(_state == State::Aborted);
-					_state = State::Idle;
-					// 候補フラグをリセット
-					_db->resetSelectionFlag();
+					_resetToIdleState(State::Aborted);
 					emit sprinkleAbort();
 				});
 		connect(_geneWorker, &GeneWorker::sprinkleProgress,
@@ -78,6 +73,14 @@ namespace dg {
 		connect(_db, &Database::endResetImage,
 				this, &Sprinkler::imageChanged);
 		getAction(Action::OpenMain)->toggle();
+	}
+	void Sprinkler::_resetToIdleState(const State::e expected) {
+		emit sprinkleProgress(100);
+		Q_ASSERT(_state == expected);
+		_state = State::Idle;
+
+		// 候補には挙がったが使用されなかった画像のフラグをリセット
+		_db->resetSelectionFlag();
 	}
 	void Sprinkler::_linkAction() {
 		auto& a = _action;
@@ -226,8 +229,8 @@ namespace dg {
 	}
 	void Sprinkler::_sprinkle(const place::Param& param, const TagIdV& tag) {
 		if(_state == State::Aborted) {
-			// まだGeneWorkerスレッドに伝えてないのでシグナルだけ出してIdleステートへ
-			_state = State::Idle;
+			_resetToIdleState(State::Aborted);
+			// まだGeneWorkerスレッドに伝えてないのでここで中断シグナルを出す
 			emit sprinkleAbort();
 			return;
 		}
@@ -347,6 +350,9 @@ namespace dg {
 				qDebug() << selected.size() << "Images selected";
 				Q_ASSERT(selected.size() > 0);
 
+				// 進捗は一旦0%にリセット
+				emit sprinkleProgress(0);
+
 				// 画像が一枚しかない場合は推奨サイズを適用
 				if(selected.size() == 1) {
 					Q_ASSERT(_state == State::Processing);
@@ -362,7 +368,6 @@ namespace dg {
 							.offset = {int(lastRect.offset().x*int(qs)), int(lastRect.offset().y*int(qs))},
 						}
 					};
-					emit sprinkleProgress(100);
 					emit sprinkleResult(res);
 					return;
 				}
