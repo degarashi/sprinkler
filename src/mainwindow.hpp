@@ -28,6 +28,7 @@ namespace dg { namespace widget {
 		private:
 			using base_t = widget::GeomRestore_MW;
 			using LabelV = std::vector<widget::ImageLabel*>;
+			//! ステートインタフェース
 			struct State {
 				virtual ~State() {}
 				virtual void onEnter(MainWindow& self) {}
@@ -43,7 +44,9 @@ namespace dg { namespace widget {
 				void onSprinkleResult(MainWindow&, const dg::place::ResultV&) override;
 				void onSprinkleAbort(MainWindow&) override;
 			};
+			//! 配置計算中(Geneスレッドの計算完了を待っている)
 			struct ProcState : State {
+				// Geneスレッドに送るタグ番号リスト
 				TagIdV		_tag;
 
 				ProcState(TagIdV&& tag);
@@ -54,6 +57,7 @@ namespace dg { namespace widget {
 				void onSprinkleResult(MainWindow&, const dg::place::ResultV&) override;
 				void onSprinkleAbort(MainWindow&) override;
 			};
+			//! 配置計算をキャンセル後、Geneスレッドの確認通知を待っている
 			struct AbortState : State {
 				void onSprinkle(MainWindow& self) override;
 				void onSprinkleResult(MainWindow&, const dg::place::ResultV&) override;
@@ -71,7 +75,9 @@ namespace dg { namespace widget {
 			LabelV							_label;
 
 			void _setState(State_U state);
+			//! [OpenDir, OpenTag, OpenRect, OpenWatch]ウィンドウを非表示にする
 			void _hideSubWindow();
+			//! 配置した画像をクリア
 			void _clearLabels();
 
 		public:
@@ -86,14 +92,16 @@ namespace dg { namespace widget {
 			void changeEvent(QEvent* e) override;
 		public slots:
 			void stayOnTop(bool b);
+			//! 画像配置の進捗
 			void sprinkleProgress(int percent);
+			//! 画像配置の開始
 			void sprinkle();
 			void resetViewFlagSelecting();
 			void resetViewFlagAll();
 		signals:
 			// 対象タグの変更、または表示された数の変更
 			void remainingImageCounterChanged(const TagIdV& tag, size_t total, size_t shown);
-			// ラベルのどれか1つがクリックされた
+			// 配置された画像のどれか1つがクリックされた
 			void labelClicked();
 	};
 }}
