@@ -25,15 +25,17 @@ namespace dg {
 				bool	del = false;
 				~RemoveConnection();
 			};
-			class ChangeFlag {
-				private:
-					bool	_changed;
-				public:
-					ChangeFlag();
-					bool change();
-					bool end();
-			};
+			//! [Dir, Tag, Image]の三種の変更フラグを持ち、デストラクタでそれをシグナル通知
 			class ResetSignal {
+				//! 内部にフラグを持ち、最後に変更を返り値で示す
+				class ChangeFlag {
+					private:
+						bool	_changed;
+					public:
+						ChangeFlag();
+						bool change();
+						bool end();
+				};
 				private:
 					ChangeFlag	_dir,
 								_tag,

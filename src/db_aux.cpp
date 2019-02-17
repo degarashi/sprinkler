@@ -2,17 +2,17 @@
 
 namespace dg {
 	// ---------------- Database::ChangeFlag ----------------
-	Database::ChangeFlag::ChangeFlag():
+	Database::ResetSignal::ChangeFlag::ChangeFlag():
 		_changed(false)
 	{}
-	bool Database::ChangeFlag::change() {
+	bool Database::ResetSignal::ChangeFlag::change() {
 		if(!_changed) {
 			_changed = true;
 			return true;
 		}
 		return false;
 	}
-	bool Database::ChangeFlag::end() {
+	bool Database::ResetSignal::ChangeFlag::end() {
 		return _changed;
 	}
 
