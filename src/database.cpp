@@ -24,6 +24,8 @@
 
 namespace dg {
 	namespace {
+		// コンストラクタ引数に対し、init()でtrueに、clear()でfalseを代入
+		// デストラクタの時点でclear()を呼んでいなければそれを呼ぶ
 		struct FlagReset {
 			bool& _b;
 			bool _valid;

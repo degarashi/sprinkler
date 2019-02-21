@@ -64,18 +64,33 @@ namespace dg {
 			using ThumbnailCache = QHash<ImageId, QPixmap>;
 			mutable ThumbnailCache	_thumbnail;
 
+			// 親を持っていないノードを列挙
 			DirId _getRootDir(DirId id) const;
 
 			using CBCollectImage = std::function<bool (const QFileInfo&)>;
+			// ディレクトリ内の画像ファイルを列挙し、コールバック関数に渡す
+			// trueを返したら読み込み対象とみなしデータベースに組み込む
 			void _collectImageInDir(ResetSignal& sig, const QString& path, DirId dirId, const CBCollectImage& cb);
 
+			// _addDirから呼ばれる
 			void _addDirPrivate(const QString& path, DirIdOpt parent);
+			// フルパスと親ディレクトリIDを指定し、
+			// ディレクトリとそこに含まれる画像群をSQLデータベースへ登録
 			void _addDir(ResetSignal& sig, const QString& path, std::optional<DirId> parentId);
+			// ImageInfoクラスを使ってSQLデータベースに画像を登録
+			// ファイルにアクセスできない場合はnulloptを返す
 			std::optional<ImageId> _addImage(DirId dirId, const QString& path);
 
+			// ディレクトリとそこに登録された画像、タグを削除
+			// 末端ノードを指定しないと後のvalidationに失敗する
 			void _removeDirPrivate(DirId id, bool upToRoot);
+			// ディレクトリとそこに登録された画像、タグを削除
+			// _removeDirPrivateから呼ばれる
+			// (末端ノードのみ対応。assert対象)
 			void _removeDirSingle(ResetSignal& sig, DirId id);
+			// ディレクトリIDから親に向かって走査した時のIDリスト(自分を含む)
 			DirIdV _enumAncestor(DirId id) const;
+			// ディレクトリID -> フルパス　の変換
 			QString _getFullPath(DirId id) const;
 
 			// ------------ サムネイル ------------
@@ -120,6 +135,7 @@ namespace dg {
 			// キャッシュに残っているデータと今のファイルシステムとで整合性を持たせる
 			// 無効なデータを消し、新しいデータは登録する
 			void _updateDatabase();
+			// ディレクトリ内の画像ファイル列挙 & 登録(再帰)
 			void _updateDatabaseLocal(const DirId id, const QString& path);
 			// キャッシュデータの整合性を判定
 			// \return キャッシュが壊れている場合はfalse
