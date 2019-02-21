@@ -64,7 +64,6 @@ namespace dg {
 			using ThumbnailCache = QHash<ImageId, QPixmap>;
 			mutable ThumbnailCache	_thumbnail;
 
-			std::optional<DirId> _fromPath(const QString& path) const;
 			DirId _getRootDir(DirId id) const;
 
 			using CBCollectImage = std::function<bool (const QFileInfo&)>;
