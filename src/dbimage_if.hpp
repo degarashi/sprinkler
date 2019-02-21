@@ -8,6 +8,7 @@
 class QAbstractItemModel;
 class QAbstractItemDelegate;
 namespace dg {
+	//! SQLデータベースで扱う情報をファイルから読み取り
 	struct ImageInfo {
 		QString		fileName;
 		QSize		size;
@@ -21,7 +22,9 @@ namespace dg {
 
 		ImageInfo() = default;
 		ImageInfo(const QString& path);
+		//! デフォルトコネクションのSQLデータベースに対し、画像を登録(新規)
 		ImageId addEntry(DirId dirId) const;
+		//! デフォルトコネクションのSQLデータベースに対し、既に登録された画像をアップデート
 		void updateEntry(DirId dirId) const;
 
 		int width() const;
