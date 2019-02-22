@@ -492,46 +492,51 @@ namespace dg {
 	}
 	void Database::_updateDatabase_Rec(const DirId dirId, const QString& path) {
 		// Imageの検査
-		// 既に存在が確認されたファイル名リスト
-		QSet<QString> exist;
-		auto q = sql::Query(
-			"SELECT " Img_id ", " Img_file_name " FROM " Image_Table " WHERE " Img_dir_id "=?",
-			dirId
-		);
-		while(q.next()) {
-			const auto imgId = sql::GetRequiredValue<ImageId>(q, 0, false);
-			const auto res = _checkImage(imgId, false);
-			if(res == CheckResult::Deleted) {
-				// サムネイルも消す
-				_removeThumbnail(imgId);
-			}
-			else
-				exist.insert(sql::GetRequiredValue<QString>(q, 1, false));
-		}
 		// ファイルシステムを巡り、新規に追加されたファイルを探す
 		ResetSignal sig(this);
-		_collectImageInDir(sig, path, dirId, [&exist](const QFileInfo& f){
-			// existに登録がない = 新しく追加された物
-			return exist.contains(f.fileName()) == 0;
-		});
-
-		exist.clear();
+		{
+			// 既に存在が確認されたファイル名リスト(パスは含まない)
+			QSet<QString> existFile;
+			{
+				// SQLデータベースからディレクトリに含まれる画像ファイル名をリストアップ
+				auto q = sql::Query(
+					"SELECT " Img_id ", " Img_file_name " FROM " Image_Table " WHERE " Img_dir_id "=?",
+					dirId
+				);
+				while(q.next()) {
+					const auto imgId = sql::GetRequiredValue<ImageId>(q, 0, false);
+					const auto res = _checkImage(imgId, false);
+					if(res == CheckResult::Deleted) {
+						// サムネイルも消す
+						_removeThumbnail(imgId);
+					}
+					else
+						existFile.insert(sql::GetRequiredValue<QString>(q, 1, false));
+				}
+			}
+			_collectImageInDir(sig, path, dirId, [&existFile](const QFileInfo& f){
+				// existに登録がない = 新しく追加された物
+				return existFile.contains(f.fileName()) == 0;
+			});
+		}
+		// 直下の(DB上でもFS上でも)引き続き存在するディレクトリ
+		QSet<QString> existDir;
 		// 下層のチェック
 		for(const auto cId : getDirChild(dirId)) {
 			const auto cPath = _getFullPath(cId);
-			QFileInfo fi(cPath);
+			const QFileInfo fi(cPath);
 			if(fi.exists()) {
-				exist.insert(fi.fileName());
+				existDir.insert(fi.fileName());
 				// 下層のディレクトリを探索
 				_updateDatabase_Rec(cId, cPath);
 			} else {
-				// 削除されている
+				// 削除されているのでDBからも削除
 				_removeDirPrivate(cId, false);
 			}
 		}
 		// ファイルシステムを巡り、新規に追加されたサブディレクトリを探す
-		_EnumSubDir(path, [this, &sig, &exist, dirId](const QFileInfo& f){
-			if(!exist.contains(f.fileName())) {
+		_EnumSubDir(path, [this, &sig, &existDir, dirId](const QFileInfo& f){
+			if(!existDir.contains(f.fileName())) {
 				_addDir_Rec(sig, f.absoluteFilePath(), dirId);
 			}
 		});
