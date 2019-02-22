@@ -352,7 +352,8 @@ namespace dg {
 			[&nSub_fs, this](const QFileInfo& info){
 				_imageDirValidation(info.absoluteFilePath());
 				++nSub_fs;
-			}
+			},
+			true
 		);
 		// 子ディレクトリの数を比較
 		const auto nSub_db = sql::GetRequiredValue<size_t>(
@@ -539,7 +540,7 @@ namespace dg {
 			if(!existDir.contains(f.fileName())) {
 				_addDir_Rec(sig, f.absoluteFilePath(), dirId);
 			}
-		});
+		}, true);
 	}
 	void Database::_updateDatabase() {
 		// DB上のファイル構造とファイルシステムのファイル構造を比較
@@ -925,12 +926,16 @@ namespace dg {
 		// 下層のディレクトリを走査
 		_EnumSubDir(path, [this, &sig, dirId](const QFileInfo& info){
 			_addDir_Rec(sig, info.absoluteFilePath(), dirId);
-		});
+		}, true);
 	}
-	void Database::_EnumSubDir(const QString& path, const CBEnumSubDir& cb) {
+	void Database::_EnumSubDir(
+			const QString &path,
+			const CBEnumSubDir &cb,
+			const bool noSymLink
+	) {
 		const auto dirs = QDir(path).entryInfoList(
 			{},
-			QDir::Dirs|QDir::Readable|QDir::NoDotAndDotDot
+			QDir::Dirs|QDir::Readable|QDir::NoDotAndDotDot | (noSymLink ? QDir::NoSymLinks : QDir::Filter(0))
 		);
 		for(const QFileInfo& d : dirs) {
 			if(d.fileName() == "thumbnails")

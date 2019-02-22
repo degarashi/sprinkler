@@ -116,7 +116,11 @@ namespace dg {
 			// ------------ サブディレクトリ列挙 ------------
 			static QStringList _ImageFilter();
 			using CBEnumSubDir = CBThumbnail;
-			static void _EnumSubDir(const QString& path, const CBEnumSubDir& cb);
+			static void _EnumSubDir(
+				const QString &path,
+				const CBEnumSubDir &cb,
+				bool noSymLink
+			);
 			using CBEnumImageDir = CBThumbnail;
 			static void _EnumImage(const QString& path, const CBEnumImageDir& cb);
 
