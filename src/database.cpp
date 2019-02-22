@@ -490,7 +490,7 @@ namespace dg {
 		sql::Query("PRAGMA foreign_keys = ON");
 		return ret;
 	}
-	void Database::_updateDatabaseLocal(const DirId dirId, const QString& path) {
+	void Database::_updateDatabase_Rec(const DirId dirId, const QString& path) {
 		// Imageの検査
 		// 既に存在が確認されたファイル名リスト
 		QSet<QString> exist;
@@ -523,7 +523,7 @@ namespace dg {
 			if(fi.exists()) {
 				exist.insert(fi.fileName());
 				// 下層のディレクトリを探索
-				_updateDatabaseLocal(cId, cPath);
+				_updateDatabase_Rec(cId, cPath);
 			} else {
 				// 削除されている
 				_removeDirPrivate(cId, false);
@@ -542,7 +542,7 @@ namespace dg {
 		for(auto id : root) {
 			const QString path = _getFullPath(id);
 			if(QFileInfo::exists(path))
-				_updateDatabaseLocal(id, path);
+				_updateDatabase_Rec(id, path);
 			else
 				removeDir(id);
 		}

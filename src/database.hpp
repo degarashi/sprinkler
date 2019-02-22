@@ -136,7 +136,7 @@ namespace dg {
 			// 無効なデータを消し、新しいデータは登録する
 			void _updateDatabase();
 			// ディレクトリ内の画像ファイル列挙 & 登録(再帰)
-			void _updateDatabaseLocal(const DirId id, const QString& path);
+			void _updateDatabase_Rec(const DirId id, const QString& path);
 			// キャッシュデータの整合性を判定
 			// \return キャッシュが壊れている場合はfalse
 			bool _checkDatabaseValidness();
