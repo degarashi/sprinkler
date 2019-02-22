@@ -703,7 +703,7 @@ namespace dg {
 				auto d2 = d;
 				if(!d2.cdUp())
 					break;
-				if(sql::FindEntryId(
+				if(sql::GetIdFromRecord(
 					ImageDir_Table,
 					IDir_id,
 					IDir_name,			d.dirName(),
@@ -984,7 +984,7 @@ namespace dg {
 			const auto dirIds = _enumAncestor(dirId);
 			for(const auto di : dirIds) {
 				t.emplace_back(
-					sql::FindEntryIdNum(
+					sql::GetIdFromRecordNum(
 						TagDLink_Table,
 						TDL_tag_id,
 						TDL_dir_id, di

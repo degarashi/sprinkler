@@ -1,5 +1,5 @@
 #pragma once
-#include "findentry.hpp"
+#include "getid_record.hpp"
 
 namespace dg::sql {
 	int64_t GetMaxId(const char* table);
@@ -52,7 +52,7 @@ namespace dg::sql {
 		q.prepare(
 			QString("INSERT INTO ") % table % "(" % detail::ConcatKey(QString(""), args...) % ")"
 			% "SELECT " % detail::Placeholder<sizeof...(args)/2>() % "\n"
-			% "WHERE NOT EXISTS (SELECT 1 FROM " % table % " " % FindEntryQuery(args...) % ");"
+			% "WHERE NOT EXISTS (SELECT 1 FROM " % table % " WHERE " % MakeConditionalExpression(args...) % ");"
 		);
 		detail::SkipOne(
 			[&q](const auto&... args){
@@ -67,7 +67,7 @@ namespace dg::sql {
 	template <class... Args>
 	std::pair<int64_t, bool> InsertIntoIfNotExist_GetId(const char* table, const Args&... args) {
 		if(!InsertIntoIfNotExist(table, args...)) {
-			const auto num = FindEntryId(table, "id", args...);
+			const auto num = GetIdFromRecord(table, "id", args...);
 			Q_ASSERT(num);
 			return {*num, false};
 		}
