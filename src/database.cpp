@@ -666,7 +666,7 @@ namespace dg {
 		Q_ASSERT(r_id);
 		return *r_id;
 	}
-	void Database::_addDir_Setup(const QString& path, const DirIdOpt parent) {
+	void Database::_addDir_Setup(const QString& path) {
 		QDir dir(path);
 		if(!dir.exists())
 			throw std::runtime_error("invalid path");
@@ -696,7 +696,7 @@ namespace dg {
 		fs.init();
 
 		// 親(のほうの)Dirが既に登録されていたら何もせず終了
-		if(!parent) {
+		{
 			QDir d(dir);
 			for(;;) {
 				auto d2 = d;
@@ -713,7 +713,7 @@ namespace dg {
 			}
 		}
 		ResetSignal sig(this);
-		_addDir_Rec(sig, path, parent);
+		_addDir_Rec(sig, path, std::nullopt);
 		// 処理が終了した合図としてNull文字列でシグナルを出す
 		emit processingDir(QString());
 		QCoreApplication::processEvents();
@@ -725,7 +725,7 @@ namespace dg {
 		sql::Transaction(
 			QSqlDatabase::database(),
 			[this, &path](){
-				_addDir_Setup(path, std::nullopt);
+				_addDir_Setup(path);
 			}
 		);
 	}

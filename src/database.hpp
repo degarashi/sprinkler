@@ -73,7 +73,7 @@ namespace dg {
 			void _collectImageInDir(ResetSignal& sig, const QString& path, DirId dirId, const CBCollectImage& cb);
 
 			// _addDirから呼ばれる
-			void _addDir_Setup(const QString& path, DirIdOpt parent);
+			void _addDir_Setup(const QString& path);
 			// フルパスと親ディレクトリIDを指定し、
 			// ディレクトリとそこに含まれる画像群をSQLデータベースへ登録
 			void _addDir_Rec(ResetSignal& sig, const QString& path, std::optional<DirId> parentId);
