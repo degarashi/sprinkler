@@ -73,10 +73,10 @@ namespace dg {
 			void _collectImageInDir(ResetSignal& sig, const QString& path, DirId dirId, const CBCollectImage& cb);
 
 			// _addDirから呼ばれる
-			void _addDirPrivate(const QString& path, DirIdOpt parent);
+			void _addDir_Setup(const QString& path, DirIdOpt parent);
 			// フルパスと親ディレクトリIDを指定し、
 			// ディレクトリとそこに含まれる画像群をSQLデータベースへ登録
-			void _addDir(ResetSignal& sig, const QString& path, std::optional<DirId> parentId);
+			void _addDir_Rec(ResetSignal& sig, const QString& path, std::optional<DirId> parentId);
 			// ImageInfoクラスを使ってSQLデータベースに画像を登録
 			// ファイルにアクセスできない場合はnulloptを返す
 			std::optional<ImageId> _addImage(DirId dirId, const QString& path);

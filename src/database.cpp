@@ -532,7 +532,7 @@ namespace dg {
 		// ファイルシステムを巡り、新規に追加されたサブディレクトリを探す
 		_EnumSubDir(path, [this, &sig, &exist, dirId](const QFileInfo& f){
 			if(!exist.contains(f.fileName())) {
-				_addDir(sig, f.absoluteFilePath(), dirId);
+				_addDir_Rec(sig, f.absoluteFilePath(), dirId);
 			}
 		});
 	}
@@ -666,7 +666,7 @@ namespace dg {
 		Q_ASSERT(r_id);
 		return *r_id;
 	}
-	void Database::_addDirPrivate(const QString& path, const DirIdOpt parent) {
+	void Database::_addDir_Setup(const QString& path, const DirIdOpt parent) {
 		QDir dir(path);
 		if(!dir.exists())
 			throw std::runtime_error("invalid path");
@@ -713,7 +713,7 @@ namespace dg {
 			}
 		}
 		ResetSignal sig(this);
-		_addDir(sig, path, parent);
+		_addDir_Rec(sig, path, parent);
 		// 処理が終了した合図としてNull文字列でシグナルを出す
 		emit processingDir(QString());
 		QCoreApplication::processEvents();
@@ -725,7 +725,7 @@ namespace dg {
 		sql::Transaction(
 			QSqlDatabase::database(),
 			[this, &path](){
-				_addDirPrivate(path, std::nullopt);
+				_addDir_Setup(path, std::nullopt);
 			}
 		);
 	}
@@ -862,7 +862,7 @@ namespace dg {
 		_validation();
 	}
 
-	void Database::_addDir(ResetSignal& sig, const QString& path, const std::optional<DirId> parentId) {
+	void Database::_addDir_Rec(ResetSignal& sig, const QString& path, const std::optional<DirId> parentId) {
 		const QFileInfo info(path);
 		if(!info.exists())
 			throw std::invalid_argument("invalid path");
@@ -919,7 +919,7 @@ namespace dg {
 
 		// 下層のディレクトリを走査
 		_EnumSubDir(path, [this, &sig, dirId](const QFileInfo& info){
-			_addDir(sig, info.absoluteFilePath(), dirId);
+			_addDir_Rec(sig, info.absoluteFilePath(), dirId);
 		});
 	}
 	void Database::_EnumSubDir(const QString& path, const CBEnumSubDir& cb) {
