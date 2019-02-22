@@ -695,7 +695,6 @@ namespace dg {
 		}
 		fs.init();
 
-		ResetSignal sig(this);
 		// 親(のほうの)Dirが既に登録されていたら何もせず終了
 		if(!parent) {
 			QDir d(dir);
@@ -713,6 +712,7 @@ namespace dg {
 				d = d2;
 			}
 		}
+		ResetSignal sig(this);
 		_addDir(sig, path, parent);
 		// 処理が終了した合図としてNull文字列でシグナルを出す
 		emit processingDir(QString());
