@@ -32,8 +32,8 @@ find_package(Threads REQUIRED)
 aux_source_directory(src SRC)
 aux_source_directory(src/widget SRC)
 aux_source_directory(src/sql SRC)
-add_definitions(-DUNIX=${UNIX})
 if(${UNIX})
+	add_definitions(-DUNIX=1)
 	find_package(X11 REQUIRED)
 	aux_source_directory(src/dep_linux SRC)
 	include_directories(
@@ -43,6 +43,7 @@ if(${UNIX})
 	)
 	set(LINK_LIBS ${LINK_LIBS} ${X11_LIBRARIES})
 elseif(${WIN32})
+	add_definitions(-DWIN32=1)
 	aux_source_directory(src/dep_win SRC)
 	set(SRC ${SRC}
 		src/dep_win/ghook/wevent.cpp
