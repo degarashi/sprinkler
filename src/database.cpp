@@ -21,6 +21,9 @@
 #include <QPixmap>
 #include <QSettings>
 #include <cmath>
+#if WIN32
+	#include "file.hpp"
+#endif
 
 namespace dg {
 	namespace {
@@ -938,6 +941,12 @@ namespace dg {
 			QDir::Dirs|QDir::Readable|QDir::NoDotAndDotDot | (noSymLink ? QDir::NoSymLinks : QDir::Filter(0))
 		);
 		for(const QFileInfo& d : dirs) {
+			// windows環境におけるジャンクション、シンボリックリンクは
+			// ファイルとして列挙されてしまうのでここで弾く
+			#if WIN32
+				if(IsSymbolicLink(d.absoluteFilePath()))
+					continue;
+			#endif
 			if(d.fileName() == "thumbnails")
 				continue;
 			cb(d);
