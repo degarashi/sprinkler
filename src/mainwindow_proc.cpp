@@ -58,9 +58,7 @@ namespace dg { namespace widget {
 			for(auto& r : res) {
 				auto* lb = new widget::ImageLabel(
 					r.id,
-					r.crop,
-					r.offset,
-					r.resize,
+					r.rect,
 					self._ctrlMenu,
 					self._dbImg,
 					self._dbTag

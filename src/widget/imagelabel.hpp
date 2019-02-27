@@ -1,7 +1,6 @@
 #pragma once
 #include "obstacle.hpp"
-#include "lubee/src/size.hpp"
-#include "lubee/src/point.hpp"
+#include "lubee/src/rect.hpp"
 #include "../idtype.hpp"
 #include <QWidget>
 
@@ -35,8 +34,8 @@ namespace dg { namespace widget {
 			void mousePressEvent(QMouseEvent* e) override;
 			void moveEvent(QMoveEvent* e) override;
 		public:
-			explicit ImageLabel(ImageId id, QSize crop,
-							const lubee::PointI ofs, QSize resize,
+			explicit ImageLabel(ImageId id,
+							const lubee::RectI& rect,
 							QMenu* ctrlMenu,
 							const DBImage* dbImage, const DBTag* dbTag);
 	};

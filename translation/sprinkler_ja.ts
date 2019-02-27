@@ -304,22 +304,22 @@
         <translation>表示フラグをリセット(&amp;r)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="438"/>
+        <location filename="../src/sprinkler.cpp" line="434"/>
         <source>&amp;Link tag</source>
         <translation>タグをリンク(&amp;l)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="443"/>
+        <location filename="../src/sprinkler.cpp" line="439"/>
         <source>Recentry used tag</source>
         <translation>最近使用したタグ</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="453"/>
+        <location filename="../src/sprinkler.cpp" line="449"/>
         <source>input...</source>
         <translation>タグ入力…</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="470"/>
+        <location filename="../src/sprinkler.cpp" line="466"/>
         <source>&amp;Unlink tag</source>
         <translation>タグのリンク解除(&amp;u)</translation>
     </message>

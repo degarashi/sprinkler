@@ -222,11 +222,6 @@ namespace dg {
 					_action[Action::OpenTag], &QAction::setChecked);
 		}
 	}
-	namespace {
-		QSize ToQSize(const lubee::SizeI& s) noexcept {
-			return {s.width, s.height};
-		}
-	}
 	void Sprinkler::_sprinkle(const place::Param& param, const TagIdV& tag) {
 		if(_state == State::Aborted) {
 			_resetToIdleState(State::Aborted);
@@ -363,9 +358,10 @@ namespace dg {
 					const place::ResultV res = {
 						place::Result {
 							.id = selected[0].id,
-							.resize = ToQSize(lastRect.size()*qs),
-							.crop = ToQSize(lastRect.size()*qs),
-							.offset = {int(lastRect.offset().x*int(qs)), int(lastRect.offset().y*int(qs))},
+							.rect = lubee::RectI(
+								lastRect.offset(),
+								lastRect.size()
+							) * int(qs)
 						}
 					};
 					emit sprinkleResult(res);

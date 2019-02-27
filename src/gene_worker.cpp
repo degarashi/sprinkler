@@ -288,38 +288,16 @@ namespace dg {
 		auto cb = initial;
 		for(size_t i=0 ; i<GeneLen ; i++) {
 			const auto idx = gene.getIndex(i);
-			const auto sz = selected[idx].getQuantizeScaledSize(gene.getScale(i), qs);
-			if(cb.place(sz)) {
-				// 画像をブロック枠サイズにピッタリ合わせる
-				const lubee::SizeI szRect = sz * qs,
-								szOriginal = selected[idx].size * gene.getScale(i);
-				const int dx = szRect.width - szOriginal.width,
-						dy = szRect.height - szOriginal.height;
-				Q_ASSERT(dx>=0 && dy>=0);
-				// 高さ、幅の何れか足りない分が大きい方に合わせる
-				float r;
-				if(dx > dy) {
-					r = float(szRect.width) / szOriginal.width;
-				} else {
-					r = float(szRect.height) / szOriginal.height;
-				}
-				const lubee::SizeI target {
-					std::max<int>(szRect.width, szOriginal.width*r),
-					std::max<int>(szRect.height, szOriginal.height*r)
-				};
-				Q_ASSERT(target.width >= szRect.width);
-				Q_ASSERT(target.height >= szRect.height);
+			// 遺伝子が想定したスケーリング値を適用
+			const auto qbSize = selected[idx].getQuantizeScaledSize(gene.getScale(i), qs);
+			if(cb.place(qbSize)) {
 				const auto rect = cb.placedRect().back();
-				auto ofs = rect.offset();
-				ofs.x *= qs;
-				ofs.y *= qs;
-
+				Q_ASSERT(rect.width() == qbSize.width
+						&& rect.height() == qbSize.height);
 				res.push_back(
 					place::Result {
 						.id = selected[idx].id,
-						.resize = ToQSize(target),
-						.crop = ToQSize(szRect),
-						.offset = {ofs.x, ofs.y}
+						.rect = cb.placedRect().back() * qs
 					}
 				);
 			}

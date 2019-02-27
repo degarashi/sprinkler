@@ -1,15 +1,12 @@
 #pragma once
-#include "lubee/src/point.hpp"
+#include "lubee/src/rect.hpp"
 #include "../idtype.hpp"
-#include <QSize>
 #include <QVector>
 
 namespace dg::place {
 	struct Result {
 		ImageId			id;
-		QSize			resize;
-		QSize			crop;
-		lubee::PointI	offset;
+		lubee::RectI	rect;	// 画像を配置する位置(ピクセル単位)
 	};
 	using ResultV = QVector<Result>;
 }
