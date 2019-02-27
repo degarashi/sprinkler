@@ -3,12 +3,12 @@
 #include <cmath>
 
 float GetRatio(const QSizeF orig, const QSizeF scr) {
-	const float asp0 = orig.width() / orig.height(),
+	const auto	asp0 = orig.width() / orig.height(),
 				asp1 = scr.width() / scr.height();
 	if(asp0 >= asp1) {
-		return scr.width() / orig.width();
+		return float(scr.width() / orig.width());
 	} else {
-		return scr.height() / orig.height();
+		return float(scr.height() / orig.height());
 	}
 }
 QRect QuantifyS(const QRect r, const int n) {
