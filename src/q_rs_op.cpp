@@ -1,6 +1,7 @@
 #include "q_rs_op.hpp"
 #include <cmath>
 #include "lubee/src/point.hpp"
+#include "lubee/src/size.hpp"
 
 QPointF operator * (const QPointF& p, const QSizeF& s) {
 	return QPointF {
@@ -31,6 +32,12 @@ QSize ToQSize(const QSizeF& s) {
 	return QSize {
 		static_cast<int>(s.width()),
 		static_cast<int>(s.height())
+	};
+}
+QSize ToQSize(const lubee::SizeI& s) {
+	return {
+		s.width,
+		s.height
 	};
 }
 QSizeF operator * (const QSizeF s0, const QSizeF s1) {
