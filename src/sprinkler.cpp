@@ -198,7 +198,6 @@ namespace dg {
 	}
 	void Sprinkler::_initImageSrc() {
 		Q_ASSERT(!_window.source);
-		// auto* db = new Database(Database::TagInit, this);
 		auto* db = new Database(this);
 		_db = db;
 		{
