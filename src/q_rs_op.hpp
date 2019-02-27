@@ -1,4 +1,5 @@
 #pragma once
+#include "lubee/src/fwd.hpp"
 #include <QRect>
 class QSizeF;
 class QPointF;
@@ -6,6 +7,7 @@ class QPointF;
 QPointF operator * (const QPointF& p, const QSizeF& s);
 QPoint operator * (const QPoint& p, const QSize& s);
 QPoint ToQPoint(const QPointF& p);
+QPoint ToQPoint(const lubee::PointI& p);
 
 QSize ToQSize(const QSizeF& s);
 QSizeF operator * (const QSizeF s0, const QSizeF s1);

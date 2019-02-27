@@ -1,5 +1,6 @@
 #include "q_rs_op.hpp"
 #include <cmath>
+#include "lubee/src/point.hpp"
 
 QPointF operator * (const QPointF& p, const QSizeF& s) {
 	return QPointF {
@@ -17,6 +18,12 @@ QPoint ToQPoint(const QPointF& p) {
 	return QPoint {
 		static_cast<int>(p.x()),
 		static_cast<int>(p.y())
+	};
+}
+QPoint ToQPoint(const lubee::PointI& p) {
+	return {
+		p.x,
+		p.y
 	};
 }
 
