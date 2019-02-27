@@ -222,7 +222,7 @@ namespace dg {
 					_action[Action::OpenTag], &QAction::setChecked);
 		}
 	}
-	void Sprinkler::_sprinkle(const place::Param& param, const TagIdV& tag) {
+	void Sprinkler::_sprinkle(const place::Param& pr, const TagIdV& tag) {
 		if(_state == State::Aborted) {
 			_resetToIdleState(State::Aborted);
 			// まだGeneWorkerスレッドに伝えてないのでここで中断シグナルを出す
@@ -234,7 +234,7 @@ namespace dg {
 
 		sql::Transaction(
 			QSqlDatabase::database(),
-			[this, &param, &tag](){
+			[this, &pr, &tag](){
 				// 最初に候補フラグをクリア
 				_db->resetSelectionFlag();
 
@@ -329,7 +329,7 @@ namespace dg {
 						used.emplace_back(c.id);
 						// 容量を超えた時点でループは終了
 						remain -= fitQs.area();
-						if(selected.size() >= param.avgImage+param::AuxImage() && remain <= 0)
+						if(selected.size() >= pr.avgImage+param::AuxImage() && remain <= 0)
 							break;
 						++i;
 					}
@@ -373,19 +373,19 @@ namespace dg {
 					sel = std::move(selected),
 					ini = board,
 					qs,
-					n_img = param.avgImage
+					n_img = pr.avgImage
 				](){
 					worker->sprinkle(ini, sel, qs, n_img);
 				});
 			}
 		);
 	}
-	void Sprinkler::sprinkle(const place::Param& param, const TagIdV& tag) {
+	void Sprinkler::sprinkle(const place::Param& pr, const TagIdV& tag) {
 		Q_ASSERT(_state == State::Idle);
 		_state = State::WaitDelay;
 		// (QLabelの削除が実際に画面へ適用されるまでタイムラグがある為)
-		QTimer::singleShot(_const.delay_ms*2, this, [param, tag, this](){
-			_sprinkle(param, tag);
+		QTimer::singleShot(_const.delay_ms*2, this, [pr, tag, this](){
+			_sprinkle(pr, tag);
 		});
 	}
 	void Sprinkler::abort() {
