@@ -5,19 +5,21 @@
 namespace dg::place {
 	struct Selected {
 		ImageId			id;
-		lubee::SizeI	fitSize;
+		// 遺伝子で倍率を1.0とした時のサイズ(= 最大表示サイズ)
+		lubee::SizeI	size;
 
-		// fitSizeを量子化
+		// sizeをqsで量子化(端数は切り上げ)
 		lubee::SizeI getQuantizedSize(const size_t qs) const noexcept {
 			return {
-				int((fitSize.width+int(qs)-1)/int(qs)),
-				int((fitSize.height+int(qs)-1)/int(qs))
+				int((size.width+int(qs)-1)/int(qs)),
+				int((size.height+int(qs)-1)/int(qs))
 			};
 		}
+		// sizeにスケーリング値をかけた物(端数は切り捨て)をqsで量子化
 		lubee::SizeI getQuantizeScaledSize(const float r, const size_t qs) const noexcept {
 			return Selected{0, {
-				int(fitSize.width * r),
-				int(fitSize.height * r)
+				int(size.width * r),
+				int(size.height * r)
 			}}.getQuantizedSize(qs);
 		}
 	};

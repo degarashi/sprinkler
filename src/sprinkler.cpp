@@ -324,7 +324,7 @@ namespace dg {
 						selected.emplace_back(
 							place::Selected {
 								.id = ImageId(c.id),
-								.fitSize = {int32_t(fit_w), int32_t(fit_h)},
+								.size = {int32_t(fit_w), int32_t(fit_h)},
 							}
 						);
 						const auto fitQs = selected.back().getQuantizedSize(qs);

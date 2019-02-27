@@ -292,7 +292,7 @@ namespace dg {
 			if(cb.place(sz)) {
 				// 画像をブロック枠サイズにピッタリ合わせる
 				const lubee::SizeI szRect = sz * qs,
-								szOriginal = selected[idx].fitSize * gene.getScale(i);
+								szOriginal = selected[idx].size * gene.getScale(i);
 				const int dx = szRect.width - szOriginal.width,
 						dy = szRect.height - szOriginal.height;
 				Q_ASSERT(dx>=0 && dy>=0);
