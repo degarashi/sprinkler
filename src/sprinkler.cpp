@@ -252,7 +252,7 @@ namespace dg {
 				// ループを回す残り面積
 				Area_t remain(Area_t(board.getNEmptyCell()) * param::AreaRatio());
 				// 最後に選択した矩形(quantized) 一枚しか候補となる画像が無かった場合に使用
-				lubee::RectI		lastRect;
+				lubee::RectI		maxRect;
 				// 候補画像リスト
 				place::SelectedV	selected;
 				ImageIdV			used;
@@ -286,16 +286,15 @@ namespace dg {
 						const QSize orig = c.size;
 						const float a = float(orig.width()) / orig.height();
 						// アスペクト比を維持したまま拡大縮小して少くとも単体で画面に配置できる目安サイズを検索
-						lastRect = asp.back().rect;
-						lubee::SizeI maxsize = lastRect.size() * qs;
+						maxRect = asp.back().rect;
 						for(size_t i=0 ; i<nAsp ; i++) {
 							auto& a0 = asp[i];
 							if(a <= a0.aspect) {
-								lastRect = a0.rect;
-								maxsize = a0.rect.size() * qs;
+								maxRect = a0.rect;
 								break;
 							}
 						}
+						const lubee::SizeI maxsize = maxRect.size() * qs;
 						float r = 1;
 						if(orig.width() > maxsize.width) {
 							// 横幅をmaxsizeに合わせるような倍率
@@ -358,8 +357,8 @@ namespace dg {
 						place::Result {
 							.id = selected[0].id,
 							.rect = lubee::RectI(
-								lastRect.offset(),
-								lastRect.size()
+								maxRect.offset(),
+								maxRect.size()
 							) * int(qs)
 						}
 					};
