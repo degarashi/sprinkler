@@ -14,4 +14,4 @@ QRectF operator * (const QRectF& r, const QSizeF s);
 QRectF& operator *= (QRectF& r, const QSizeF s);
 QRectF operator + (const QRectF& r, const QPointF ofs);
 QRectF& operator += (QRectF& r, const QPointF s);
-QRect ToRect(const QRectF& r);
+QRect ToQRect(const QRectF& r);

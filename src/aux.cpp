@@ -32,7 +32,7 @@ QRect Quantify(const QRect& r, const int n) {
 	};
 }
 QRect RectScOfs(const QRect& r, const QSizeF sc, const QPointF ofs) {
-	return ToRect(r * sc + ofs);
+	return ToQRect(r * sc + ofs);
 }
 QSize AspectKeepScale(const QSize target, const QSize size) {
 	const auto ar = [](const QSize s){

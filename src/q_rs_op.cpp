@@ -64,7 +64,7 @@ QRectF operator + (const QRectF& r, const QPointF ofs) {
 QRectF& operator += (QRectF& r, const QPointF s) {
 	return r = r + s;
 }
-QRect ToRect(const QRectF& r) {
+QRect ToQRect(const QRectF& r) {
 	return {
 		int(std::floor(r.x())),
 		int(std::floor(r.y())),
