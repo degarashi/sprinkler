@@ -44,3 +44,4 @@ probability_path = 0.5
 
 [GeneWorker.Fit]
 fit_scale = 3.0
+fit_scale_imageset = 8.0

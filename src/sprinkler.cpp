@@ -309,7 +309,7 @@ namespace dg {
 			qs,
 			n_img = idv.size()
 		](){
-			worker->sprinkle(ini, sel, qs, n_img);
+			worker->sprinkle(ini, sel, qs, n_img, true);
 		});
 	}
 	void Sprinkler::_sprinkle(const place::Param& pr, const TagIdV& tag) {
@@ -427,7 +427,7 @@ namespace dg {
 					qs,
 					n_img = pr.avgImage
 				](){
-					worker->sprinkle(ini, sel, qs, n_img);
+					worker->sprinkle(ini, sel, qs, n_img, false);
 				});
 			}
 		);

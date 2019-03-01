@@ -22,7 +22,8 @@ namespace dg {
 				const dg::CellBoard& initial,
 				const dg::place::SelectedV&	selected,
 				size_t qs,
-				size_t targetN
+				size_t targetN,
+				bool imageset
 			);
 			void abort();
 		signals:

@@ -35,6 +35,7 @@ namespace dg {
 			DefP(Mutate_P, "Mutate.probability", double)
 			DefP(Mutate_PathP, "Mutate.probability_path", double)
 			DefP(Fit_Scale, "Fit.fit_scale", double)
+			DefP(Fit_Scale_ImageSet, "Fit.fit_scale_imageset", double)
 			DefP(Population_Ratio, "Population.ratio", int)
 			#undef DefP
 		}
@@ -213,7 +214,8 @@ namespace dg {
 		const dg::CellBoard& initial,
 		const dg::place::SelectedV&	selected,
 		const size_t qs,
-		const size_t targetN
+		const size_t targetN,
+		const bool imageset
 	){
 		_abort = false;
 		// --------- GAで配置を最適化 ---------
@@ -240,7 +242,13 @@ namespace dg {
 					Population = NChild * param::Population_Ratio();
 		const double MutateP = param::Mutate_P(),
 					MutateP_Path = param::Mutate_PathP();
-		Fit fit(selected, initial, param::Fit_Scale(), qs, targetN);
+		Fit fit(
+			selected,
+			initial,
+			imageset ? param::Fit_Scale_ImageSet() : param::Fit_Scale(),
+			qs,
+			targetN
+		);
 		auto tmp = fit._initial;
 
 		// Window環境でrandom_deviceを使うと毎回同じ乱数列が生成されてしまうので
