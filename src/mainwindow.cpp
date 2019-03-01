@@ -57,28 +57,30 @@ namespace dg { namespace widget {
 		connect(spr, &Sprinkler::sprinkleProgress,
 				this, &MainWindow::sprinkleProgress);
 
-		const auto changed_f = [this](const TagIdV& tag){
+		// タグリストを引数にして画像の残数カウンタ更新
+		const auto refresh_counter_tag = [this](const TagIdV& tag){
 			const auto c = _dbTag->countImageByTag(tag);
 			emit remainingImageCounterChanged(tag, c.total, c.shown);
 		};
-		const auto changed_f0 = [this, changed_f](){
-			changed_f(_ui->tagSelector->getArray());
+		// 現在選択しているタグに対して画像の残量カウンタを更新
+		const auto refresh_counter = [this, refresh_counter_tag](){
+			refresh_counter_tag(_ui->tagSelector->getArray());
 		};
 		// sprinkle結果
 		connect(spr, &Sprinkler::sprinkleResult,
-					this, [this, changed_f0](const place::ResultV& r){
+					this, [this, refresh_counter](const place::ResultV& r){
 						_state->onSprinkleResult(*this, r);
-						changed_f0();
+						refresh_counter();
 				});
 		connect(spr, &Sprinkler::sprinkleAbort,
 					this, [this](){
 					_state->onSprinkleAbort(*this);
 				});
 		connect(_ui->tagSelector, &TagSelector::changed,
-					this, changed_f);
+					this, refresh_counter_tag);
 		connect(spr, &Sprinkler::imageChanged,
-					this, [changed_f0](){
-						changed_f0();
+					this, [refresh_counter](){
+						refresh_counter();
 				});
 
 		// --------- ツールバー ---------
