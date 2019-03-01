@@ -85,6 +85,7 @@ namespace dg {
 			QAction*			_action[Action::_Num];
 
 			void _sprinkle(const place::Param& param, const TagIdV& tag);
+			void _sprinkleImageSet(const ImageIdV& id);
 			void _resetToIdleState(State::e expected);
 
 		private:
@@ -98,7 +99,11 @@ namespace dg {
 		public:
 			explicit Sprinkler();
 			// ---- from MainWindow ----
+			// 候補タグと平均枚数を指定して画像を配置
 			void sprinkle(const place::Param& param, const TagIdV& tag);
+			// 予め用意した画像候補を使って画像を配置
+			// (全て配置できるとは限らない)
+			void sprinkleImageSet(const ImageIdV& id);
 			void abort();
 			// -------------------------
 			~Sprinkler();

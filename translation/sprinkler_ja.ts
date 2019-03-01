@@ -55,7 +55,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="85"/>
+        <location filename="../src/mainwindow.ui" line="42"/>
         <source>tag selection</source>
         <translation>タグ選択</translation>
     </message>
@@ -64,59 +64,65 @@
         <translation type="vanished">表示済みフラグをクリア</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="114"/>
+        <location filename="../src/mainwindow.ui" line="71"/>
         <source>collection parameter</source>
         <translation>収集パラメータ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="128"/>
+        <location filename="../src/mainwindow.ui" line="85"/>
         <source>ResetViewFlag(All)</source>
         <translation>全表示済みフラグをクリア</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="135"/>
+        <location filename="../src/mainwindow.ui" line="92"/>
         <source>ResetViewFlag(Selecting)</source>
         <translation>表示済みフラグをクリア(現在の候補のみ)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="33"/>
-        <location filename="../src/mainwindow.ui" line="220"/>
+        <location filename="../src/mainwindow.ui" line="125"/>
+        <location filename="../src/mainwindow.ui" line="228"/>
         <source>Sprinkle</source>
         <translation>画像を配置</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="43"/>
-        <location filename="../src/mainwindow.ui" line="225"/>
+        <location filename="../src/mainwindow.ui" line="135"/>
+        <location filename="../src/mainwindow.ui" line="233"/>
         <source>Stop</source>
         <translation>中止</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="69"/>
+        <location filename="../src/mainwindow.ui" line="145"/>
         <source>HideOnSprinkle</source>
         <translation>Sprinkle時にウィンドウを隠す</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="162"/>
+        <location filename="../src/mainwindow.ui" line="152"/>
+        <location filename="../src/mainwindow.ui" line="238"/>
+        <source>Reposition</source>
+        <translation>再配置</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="169"/>
         <source>&amp;Application</source>
         <translation>アプリケーション(&amp;a)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="168"/>
+        <location filename="../src/mainwindow.ui" line="175"/>
         <source>&amp;Window</source>
         <translation>ウィンドウ(&amp;w)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="175"/>
+        <location filename="../src/mainwindow.ui" line="182"/>
         <source>A&amp;ction</source>
         <translation>アクション(&amp;c)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="186"/>
+        <location filename="../src/mainwindow.ui" line="194"/>
         <source>toolBar</source>
         <translation>ツールバー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="211"/>
+        <location filename="../src/mainwindow.ui" line="219"/>
         <source>&amp;StayOnTop</source>
         <translation>常に最前面に表示(&amp;t)</translation>
     </message>
@@ -310,22 +316,22 @@
         <translation>表示フラグをリセット(&amp;r)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="423"/>
+        <location filename="../src/sprinkler.cpp" line="494"/>
         <source>&amp;Link tag</source>
         <translation>タグをリンク(&amp;l)</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="428"/>
+        <location filename="../src/sprinkler.cpp" line="499"/>
         <source>Recentry used tag</source>
         <translation>最近使用したタグ</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="438"/>
+        <location filename="../src/sprinkler.cpp" line="509"/>
         <source>input...</source>
         <translation>タグ入力…</translation>
     </message>
     <message>
-        <location filename="../src/sprinkler.cpp" line="455"/>
+        <location filename="../src/sprinkler.cpp" line="526"/>
         <source>&amp;Unlink tag</source>
         <translation>タグのリンク解除(&amp;u)</translation>
     </message>
@@ -341,53 +347,60 @@
 <context>
     <name>dg::widget::MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="120"/>
+        <location filename="../src/mainwindow.cpp" line="129"/>
         <source>detail menu</source>
         <translation>詳細メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="140"/>
+        <location filename="../src/mainwindow.cpp" line="149"/>
         <source>simplified menu</source>
         <translation>簡易メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="159"/>
+        <location filename="../src/mainwindow.cpp" line="168"/>
         <source>showing: %1
 [%2 / %3] were displayed</source>
         <translation>%1枚の画像を表示中\n[%2 / %3]枚が表示済み</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="57"/>
+        <location filename="../src/mainwindow_proc.cpp" line="70"/>
         <source>No image</source>
         <translation>候補画像なし</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="58"/>
+        <location filename="../src/mainwindow_proc.cpp" line="71"/>
         <source>There&apos;s no image can place</source>
         <translation>配置する画像が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="60"/>
+        <location filename="../src/mainwindow_proc.cpp" line="73"/>
         <source>Image placed</source>
         <translation>配置完了</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow_proc.cpp" line="61"/>
+        <location filename="../src/mainwindow_proc.cpp" line="74"/>
         <source>%n image(s) placed</source>
         <translation>
             <numerusform>%n枚の画像を配置済み</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_idle.cpp" line="18"/>
+        <location filename="../src/mainwindow_idle.cpp" line="19"/>
+        <location filename="../src/mainwindow_idle.cpp" line="37"/>
         <source>No images</source>
         <translation>候補画像なし</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_idle.cpp" line="19"/>
+        <location filename="../src/mainwindow_idle.cpp" line="20"/>
         <source>There&apos;s no image to show.
 (Image-set runs out)</source>
         <translation>配置する画像が見つかりませんでした (残り画像なし)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow_idle.cpp" line="38"/>
+        <source>There&apos;s no image to show.
+(No previous image set)</source>
+        <translation>配置する画像が見つかりませんでした (前回配置画像リストが空)</translation>
     </message>
 </context>
 <context>

@@ -249,6 +249,69 @@ namespace dg {
 			return maxRect;
 		}
 	}
+	void Sprinkler::_sprinkleImageSet(const ImageIdV& idv) {
+		if(_state == State::Aborted) {
+			_resetToIdleState(State::Aborted);
+			// まだGeneWorkerスレッドに伝えてないのでここで中断シグナルを出す
+			emit sprinkleAbort();
+			return;
+		}
+		Q_ASSERT(_state == State::WaitDelay);
+		_state = State::Processing;
+
+		// 進捗は一旦0%にリセット
+		emit sprinkleProgress(0);
+
+		const auto qs = _const.quantify_size;
+		const CellBoard& board = _quantizer->qmap();
+		// アスペクト比とサイズの目安(Quantized)
+		const auto asp = CalcAspSize(board);
+		if(idv.size() == 1) {
+			Q_ASSERT(_state == State::Processing);
+			_state = State::Idle;
+			// 画像が一枚しかない場合は最大サイズを適用
+			const auto id = idv.front();
+			// 使用した画像にフラグを立てる
+			_db->setViewFlag({id}, 2);
+
+			const auto& info = _db->getImageInfo(id);
+			const auto maxRect = CalcMaxSize(asp, info.size);
+			// 画像1枚だけのリストを構成
+			const place::ResultV res = {
+				place::Result {
+					.id = id,
+					.rect = maxRect * qs
+				}
+			};
+			emit sprinkleResult(res);
+			return;
+		}
+		_state = State::Processing;
+
+		// Geneスレッドへパラメータを送る為の準備
+		// 候補画像リスト
+		place::SelectedV	selected;
+		// アスペクト比毎の最大サイズを取得
+		for(auto&& id : idv) {
+			const auto& info = _db->getImageInfo(id);
+			const auto maxRect = CalcMaxSize(asp, info.size);
+			selected.emplace_back(
+				place::Selected {
+					.id = id,
+					.size = maxRect.size() * qs,
+				}
+			);
+		}
+		QTimer::singleShot(0, _geneWorker, [
+			worker = _geneWorker,
+			sel = std::move(selected),
+			ini = board,
+			qs,
+			n_img = idv.size()
+		](){
+			worker->sprinkle(ini, sel, qs, n_img);
+		});
+	}
 	void Sprinkler::_sprinkle(const place::Param& pr, const TagIdV& tag) {
 		if(_state == State::Aborted) {
 			_resetToIdleState(State::Aborted);
@@ -368,6 +431,14 @@ namespace dg {
 				});
 			}
 		);
+	}
+	void Sprinkler::sprinkleImageSet(const ImageIdV& idv) {
+		Q_ASSERT(_state == State::Idle);
+		_state = State::WaitDelay;
+		// (QLabelの削除が実際に画面へ適用されるまでタイムラグがある為)
+		QTimer::singleShot(_const.delay_ms*2, this, [this, idv](){
+			_sprinkleImageSet(idv);
+		});
 	}
 	void Sprinkler::sprinkle(const place::Param& pr, const TagIdV& tag) {
 		Q_ASSERT(_state == State::Idle);

@@ -7,6 +7,7 @@
 #include "version.hpp"
 #include "widget/imagelabel.hpp"
 #include "database_sig.hpp"
+#include "place/result.hpp"
 #include <QSystemTrayIcon>
 #include <QStyle>
 #include <QShowEvent>
@@ -35,7 +36,8 @@ namespace dg { namespace widget {
 		base_t("placer", parent),
 		_ui(new Ui::MainWindow),
 		_dbTag(tag),
-		_dbImg(img)
+		_dbImg(img),
+		_processingNewImage(false)
 	{
 		_ui->setupUi(this);
 		{
@@ -45,10 +47,11 @@ namespace dg { namespace widget {
 		}
 		_ui->tagSelector->init(tag, sig);
 
-		// 画像コレクションが変わる時には既に配置してあるラベルをクリア
+		// 画像コレクションが変わる時には既に配置してあるラベルと、前回の画像リストをクリア
 		connect(sig, &DatabaseSignal::beginResetDir,
 			this, [this](){
 				_clearLabels();
+				_prevImg.clear();
 			});
 
 		auto* spr = &sprinkler;
@@ -70,7 +73,13 @@ namespace dg { namespace widget {
 		connect(spr, &Sprinkler::sprinkleResult,
 					this, [this, refresh_counter](const place::ResultV& r){
 						_state->onSprinkleResult(*this, r);
-						refresh_counter();
+						if(_processingNewImage) {
+							_prevImg.clear();
+							for(auto&& r0 : r) {
+								_prevImg.emplace_back(r0.id);
+							}
+							refresh_counter();
+						}
 				});
 		connect(spr, &Sprinkler::sprinkleAbort,
 					this, [this](){
@@ -208,6 +217,9 @@ namespace dg { namespace widget {
 	}
 	void MainWindow::stop() {
 		_state->onStop(*this);
+	}
+	void MainWindow::reposition() {
+		_state->onReposition(*this);
 	}
 	void MainWindow::resetViewFlagSelecting() {
 		// 選択中のタグを取得

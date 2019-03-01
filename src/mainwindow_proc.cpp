@@ -10,12 +10,18 @@
 
 namespace dg { namespace widget {
 	MainWindow::ProcState::ProcState(TagIdV&& tag):
-		_tag(std::move(tag))
+		_tag(std::move(tag)),
+		_procTag(true)
+	{}
+	MainWindow::ProcState::ProcState(const ImageIdV& img):
+		_img(img),
+		_procTag(false)
 	{}
 	void MainWindow::ProcState::_setEnable(MainWindow& self, const bool b) {
 		self._ui->paramFrame->setEnabled(b);
 		self._ui->cbHide->setEnabled(b);
 		self._ui->pbSprinkle->setEnabled(b);
+		self._ui->pbReposition->setEnabled(b);
 		self._ui->pbStop->setEnabled(!b);
 	}
 	void MainWindow::ProcState::onEnter(MainWindow& self) {
@@ -29,8 +35,12 @@ namespace dg { namespace widget {
 			self.setWindowState(Qt::WindowMinimized);
 		}
 		// 後はSprinklerクラスに任せる(結果はplaceResultシグナル)
-		const auto param = self._ui->request->param();
-		sprinkler.sprinkle(param, _tag);
+		if(_procTag) {
+			const auto param = self._ui->request->param();
+			sprinkler.sprinkle(param, _tag);
+		} else {
+			sprinkler.sprinkleImageSet(_img);
+		}
 	}
 	void MainWindow::ProcState::onExit(MainWindow& self) {
 		// パラメータ関連のUIを元に戻す
@@ -45,6 +55,9 @@ namespace dg { namespace widget {
 		self._setState(State_U(new AbortState()));
 	}
 	void MainWindow::ProcState::onSprinkle(MainWindow&) {
+		Q_ASSERT(false);
+	}
+	void MainWindow::ProcState::onReposition(MainWindow&) {
 		Q_ASSERT(false);
 	}
 	void MainWindow::ProcState::onSprinkleAbort(MainWindow&) {
@@ -82,6 +95,6 @@ namespace dg { namespace widget {
 			title,
 			msg
 		);
-		self._setState(State_U(new IdleState()));
+		self._setState(State_U(new IdleState));
 	}
 }}

@@ -35,6 +35,7 @@ namespace dg { namespace widget {
 				virtual void onExit(MainWindow& self) {}
 				virtual void onSprinkle(MainWindow& self) = 0;
 				virtual void onStop(MainWindow& self) = 0;
+				virtual void onReposition(MainWindow& self) = 0;
 				virtual void onSprinkleResult(MainWindow& self, const dg::place::ResultV& r) = 0;
 				virtual void onSprinkleAbort(MainWindow&) = 0;
 			};
@@ -43,6 +44,7 @@ namespace dg { namespace widget {
 			struct IdleState : State {
 				void onSprinkle(MainWindow& self) override;
 				void onStop(MainWindow& self) override;
+				void onReposition(MainWindow& self) override;
 				void onSprinkleResult(MainWindow&, const dg::place::ResultV&) override;
 				void onSprinkleAbort(MainWindow&) override;
 			};
@@ -50,13 +52,17 @@ namespace dg { namespace widget {
 			struct ProcState : State {
 				// Geneスレッドに送るタグ番号リスト
 				TagIdV		_tag;
+				ImageIdV	_img;
+				bool		_procTag;
 
 				ProcState(TagIdV&& tag);
+				ProcState(const ImageIdV& img);
 				void _setEnable(MainWindow& self, bool b);
 				void onEnter(MainWindow&) override;
 				void onExit(MainWindow&) override;
 				void onSprinkle(MainWindow& self) override;
 				void onStop(MainWindow& self) override;
+				void onReposition(MainWindow& self) override;
 				void onSprinkleResult(MainWindow&, const dg::place::ResultV&) override;
 				void onSprinkleAbort(MainWindow&) override;
 			};
@@ -64,6 +70,7 @@ namespace dg { namespace widget {
 			struct AbortState : State {
 				void onSprinkle(MainWindow& self) override;
 				void onStop(MainWindow& self) override;
+				void onReposition(MainWindow& self) override;
 				void onSprinkleResult(MainWindow&, const dg::place::ResultV&) override;
 				void onSprinkleAbort(MainWindow&) override;
 			};
@@ -77,6 +84,11 @@ namespace dg { namespace widget {
 			QSystemTrayIcon					*_tray;
 			// Label: 配置した画像
 			LabelV							_label;
+			// 前回配置した画像リスト
+			// 画像ソースを変更するとリセット
+			ImageIdV						_prevImg;
+			// trueの時は配置結果が来たらprevImgを差し替え
+			bool							_processingNewImage;
 
 			void _setState(State_U state);
 			//! [OpenDir, OpenTag, OpenRect, OpenWatch]ウィンドウを非表示にする
@@ -101,6 +113,8 @@ namespace dg { namespace widget {
 			//! 画像配置の開始
 			void sprinkle();
 			void stop();
+			//! 前回の画像配置セットをもう一度配置
+			void reposition();
 			void resetViewFlagSelecting();
 			void resetViewFlagAll();
 		signals:

@@ -8,6 +8,7 @@
 namespace dg { namespace widget {
 	void MainWindow::IdleState::onSprinkle(MainWindow& self) {
 		self._clearLabels();
+		self._processingNewImage = true;
 
 		TagIdV tag = self._ui->tagSelector->getArray();
 		const auto c = self._dbTag->countImageByTag(tag);
@@ -24,6 +25,21 @@ namespace dg { namespace widget {
 	}
 	void MainWindow::IdleState::onStop(MainWindow&) {
 		Q_ASSERT(false);
+	}
+	void MainWindow::IdleState::onReposition(MainWindow& self) {
+		self._clearLabels();
+		self._processingNewImage = false;
+
+		// 対象画像数が0だったら何もしない
+		if(self._prevImg.empty()) {
+			mgr_toast.bake(
+				Toast::Icon::Information,
+				tr("No images"),
+				tr("There's no image to show.\n(No previous image set)")
+			);
+			return;
+		}
+		self._setState(State_U{new ProcState(self._prevImg)});
 	}
 	void MainWindow::IdleState::onSprinkleResult(MainWindow&, const dg::place::ResultV&) {
 		Q_ASSERT(false);

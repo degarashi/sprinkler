@@ -3,9 +3,12 @@
 namespace dg { namespace widget {
 	void MainWindow::AbortState::onSprinkleAbort(MainWindow& self) {
 		// アイドルステートへ移行
-		self._setState(State_U(new IdleState()));
+		self._setState(State_U(new IdleState));
 	}
 	void MainWindow::AbortState::onSprinkle(MainWindow&) {
+		Q_ASSERT(false);
+	}
+	void MainWindow::AbortState::onReposition(MainWindow&) {
 		Q_ASSERT(false);
 	}
 	void MainWindow::AbortState::onStop(MainWindow&) {

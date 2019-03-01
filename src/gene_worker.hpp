@@ -17,6 +17,7 @@ namespace dg {
 			bool	_abort;
 
 		public slots:
+			// 引数の画像候補を重ならないように配置出来るだけする
 			void sprinkle(
 				const dg::CellBoard& initial,
 				const dg::place::SelectedV&	selected,
