@@ -15,7 +15,8 @@ namespace dg { namespace widget {
 	void MainWindow::ProcState::_setEnable(MainWindow& self, const bool b) {
 		self._ui->paramFrame->setEnabled(b);
 		self._ui->cbHide->setEnabled(b);
-		self._ui->pbSprinkle->setText(b ? "Sprinkle" : "Stop");
+		self._ui->pbSprinkle->setEnabled(b);
+		self._ui->pbStop->setEnabled(!b);
 	}
 	void MainWindow::ProcState::onEnter(MainWindow& self) {
 		// システムトレイを処理中アイコンにする
@@ -37,11 +38,14 @@ namespace dg { namespace widget {
 		// システムトレイを通常アイコンにする
 		self._tray->setIcon(QApplication::style()->standardIcon(QStyle::SP_TitleBarMenuButton));
 	}
-	void MainWindow::ProcState::onSprinkle(MainWindow& self) {
+	void MainWindow::ProcState::onStop(MainWindow& self) {
 		// 中止要請
 		sprinkler.abort();
 		// 中止待機ステートへ移行
 		self._setState(State_U(new AbortState()));
+	}
+	void MainWindow::ProcState::onSprinkle(MainWindow&) {
+		Q_ASSERT(false);
 	}
 	void MainWindow::ProcState::onSprinkleAbort(MainWindow&) {
 		Q_ASSERT(false);

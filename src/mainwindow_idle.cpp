@@ -22,6 +22,9 @@ namespace dg { namespace widget {
 		}
 		self._setState(State_U{new ProcState(std::move(tag))});
 	}
+	void MainWindow::IdleState::onStop(MainWindow&) {
+		Q_ASSERT(false);
+	}
 	void MainWindow::IdleState::onSprinkleResult(MainWindow&, const dg::place::ResultV&) {
 		Q_ASSERT(false);
 	}

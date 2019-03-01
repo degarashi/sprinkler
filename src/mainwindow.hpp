@@ -34,6 +34,7 @@ namespace dg { namespace widget {
 				virtual void onEnter(MainWindow& self) {}
 				virtual void onExit(MainWindow& self) {}
 				virtual void onSprinkle(MainWindow& self) = 0;
+				virtual void onStop(MainWindow& self) = 0;
 				virtual void onSprinkleResult(MainWindow& self, const dg::place::ResultV& r) = 0;
 				virtual void onSprinkleAbort(MainWindow&) = 0;
 			};
@@ -41,6 +42,7 @@ namespace dg { namespace widget {
 
 			struct IdleState : State {
 				void onSprinkle(MainWindow& self) override;
+				void onStop(MainWindow& self) override;
 				void onSprinkleResult(MainWindow&, const dg::place::ResultV&) override;
 				void onSprinkleAbort(MainWindow&) override;
 			};
@@ -54,12 +56,14 @@ namespace dg { namespace widget {
 				void onEnter(MainWindow&) override;
 				void onExit(MainWindow&) override;
 				void onSprinkle(MainWindow& self) override;
+				void onStop(MainWindow& self) override;
 				void onSprinkleResult(MainWindow&, const dg::place::ResultV&) override;
 				void onSprinkleAbort(MainWindow&) override;
 			};
 			//! 配置計算をキャンセル後、Geneスレッドの確認通知を待っている
 			struct AbortState : State {
 				void onSprinkle(MainWindow& self) override;
+				void onStop(MainWindow& self) override;
 				void onSprinkleResult(MainWindow&, const dg::place::ResultV&) override;
 				void onSprinkleAbort(MainWindow&) override;
 			};
@@ -96,6 +100,7 @@ namespace dg { namespace widget {
 			void sprinkleProgress(int percent);
 			//! 画像配置の開始
 			void sprinkle();
+			void stop();
 			void resetViewFlagSelecting();
 			void resetViewFlagAll();
 		signals:

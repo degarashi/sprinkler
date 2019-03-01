@@ -55,7 +55,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="42"/>
+        <location filename="../src/mainwindow.ui" line="85"/>
         <source>tag selection</source>
         <translation>タグ選択</translation>
     </message>
@@ -64,53 +64,59 @@
         <translation type="vanished">表示済みフラグをクリア</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="71"/>
+        <location filename="../src/mainwindow.ui" line="114"/>
         <source>collection parameter</source>
         <translation>収集パラメータ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="85"/>
+        <location filename="../src/mainwindow.ui" line="128"/>
         <source>ResetViewFlag(All)</source>
         <translation>全表示済みフラグをクリア</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="92"/>
+        <location filename="../src/mainwindow.ui" line="135"/>
         <source>ResetViewFlag(Selecting)</source>
         <translation>表示済みフラグをクリア(現在の候補のみ)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="109"/>
-        <location filename="../src/mainwindow.ui" line="209"/>
+        <location filename="../src/mainwindow.ui" line="33"/>
+        <location filename="../src/mainwindow.ui" line="220"/>
         <source>Sprinkle</source>
-        <translation></translation>
+        <translation>画像を配置</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="119"/>
+        <location filename="../src/mainwindow.ui" line="43"/>
+        <location filename="../src/mainwindow.ui" line="225"/>
+        <source>Stop</source>
+        <translation>中止</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="69"/>
         <source>HideOnSprinkle</source>
         <translation>Sprinkle時にウィンドウを隠す</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="152"/>
+        <location filename="../src/mainwindow.ui" line="162"/>
         <source>&amp;Application</source>
         <translation>アプリケーション(&amp;a)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="158"/>
+        <location filename="../src/mainwindow.ui" line="168"/>
         <source>&amp;Window</source>
         <translation>ウィンドウ(&amp;w)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="165"/>
+        <location filename="../src/mainwindow.ui" line="175"/>
         <source>A&amp;ction</source>
         <translation>アクション(&amp;c)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="175"/>
+        <location filename="../src/mainwindow.ui" line="186"/>
         <source>toolBar</source>
         <translation>ツールバー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="200"/>
+        <location filename="../src/mainwindow.ui" line="211"/>
         <source>&amp;StayOnTop</source>
         <translation>常に最前面に表示(&amp;t)</translation>
     </message>
@@ -351,22 +357,22 @@
         <translation>%1枚の画像を表示中\n[%2 / %3]枚が表示済み</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="53"/>
+        <location filename="../src/mainwindow_proc.cpp" line="57"/>
         <source>No image</source>
         <translation>候補画像なし</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="54"/>
+        <location filename="../src/mainwindow_proc.cpp" line="58"/>
         <source>There&apos;s no image can place</source>
         <translation>配置する画像が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="56"/>
+        <location filename="../src/mainwindow_proc.cpp" line="60"/>
         <source>Image placed</source>
         <translation>配置完了</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow_proc.cpp" line="57"/>
+        <location filename="../src/mainwindow_proc.cpp" line="61"/>
         <source>%n image(s) placed</source>
         <translation>
             <numerusform>%n枚の画像を配置済み</numerusform>
