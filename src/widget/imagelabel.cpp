@@ -14,7 +14,7 @@
 namespace dg { namespace widget {
 	ImageLabel::ImageLabel(
 		const ImageId id,
-		const lubee::RectI& rect,
+		const lubee::RectI &rect,
 		QMenu* ctrlMenu,
 		const DBImage *const dbImage,
 		const DBTag *const dbTag
@@ -29,8 +29,8 @@ namespace dg { namespace widget {
 		_dbTag(dbTag)
 	{
 		{
-			const auto calcSize = [id, &rect, dbImage](){
-				const auto& imgInfo = dbImage->getImageInfo(id);
+			const auto& imgInfo = dbImage->getImageInfo(id);
+			const auto calcSize = [&rect, &imgInfo](){
 				// 画像をブロック枠サイズにピッタリ合わせる
 				// 置く予定のスペース
 				const lubee::SizeI space = rect.size();

@@ -221,6 +221,34 @@ namespace dg {
 					_action[Action::OpenTag], &QAction::setChecked);
 		}
 	}
+	namespace {
+		auto CalcAspSize(const CellBoard &board) {
+			const auto asp = CalcAspSize(
+				board,
+				param::AspMin(),
+				param::AspMax(),
+				param::AspDiff()
+			);
+			assert(!asp.empty());
+			return asp;
+		}
+		lubee::RectI CalcMaxSize(const AspSizeV &asp,
+								const QSize orig)
+		{
+			const float a = float(orig.width()) / orig.height();
+			// アスペクト比を維持したまま拡大縮小して少くとも単体で画面に配置できる目安サイズを検索
+			lubee::RectI maxRect = asp.back().rect;
+			const auto nAsp = asp.size();
+			for(size_t i=0 ; i<nAsp ; i++) {
+				auto& a0 = asp[i];
+				if(a <= a0.aspect) {
+					maxRect = a0.rect;
+					break;
+				}
+			}
+			return maxRect;
+		}
+	}
 	void Sprinkler::_sprinkle(const place::Param& pr, const TagIdV& tag) {
 		if(_state == State::Aborted) {
 			_resetToIdleState(State::Aborted);
@@ -240,14 +268,7 @@ namespace dg {
 				const CellBoard& board = _quantizer->qmap();
 				const auto qs = _const.quantify_size;
 				// アスペクト比とサイズの目安(Quantized)
-				const auto asp = CalcAspSize(
-									board,
-									param::AspMin(),
-									param::AspMax(),
-									param::AspDiff()
-								);
-				const auto nAsp = asp.size();
-				assert(nAsp > 0);
+				const auto asp = CalcAspSize(board);
 				using Area_t = int_fast32_t;
 				// ループを回す残り面積
 				Area_t remain(Area_t(board.getNEmptyCell()) * param::AreaRatio());
@@ -284,49 +305,21 @@ namespace dg {
 						auto& c = cand[i];
 						// 画像の元サイズ
 						const QSize orig = c.size;
-						const float a = float(orig.width()) / orig.height();
-						// アスペクト比を維持したまま拡大縮小して少くとも単体で画面に配置できる目安サイズを検索
-						maxRect = asp.back().rect;
-						for(size_t i=0 ; i<nAsp ; i++) {
-							auto& a0 = asp[i];
-							if(a <= a0.aspect) {
-								maxRect = a0.rect;
-								break;
-							}
-						}
-						const lubee::SizeI maxsize = maxRect.size() * qs;
-						float r = 1;
-						if(orig.width() > maxsize.width) {
-							// 横幅をmaxsizeに合わせるような倍率
-							r = maxsize.width / float(orig.width());
-						}
-						if(orig.height() > maxsize.height) {
-							// 縦幅をmaxsizeに合わせるような倍率
-							r = std::min(r, maxsize.height / float(orig.height()));
-						} else {
-							// 拡大する
-							r = std::min(
-								maxsize.width / float(orig.width()),
-								maxsize.height / float(orig.height())
-							);
-						}
-						// 画像を空き領域に配置できる限界まで拡大or縮小したサイズ
-						const auto fit_w = static_cast<size_t>(std::ceil(r * orig.width())),
-									fit_h = static_cast<size_t>(std::ceil(r * orig.height()));
+						maxRect = CalcMaxSize(asp, orig);
+						const lubee::SizeI maxsize = maxRect.size();
+						assert(maxsize.width <= maxCellSize.width
+							&& maxsize.height <= maxCellSize.height);
 						// 遺伝子候補に加える
 						selected.emplace_back(
 							place::Selected {
 								.id = ImageId(c.id),
-								.size = {int32_t(fit_w), int32_t(fit_h)},
+								.size = maxsize * qs,
 							}
 						);
-						const auto fitQs = selected.back().getQuantizedSize(qs);
-						assert(fitQs.width <= maxCellSize.width);
-						assert(fitQs.height <= maxCellSize.height);
 						// 後でcand_flagにマークする為、配列に加えておく
 						used.emplace_back(c.id);
 						// 容量を超えた時点でループは終了
-						remain -= fitQs.area();
+						remain -= maxsize.area();
 						if(selected.size() >= pr.avgImage+param::AuxImage() && remain <= 0)
 							break;
 						++i;
@@ -353,13 +346,11 @@ namespace dg {
 
 					// 使用した画像にフラグを立てる
 					_db->setViewFlag({selected.front().id}, 2);
+					// 画像1枚だけのリストを構成
 					const place::ResultV res = {
 						place::Result {
-							.id = selected[0].id,
-							.rect = lubee::RectI(
-								maxRect.offset(),
-								maxRect.size()
-							) * int(qs)
+							.id = selected.front().id,
+							.rect = maxRect * qs
 						}
 					};
 					emit sprinkleResult(res);

@@ -5,7 +5,7 @@
 namespace dg::place {
 	struct Selected {
 		ImageId			id;
-		// 遺伝子で倍率を1.0とした時のサイズ(= 最大表示サイズ)
+		// 遺伝子で倍率を1.0とした時のサイズ(= 最大表示ピクセルサイズ)
 		lubee::SizeI	size;
 
 		// sizeをqsで量子化(端数は切り上げ)
