@@ -108,9 +108,10 @@ namespace dg { namespace widget {
 		_ui->windowmenu->addAction(spr->getAction(Sprinkler::Action::OpenRect));
 		_ui->windowmenu->addAction(spr->getAction(Sprinkler::Action::OpenWatch));
 
-		// --------- Ctrlメニュー ---------
+		// --------- イメージラベルをCtrl + 右クリックした時に表示されるメニュー  ---------
 		_ctrlMenu = new QMenu(this);
 		_ctrlMenu->addAction(_ui->actionSprinkle);
+		_ctrlMenu->addAction(_ui->actionReposition);
 		_ctrlMenu->addSeparator();
 		_ctrlMenu->addAction(spr->getAction(Sprinkler::Action::Quit));
 
@@ -136,6 +137,8 @@ namespace dg { namespace widget {
 							menu.addAction(spr->getAction(Sprinkler::Action::OpenWatch));
 							menu.addSeparator();
 							menu.addAction(_ui->actionSprinkle);
+							menu.addAction(_ui->actionReposition);
+							menu.addSeparator();
 							menu.addAction(spr->getAction(Sprinkler::Action::ResetFlag));
 							menu.addSeparator();
 							menu.addAction(spr->getAction(Sprinkler::Action::Quit));
@@ -150,6 +153,7 @@ namespace dg { namespace widget {
 							menu.addAction(spr->getAction(Sprinkler::Action::OpenMain));
 							menu.addSeparator();
 							menu.addAction(_ui->actionSprinkle);
+							menu.addAction(_ui->actionReposition);
 							menu.exec(QCursor::pos());
 							break;
 						}
