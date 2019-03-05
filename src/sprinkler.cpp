@@ -72,6 +72,7 @@ namespace dg {
 				this, &Sprinkler::sprinkleProgress);
 		connect(_db, &Database::endResetImage,
 				this, &Sprinkler::imageChanged);
+		// メインウィンドウを表示する
 		getAction(Action::OpenMain)->toggle();
 	}
 	void Sprinkler::_resetToIdleState(const State::e expected) {
@@ -84,6 +85,7 @@ namespace dg {
 	}
 	void Sprinkler::_linkAction() {
 		auto& a = _action;
+		// Actionのチェック状態が変わったらウィンドウの表示状態も同期
 		connect(a[Action::OpenDir], &QAction::toggled,
 				_window.source, &QWidget::setVisible);
 		connect(a[Action::OpenTag], &QAction::toggled,
@@ -203,12 +205,14 @@ namespace dg {
 		{
 			auto* w = new widget::MainWindow(db, db, db);
 			_window.mainwin = w;
+			// 表示状態が変わったらActionのチェックも同期
 			connect(w, &widget::MainWindow::onVisibilityChanged,
 					_action[Action::OpenMain], &QAction::setChecked);
 		}
 		{
 			auto* w = new ImageDirWindow(db, db->makeDirModel());
 			_window.source = w;
+			// 表示状態が変わったらActionのチェックも同期
 			connect(w, &ImageDirWindow::onVisibilityChanged,
 					_action[Action::OpenDir], &QAction::setChecked);
 		}
@@ -217,6 +221,7 @@ namespace dg {
 			connect(this, &Sprinkler::destroyed,
 					w, [w](auto*){ delete w; });
 			_window.tag = w;
+			// 表示状態が変わったらActionのチェックも同期
 			connect(w, &ImageTagWindow::onVisibilityChanged,
 					_action[Action::OpenTag], &QAction::setChecked);
 		}

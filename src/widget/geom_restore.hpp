@@ -56,6 +56,7 @@ namespace dg::widget {
 				}
 				base_t::hideEvent(e);
 			}
+			// アプリケーションによるShow / Hideイベント発生時に呼ばれる
 			virtual void _onVisibilityChanged(bool b) = 0;
 		public:
 			explicit GeomRestore(const QString& key, QWidget *const parent=nullptr):
