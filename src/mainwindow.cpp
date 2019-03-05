@@ -242,7 +242,9 @@ namespace dg { namespace widget {
 			if(state == Qt::WindowMinimized) {
 				// 最小化と同時に非表示
 				hide();
-			} else if(state == Qt::WindowNoState) {}
+			} else if(state == Qt::WindowNoState) {
+				show();
+			}
 		}
 	}
 }}
