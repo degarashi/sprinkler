@@ -347,57 +347,57 @@
 <context>
     <name>dg::widget::MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="130"/>
+        <location filename="../src/mainwindow.cpp" line="116"/>
         <source>detail menu</source>
         <translation>詳細メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="152"/>
+        <location filename="../src/mainwindow.cpp" line="138"/>
         <source>simplified menu</source>
         <translation>簡易メニュー</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="172"/>
+        <location filename="../src/mainwindow.cpp" line="158"/>
         <source>showing: %1
 [%2 / %3] were displayed</source>
         <translation>%1枚の画像を表示中\n[%2 / %3]枚が表示済み</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="70"/>
+        <location filename="../src/mainwindow_proc.cpp" line="72"/>
         <source>No image</source>
         <translation>候補画像なし</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="71"/>
+        <location filename="../src/mainwindow_proc.cpp" line="73"/>
         <source>There&apos;s no image can place</source>
         <translation>配置する画像が見つかりませんでした</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_proc.cpp" line="73"/>
+        <location filename="../src/mainwindow_proc.cpp" line="75"/>
         <source>Image placed</source>
         <translation>配置完了</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow_proc.cpp" line="74"/>
+        <location filename="../src/mainwindow_proc.cpp" line="76"/>
         <source>%n image(s) placed</source>
         <translation>
             <numerusform>%n枚の画像を配置済み</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_idle.cpp" line="19"/>
-        <location filename="../src/mainwindow_idle.cpp" line="37"/>
+        <location filename="../src/mainwindow_idle.cpp" line="18"/>
+        <location filename="../src/mainwindow_idle.cpp" line="35"/>
         <source>No images</source>
         <translation>候補画像なし</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_idle.cpp" line="20"/>
+        <location filename="../src/mainwindow_idle.cpp" line="19"/>
         <source>There&apos;s no image to show.
 (Image-set runs out)</source>
         <translation>配置する画像が見つかりませんでした (残り画像なし)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow_idle.cpp" line="38"/>
+        <location filename="../src/mainwindow_idle.cpp" line="36"/>
         <source>There&apos;s no image to show.
 (No previous image set)</source>
         <translation>配置する画像が見つかりませんでした (前回配置画像リストが空)</translation>

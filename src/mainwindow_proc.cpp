@@ -9,13 +9,15 @@
 #include <QStyle>
 
 namespace dg { namespace widget {
-	MainWindow::ProcState::ProcState(TagIdV&& tag):
+	MainWindow::ProcState::ProcState(TagIdV&& tag, const bool newSet):
 		_tag(std::move(tag)),
-		_procTag(true)
+		_procTag(true),
+		_newSet(newSet)
 	{}
-	MainWindow::ProcState::ProcState(const ImageIdV& img):
+	MainWindow::ProcState::ProcState(const ImageIdV& img, const bool newSet):
 		_img(img),
-		_procTag(false)
+		_procTag(false),
+		_newSet(newSet)
 	{}
 	void MainWindow::ProcState::_setEnable(MainWindow& self, const bool b) {
 		self._ui->paramFrame->setEnabled(b);
@@ -95,6 +97,15 @@ namespace dg { namespace widget {
 			title,
 			msg
 		);
+		if(_newSet) {
+			// [前回の画像リスト]を置き換え
+			self._prevImg.clear();
+			for(auto&& r0 : res) {
+				self._prevImg.emplace_back(r0.id);
+			}
+			// 画像残数カウンタの更新
+			self._refresh_counter();
+		}
 		self._setState(State_U(new IdleState));
 	}
 }}

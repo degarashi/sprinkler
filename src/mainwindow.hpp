@@ -53,10 +53,14 @@ namespace dg { namespace widget {
 				// Geneスレッドに送るタグ番号リスト
 				TagIdV		_tag;
 				ImageIdV	_img;
+				// true: Sprinklerのsprinkle()を呼ぶ
+				// false: SprinklerのsprinkleImageSet()を呼ぶ
 				bool		_procTag;
+				// 新しい画像セットを示すフラグ(true時は前の画像セットを置き換え)
+				bool		_newSet;
 
-				ProcState(TagIdV&& tag);
-				ProcState(const ImageIdV& img);
+				ProcState(TagIdV&& tag, bool newSet);
+				ProcState(const ImageIdV& img, bool newSet);
 				void _setEnable(MainWindow& self, bool b);
 				void onEnter(MainWindow&) override;
 				void onExit(MainWindow&) override;
@@ -87,14 +91,16 @@ namespace dg { namespace widget {
 			// 前回配置した画像リスト
 			// 画像ソースを変更するとリセット
 			ImageIdV						_prevImg;
-			// trueの時は配置結果が来たらprevImgを差し替え
-			bool							_processingNewImage;
 
 			void _setState(State_U state);
 			//! [OpenDir, OpenTag, OpenRect, OpenWatch]ウィンドウを非表示にする
 			void _hideSubWindow();
 			//! 配置した画像をクリア
 			void _clearLabels();
+			// タグリストを引数にして画像の残数カウンタ更新
+			void _refresh_counter();
+			// 現在選択しているタグに対して画像の残量カウンタを更新
+			void _refresh_counter_tag(const TagIdV& tag);
 
 		public:
 			MainWindow(

@@ -32,12 +32,18 @@ namespace dg { namespace widget {
 		// 進捗をプログレスバーに反映
 		_ui->progress->setValue(percent);
 	}
+	void MainWindow::_refresh_counter_tag(const TagIdV& tag) {
+		const auto c = _dbTag->countImageByTag(tag);
+		emit remainingImageCounterChanged(tag, c.total, c.shown);
+	}
+	void MainWindow::_refresh_counter() {
+		_refresh_counter_tag(_ui->tagSelector->getArray());
+	}
 	MainWindow::MainWindow(DBImage* img, DBTag* tag, DatabaseSignal* sig, QWidget *parent) :
 		base_t("placer", parent),
 		_ui(new Ui::MainWindow),
 		_dbTag(tag),
-		_dbImg(img),
-		_processingNewImage(false)
+		_dbImg(img)
 	{
 		_ui->setupUi(this);
 		{
@@ -60,37 +66,17 @@ namespace dg { namespace widget {
 		connect(spr, &Sprinkler::sprinkleProgress,
 				this, &MainWindow::sprinkleProgress);
 
-		// タグリストを引数にして画像の残数カウンタ更新
-		const auto refresh_counter_tag = [this](const TagIdV& tag){
-			const auto c = _dbTag->countImageByTag(tag);
-			emit remainingImageCounterChanged(tag, c.total, c.shown);
-		};
-		// 現在選択しているタグに対して画像の残量カウンタを更新
-		const auto refresh_counter = [this, refresh_counter_tag](){
-			refresh_counter_tag(_ui->tagSelector->getArray());
-		};
 		// sprinkle結果
 		connect(spr, &Sprinkler::sprinkleResult,
-					this, [this, refresh_counter](const place::ResultV& r){
-						_state->onSprinkleResult(*this, r);
-						if(_processingNewImage) {
-							_prevImg.clear();
-							for(auto&& r0 : r) {
-								_prevImg.emplace_back(r0.id);
-							}
-							refresh_counter();
-						}
-				});
+					this, [this](const place::ResultV& r){
+						_state->onSprinkleResult(*this, r); });
 		connect(spr, &Sprinkler::sprinkleAbort,
 					this, [this](){
-					_state->onSprinkleAbort(*this);
-				});
+						_state->onSprinkleAbort(*this); });
 		connect(_ui->tagSelector, &TagSelector::changed,
-					this, refresh_counter_tag);
+					this, &MainWindow::_refresh_counter_tag);
 		connect(spr, &Sprinkler::imageChanged,
-					this, [refresh_counter](){
-						refresh_counter();
-				});
+					this, &MainWindow::_refresh_counter);
 
 		// --------- ツールバー ---------
 		_ui->toolBar->addAction(spr->getAction(Sprinkler::Action::OpenDir));
