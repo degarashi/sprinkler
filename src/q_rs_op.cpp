@@ -36,8 +36,8 @@ QSize ToQSize(const QSizeF& s) {
 }
 QSize ToQSize(const lubee::SizeI& s) {
 	return {
-		s.width,
-		s.height
+		int(s.width),
+		int(s.height)
 	};
 }
 QSizeF operator * (const QSizeF s0, const QSizeF s1) {

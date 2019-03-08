@@ -19,7 +19,7 @@ namespace dg {
 				}
 			};
 			lubee::PointI	offset;
-			int				width;
+			uint32_t		width;
 
 			bool operator == (const OfsW& u) const noexcept {
 				return offset == u.offset &&

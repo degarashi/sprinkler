@@ -40,7 +40,10 @@ namespace dg {
 			#undef DefP
 		}
 		QSize ToQSize(const lubee::SizeI& s) noexcept {
-			return {s.width, s.height};
+			return {
+				int(s.width),
+				int(s.height)
+			};
 		}
 		struct Gene {
 			using Path = gene::path::VariableGene<int>;
