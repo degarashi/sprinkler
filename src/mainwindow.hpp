@@ -31,8 +31,8 @@ namespace dg { namespace widget {
 			//! ステートインタフェース
 			struct State {
 				virtual ~State() {}
-				virtual void onEnter(MainWindow& self) {}
-				virtual void onExit(MainWindow& self) {}
+				virtual void onEnter(MainWindow&) {}
+				virtual void onExit(MainWindow&) {}
 				virtual void onSprinkle(MainWindow& self) = 0;
 				virtual void onStop(MainWindow& self) = 0;
 				virtual void onReposition(MainWindow& self) = 0;
