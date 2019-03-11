@@ -12,7 +12,7 @@ namespace dg {
 	namespace place {
 		struct Param;
 		struct Result;
-		using ResultV = QVector<Result>;
+		using ResultV = std::vector<Result>;
 	}
 	class ToastMgr;
 	class Watcher;

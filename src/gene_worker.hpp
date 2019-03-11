@@ -7,7 +7,7 @@ namespace dg {
 		struct Selected;
 		using SelectedV = std::vector<Selected>;
 		struct Result;
-		using ResultV = QVector<Result>;
+		using ResultV = std::vector<Result>;
 	}
 	class GeneWorker :
 		public QObject

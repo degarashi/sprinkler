@@ -13,7 +13,7 @@ namespace dg {
 	class DatabaseSignal;
 	namespace place {
 		struct Result;
-		using ResultV = QVector<Result>;
+		using ResultV = std::vector<Result>;
 	}
 	namespace widget {
 		class ImageLabel;
