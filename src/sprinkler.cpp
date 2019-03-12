@@ -1,34 +1,39 @@
 #include "sprinkler.hpp"
-#include "toast_mgr.hpp"
-#include "quantizer.hpp"
-#include "rectwindow.hpp"
-#include "watchlist.hpp"
-#include "watcher.hpp"
-#include "qtw_notifier.hpp"
+#include "database.hpp"
+#include "gene_worker.hpp"
+#include "histgram/src/cell.hpp"
 #include "imagedir_window.hpp"
 #include "imagetag_window.hpp"
-
-#include "database.hpp"
 #include "mainwindow.hpp"
-#include "sprinkler_aux.hpp"
 #include "place/param.hpp"
 #include "place/result.hpp"
-#include "place/selected.hpp"
-#include "lubee/src/low_discrepancy.hpp"
-#include "gene_worker.hpp"
-#include "taginput.hpp"
+#include "qtw_notifier.hpp"
+#include "quantizer.hpp"
+#include "rectwindow.hpp"
+#include "sprinkler_aux.hpp"
 #include "sql/transaction.hpp"
+#include "taginput.hpp"
+#include "toast_mgr.hpp"
 #include "toml_settings.hpp"
+#include "watcher.hpp"
+#include "watchlist.hpp"
+#include "sprinkler_board.hpp"
 
-#include <QApplication>
 #include <QAction>
-#include <random>
-#include <QDebug>
-#include <QTimer>
-#include <QThread>
+#include <QApplication>
 #include <QMenu>
+#include <QThread>
+#include <QTimer>
 
 namespace dg {
+	void Sprinkler::_saveBoardState(const CellBoard& board) {
+		Q_ASSERT(!_board);
+		_board = std::make_shared<SprBoard>(board.nboard());
+	}
+	void Sprinkler::_removeBoardState() {
+		Q_ASSERT(_board);
+		_board.reset();
+	}
 	Sprinkler::Sprinkler():
 		_toast(new ToastMgr(this)),
 		_watcher(nullptr),
@@ -52,7 +57,7 @@ namespace dg {
 
 		qRegisterMetaType<dg::place::ResultV>("dg::place::ResultV");
 		connect(_geneWorker, &GeneWorker::sprinkleResult,
-				this, [this](const dg::place::ResultV& r){
+				this, [this](dg::place::ResultV r){
 					// 実際に使用した画像にフラグを立てる
 					{
 						ImageIdV used;
@@ -60,6 +65,17 @@ namespace dg {
 							used.emplace_back(img.id);
 						_db->setViewFlag(used, 2);
 					}
+
+					Q_ASSERT(_board);
+					// 穴埋め処理
+					// 引数のResultVを直接編集
+					_board->fillInEmptyCells(r);
+					// 用が済んだら盤面データを破棄
+					_removeBoardState();
+					// Qs単位をピクセル単位に戻す
+					for(auto& res : r)
+						res.rect *= _const.quantify_size;
+
 					_resetToIdleState(State::Processing);
 					emit sprinkleResult(r);
 				});
@@ -307,6 +323,8 @@ namespace dg {
 				}
 			);
 		}
+		// 後の黒領域補正の為に初期のマス目の状態を保存しておく
+		_saveBoardState(board);
 		QTimer::singleShot(0, _geneWorker, [
 			worker = _geneWorker,
 			sel = std::move(selected),
@@ -424,6 +442,8 @@ namespace dg {
 					emit sprinkleResult(res);
 					return;
 				}
+				// 後の黒領域補正の為に初期のマス目の状態を保存しておく
+				_saveBoardState(board);
 				// Geneスレッドへパラメータを送る(別スレッドで計算)
 				QTimer::singleShot(0, _geneWorker, [
 					worker = _geneWorker,

@@ -3,11 +3,13 @@
 #include "spine/src/enum.hpp"
 #include "idtype.hpp"
 #include "place/selected.hpp"
+#include "lubee/src/rect.hpp"
 #include <QObject>
 
 class QMenu;
 class QAction;
 namespace dg {
+	class SprBoard;
 	class CellBoard;
 	namespace place {
 		struct Param;
@@ -87,6 +89,12 @@ namespace dg {
 			void _sprinkle(const place::Param& param, const TagIdV& tag);
 			void _sprinkleImageSet(const ImageIdV& id);
 			void _resetToIdleState(State::e expected);
+
+			using SprBoard_S = std::shared_ptr<SprBoard>;
+			SprBoard_S			_board;
+
+			void _saveBoardState(const CellBoard& board);
+			void _removeBoardState();
 
 		private:
 			void _initWatchList();

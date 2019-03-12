@@ -308,7 +308,7 @@ namespace dg {
 				res.push_back(
 					place::Result {
 						.id = selected[idx].id,
-						.rect = rect * qs
+						.rect = rect
 					}
 				);
 			}
